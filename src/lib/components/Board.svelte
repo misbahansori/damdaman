@@ -1,4 +1,6 @@
 <script>
+	import { createEventDispatcher } from 'svelte';
+
 	const boardLines = [
 		{ x1: '100', y1: '300', x2: '900', y2: '300' },
 		{ x1: '100', y1: '500', x2: '900', y2: '500' },
@@ -21,6 +23,7 @@
 		{ x1: '100', y1: '300', x2: '900', y2: '1100' },
 		{ x1: '900', y1: '300', x2: '100', y2: '1100' }
 	];
+
 	const boardCoordinate = [
 		{ x: '100', y: '300' },
 		{ x: '100', y: '500' },
@@ -64,6 +67,12 @@
 		{ x: '900', y: '1100' },
 		{ x: '100', y: '1100' }
 	];
+
+	const dispatch = createEventDispatcher();
+
+	function onClick(coordinate) {
+		dispatch('click', { ...coordinate });
+	}
 </script>
 
 {#each boardLines as line}
@@ -78,7 +87,19 @@
 	/>
 {/each}
 {#each boardCoordinate as coordinate}
-	<text x={coordinate.x} y={coordinate.y} class="text-gray-500 text-sm fill-current">
+	<text x={parseInt(coordinate.x) + 20} y={coordinate.y} class="text-gray-500 text-sm fill-current">
 		[{coordinate.x},{coordinate.y}]
 	</text>
+{/each}
+{#each boardCoordinate as coordinate}
+	<circle
+		on:click={() => onClick(coordinate)}
+		cx={coordinate.x}
+		cy={coordinate.y}
+		r="16"
+		class="cursor-pointer"
+		fill="#D4EBFF"
+		stroke="#DDFBFF"
+		stroke-width="6"
+	/>
 {/each}

@@ -1,10 +1,23 @@
 <script>
+	import { createEventDispatcher } from 'svelte';
+
 	export let cx;
 	export let cy;
 	export let color;
+
+	const dispatch = createEventDispatcher();
+
+	function onClick() {
+		dispatch('click', {
+			x: cx,
+			y: cy,
+			color: color
+		});
+	}
 </script>
 
 <circle
+	on:click={onClick}
 	{cx}
 	{cy}
 	r="16"
