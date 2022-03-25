@@ -1,7 +1,7 @@
 <script>
 	import Board from '$lib/components/Board.svelte';
 	import Pawn from '$lib/components/Pawn.svelte';
-	import { activePawn } from '$lib/store/state';
+	import { activePawn, changeTurn, turn } from '$lib/store/state';
 
 	let pawnCoordinates = [
 		{ x: 300, y: 100, color: 'red' },
@@ -39,14 +39,16 @@
 	];
 
 	function onPawnClick(event) {
-		$activePawn = {
-			x: event.detail.x,
-			y: event.detail.y,
-			color: event.detail.color
-		};
+		const { x, y, color } = event.detail;
+
+		if (color !== $turn) {
+			return;
+		}
+
+		$activePawn = { x, y, color };
 	}
 
-	function findPawn(x, y, color) {
+	function findPawn(x, y) {
 		return pawnCoordinates.findIndex((pawn) => pawn.x === x && pawn.y === y);
 	}
 
@@ -54,7 +56,7 @@
 		if (!$activePawn.x && !$activePawn.y && !$activePawn.color) {
 			return;
 		}
-		const index = findPawn($activePawn.x, $activePawn.y, $activePawn.color);
+		const index = findPawn($activePawn.x, $activePawn.y);
 
 		if (index === -1) {
 			return;
@@ -63,14 +65,22 @@
 		pawnCoordinates[index].y = event.detail.y;
 
 		$activePawn = {
-			x: event.detail.x,
-			y: event.detail.y,
-			color: $activePawn.color
+			x: null,
+			y: null,
+			color: null
 		};
+
+		// $activePawn = {
+		// 	x: event.detail.x,
+		// 	y: event.detail.y,
+		// 	color: $activePawn.color
+		// };
+
+		changeTurn();
 	}
 </script>
 
-<div class="w-full min-h-screen">
+<div class="w-full min-h-screen bg-gray-100">
 	<div class="max-w-5xl flex mx-auto max-h-screen">
 		<svg class="w-full" viewBox="0 0 1000 1400" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<Board on:click={movePawn} />
@@ -79,13 +89,12 @@
 			{/each}
 		</svg>
 	</div>
-</div>
-
-<div class="flex flex-col">
-	{#each pawnCoordinates as coordinate}
-		<div class="flex items-center">
-			<input type="text" bind:value={coordinate.x} />
-			<input type="text" bind:value={coordinate.y} />
-		</div>
-	{/each}
+	<div class="absolute right-4 top-4 bg-white rounded-md p-4 w-64">
+		<table>
+			<tr>
+				<td>Turn : </td>
+				<td>{$turn}</td>
+			</tr>
+		</table>
+	</div>
 </div>
