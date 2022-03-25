@@ -65,20 +65,20 @@
 	</text>
 {/each}
 {#each boardCoordinate as coordinate}
+	{@const showSuggestion =
+		$suggestPath &&
+		currentPawnCoordinate &&
+		currentPawnCoordinate.possiblePaths.some(
+			(path) => path.x === coordinate.x && path.y === coordinate.y
+		)}
 	<circle
 		on:click={() => onClick(coordinate)}
 		cx={coordinate.x}
 		cy={coordinate.y}
 		r="16"
 		class="cursor-pointer"
-		fill={currentPawnCoordinate &&
-		$suggestPath &&
-		currentPawnCoordinate.possiblePaths.some(
-			(path) => path.x === coordinate.x && path.y === coordinate.y
-		)
-			? '#000'
-			: '#fff'}
-		stroke="#DDFBFF"
+		fill={showSuggestion ? '#2DF9AF' : '#D4EBFF'}
+		stroke={showSuggestion ? '#BFFFE8' : '#DDFBFF'}
 		stroke-width="6"
 	/>
 {/each}
