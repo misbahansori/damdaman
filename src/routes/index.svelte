@@ -6,6 +6,7 @@
 	let pawnCoordinates = [
 		{ x: 300, y: 100, color: 'red' },
 		{ x: 500, y: 100, color: 'red' },
+		{ x: 500, y: 200, color: 'red' },
 		{ x: 700, y: 100, color: 'red' },
 		{ x: 400, y: 200, color: 'red' },
 		{ x: 600, y: 200, color: 'red' },
@@ -30,6 +31,7 @@
 		{ x: 700, y: 1100, color: 'blue' },
 		{ x: 900, y: 1100, color: 'blue' },
 		{ x: 400, y: 1200, color: 'blue' },
+		{ x: 500, y: 1200, color: 'blue' },
 		{ x: 600, y: 1200, color: 'blue' },
 		{ x: 300, y: 1300, color: 'blue' },
 		{ x: 500, y: 1300, color: 'blue' },
