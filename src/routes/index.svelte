@@ -38,327 +38,9 @@
 		{ x: 700, y: 1300, color: 'blue' },
 	];
 
-	const possiblePath = [
-		{
-			x: 300,
-			y: 100,
-			paths: [
-				{ x: 500, y: 100 },
-				{ x: 400, y: 200 },
-			],
-		},
-		{
-			x: 500,
-			y: 100,
-			paths: [
-				{ x: 300, y: 100 },
-				{ x: 700, y: 100 },
-				{ x: 500, y: 200 },
-			],
-		},
-		{
-			x: 500,
-			y: 200,
-			paths: [
-				{ x: 500, y: 100 },
-				{ x: 600, y: 200 },
-				{ x: 400, y: 200 },
-				{ x: 500, y: 300 },
-			],
-		},
-		{
-			x: 700,
-			y: 100,
-			paths: [
-				{ x: 500, y: 100 },
-				{ x: 600, y: 200 },
-			],
-		},
-		{
-			x: 400,
-			y: 200,
-			paths: [
-				{ x: 500, y: 200 },
-				{ x: 300, y: 100 },
-				{ x: 500, y: 300 },
-			],
-		},
-		{
-			x: 600,
-			y: 200,
-			paths: [
-				{ x: 700, y: 100 },
-				{ x: 500, y: 200 },
-				{ x: 500, y: 300 },
-			],
-		},
-		{
-			x: 100,
-			y: 300,
-			paths: [
-				{ x: 100, y: 500 },
-				{ x: 300, y: 300 },
-				{ x: 300, y: 500 },
-			],
-		},
-		{
-			x: 300,
-			y: 300,
-			paths: [
-				{ x: 100, y: 300 },
-				{ x: 300, y: 500 },
-				{ x: 500, y: 300 },
-			],
-		},
-		{
-			x: 500,
-			y: 300,
-			paths: [
-				{ x: 400, y: 200 },
-				{ x: 500, y: 200 },
-				{ x: 600, y: 200 },
-				{ x: 700, y: 300 },
-				{ x: 700, y: 500 },
-				{ x: 500, y: 500 },
-				{ x: 300, y: 500 },
-				{ x: 300, y: 300 },
-			],
-		},
-		{
-			x: 700,
-			y: 300,
-			paths: [
-				{ x: 500, y: 300 },
-				{ x: 700, y: 500 },
-				{ x: 900, y: 300 },
-			],
-		},
-		{
-			x: 900,
-			y: 300,
-			paths: [
-				{ x: 700, y: 300 },
-				{ x: 900, y: 500 },
-				{ x: 700, y: 500 },
-			],
-		},
-		{
-			x: 100,
-			y: 500,
-			paths: [
-				{ x: 100, y: 300 },
-				{ x: 300, y: 500 },
-				{ x: 100, y: 700 },
-			],
-		},
-		{
-			x: 300,
-			y: 500,
-			paths: [
-				{ x: 100, y: 300 },
-				{ x: 300, y: 300 },
-				{ x: 500, y: 300 },
-				{ x: 500, y: 500 },
-				{ x: 500, y: 700 },
-				{ x: 300, y: 700 },
-				{ x: 100, y: 700 },
-				{ x: 100, y: 500 },
-			],
-		},
-		{
-			x: 500,
-			y: 500,
-			paths: [
-				{ x: 300, y: 500 },
-				{ x: 500, y: 300 },
-				{ x: 700, y: 500 },
-				{ x: 500, y: 700 },
-			],
-		},
-		{
-			x: 700,
-			y: 500,
-			paths: [
-				{ x: 500, y: 500 },
-				{ x: 500, y: 300 },
-				{ x: 700, y: 300 },
-				{ x: 900, y: 300 },
-				{ x: 900, y: 500 },
-				{ x: 900, y: 700 },
-			],
-		},
-		{
-			x: 900,
-			y: 500,
-			paths: [
-				{ x: 700, y: 500 },
-				{ x: 900, y: 300 },
-				{ x: 900, y: 700 },
-			],
-		},
-		{
-			x: 100,
-			y: 900,
-			paths: [
-				{ x: 100, y: 700 },
-				{ x: 300, y: 900 },
-				{ x: 100, y: 1100 },
-			],
-		},
-		{
-			x: 300,
-			y: 900,
-			paths: [
-				{ x: 100, y: 700 },
-				{ x: 300, y: 900 },
-				{ x: 500, y: 700 },
-				{ x: 500, y: 900 },
-				{ x: 500, y: 1100 },
-				{ x: 300, y: 1100 },
-				{ x: 100, y: 1100 },
-				{ x: 100, y: 900 },
-			],
-		},
-		{
-			x: 500,
-			y: 900,
-			paths: [
-				{ x: 300, y: 900 },
-				{ x: 500, y: 700 },
-				{ x: 700, y: 900 },
-				{ x: 500, y: 1100 },
-			],
-		},
-		{
-			x: 700,
-			y: 900,
-			paths: [
-				{ x: 500, y: 900 },
-				{ x: 500, y: 700 },
-				{ x: 700, y: 700 },
-				{ x: 900, y: 700 },
-				{ x: 900, y: 900 },
-				{ x: 900, y: 1100 },
-				{ x: 700, y: 1100 },
-				{ x: 500, y: 1100 },
-			],
-		},
-		{
-			x: 900,
-			y: 900,
-			paths: [
-				{ x: 700, y: 900 },
-				{ x: 900, y: 700 },
-				{ x: 900, y: 1100 },
-			],
-		},
-		{
-			x: 100,
-			y: 1100,
-			paths: [
-				{ x: 100, y: 900 },
-				{ x: 300, y: 900 },
-				{ x: 300, y: 1100 },
-			],
-		},
-		{
-			x: 300,
-			y: 1100,
-			paths: [
-				{ x: 100, y: 1100 },
-				{ x: 300, y: 900 },
-				{ x: 500, y: 1100 },
-			],
-		},
-		{
-			x: 500,
-			y: 1100,
-			paths: [
-				{ x: 300, y: 1100 },
-				{ x: 300, y: 900 },
-				{ x: 500, y: 900 },
-				{ x: 700, y: 900 },
-				{ x: 700, y: 1100 },
-				{ x: 600, y: 1200 },
-				{ x: 500, y: 1200 },
-				{ x: 400, y: 1200 },
-			],
-		},
-		{
-			x: 700,
-			y: 1100,
-			paths: [
-				{ x: 500, y: 100 },
-				{ x: 700, y: 900 },
-				{ x: 900, y: 1100 },
-			],
-		},
-		{
-			x: 900,
-			y: 1100,
-			paths: [
-				{ x: 700, y: 1100 },
-				{ x: 700, y: 900 },
-				{ x: 900, y: 900 },
-			],
-		},
-		{
-			x: 400,
-			y: 1200,
-			paths: [
-				{ x: 500, y: 1100 },
-				{ x: 500, y: 1200 },
-				{ x: 300, y: 1300 },
-			],
-		},
-		{
-			x: 500,
-			y: 1200,
-			paths: [
-				{ x: 400, y: 1200 },
-				{ x: 500, y: 1100 },
-				{ x: 600, y: 1200 },
-				{ x: 500, y: 1300 },
-			],
-		},
-		{
-			x: 600,
-			y: 1200,
-			paths: [
-				{ x: 500, y: 1200 },
-				{ x: 500, y: 1100 },
-				{ x: 700, y: 1300 },
-			],
-		},
-		{
-			x: 300,
-			y: 1300,
-			paths: [
-				{ x: 400, y: 1200 },
-				{ x: 500, y: 1300 },
-			],
-		},
-		{
-			x: 500,
-			y: 1300,
-			paths: [
-				{ x: 300, y: 1300 },
-				{ x: 500, y: 1200 },
-				{ x: 700, y: 1300 },
-			],
-		},
-		{
-			x: 700,
-			y: 1300,
-			paths: [
-				{ x: 500, y: 1300 },
-				{ x: 600, y: 1200 },
-			],
-		},
-	];
-
-	function onPawnClick(event) {
+	function onPawnSelected(event) {
 		const { x, y, color } = event.detail;
+		// highlightPossiblePawn(x, y);
 
 		if (color !== $turn) {
 			return;
@@ -397,6 +79,40 @@
 
 		changeTurn();
 	}
+
+	function highlightPossiblePawn(x, y) {
+		const index = findPawn(x, y);
+
+		if (index === -1) {
+			return;
+		}
+
+		const pawn = pawnCoordinates[index];
+
+		if (pawn.color !== $turn) {
+			return;
+		}
+
+		const paths = pawn.paths;
+
+		for (let i = 0; i < paths.length; i++) {
+			const path = paths[i];
+
+			const pathIndex = findPawn(path.x, path.y);
+
+			if (pathIndex === -1) {
+				continue;
+			}
+
+			const pathPawn = pawnCoordinates[pathIndex];
+
+			if (pathPawn.color === $turn) {
+				continue;
+			}
+
+			pathPawn.highlighted = true;
+		}
+	}
 </script>
 
 <div class="w-full min-h-screen bg-gray-100">
@@ -404,7 +120,12 @@
 		<svg class="w-full" viewBox="0 0 1000 1400" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<Board on:click={movePawn} />
 			{#each pawnCoordinates as coordinate}
-				<Pawn on:click={onPawnClick} cx={coordinate.x} cy={coordinate.y} color={coordinate.color} />
+				<Pawn
+					on:click={onPawnSelected}
+					cx={coordinate.x}
+					cy={coordinate.y}
+					color={coordinate.color}
+				/>
 			{/each}
 		</svg>
 	</div>
