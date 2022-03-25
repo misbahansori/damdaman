@@ -1,5 +1,6 @@
 <script>
 	import { boardCoordinate } from '$lib/store/board';
+	import { activePawn } from '$lib/store/state';
 
 	import { createEventDispatcher } from 'svelte';
 
@@ -25,6 +26,21 @@
 		{ x1: '100', y1: '300', x2: '900', y2: '1100' },
 		{ x1: '900', y1: '300', x2: '100', y2: '1100' },
 	];
+
+	let currentPawnCoordinate = {
+		x: null,
+		y: null,
+		possiblePaths: [],
+	};
+
+	$: {
+		currentPawnCoordinate =
+			boardCoordinate.find(
+				(coordinate) => coordinate.x === $activePawn.x && coordinate.y === $activePawn.y
+			) ?? currentPawnCoordinate;
+	}
+
+	$: console.log(currentPawnCoordinate);
 
 	const dispatch = createEventDispatcher();
 
@@ -56,7 +72,12 @@
 		cy={coordinate.y}
 		r="16"
 		class="cursor-pointer"
-		fill="#D4EBFF"
+		fill={currentPawnCoordinate &&
+		currentPawnCoordinate.possiblePaths.some(
+			(path) => path.x === coordinate.x && path.y === coordinate.y
+		)
+			? '#000'
+			: '#fff'}
 		stroke="#DDFBFF"
 		stroke-width="6"
 	/>

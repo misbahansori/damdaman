@@ -40,7 +40,6 @@
 
 	function onPawnSelected(event) {
 		const { x, y, color } = event.detail;
-		// highlightPossiblePawn(x, y);
 
 		if (color !== $turn) {
 			return;
@@ -78,40 +77,6 @@
 		// };
 
 		changeTurn();
-	}
-
-	function highlightPossiblePawn(x, y) {
-		const index = findPawn(x, y);
-
-		if (index === -1) {
-			return;
-		}
-
-		const pawn = pawnCoordinates[index];
-
-		if (pawn.color !== $turn) {
-			return;
-		}
-
-		const paths = pawn.paths;
-
-		for (let i = 0; i < paths.length; i++) {
-			const path = paths[i];
-
-			const pathIndex = findPawn(path.x, path.y);
-
-			if (pathIndex === -1) {
-				continue;
-			}
-
-			const pathPawn = pawnCoordinates[pathIndex];
-
-			if (pathPawn.color === $turn) {
-				continue;
-			}
-
-			pathPawn.highlighted = true;
-		}
 	}
 </script>
 
