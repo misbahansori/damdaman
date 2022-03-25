@@ -1,6 +1,6 @@
 <script>
 	import { boardCoordinate } from '$lib/store/board';
-	import { activePawn } from '$lib/store/state';
+	import { activePawn, suggestPath } from '$lib/store/state';
 
 	import { createEventDispatcher } from 'svelte';
 
@@ -40,8 +40,6 @@
 			) ?? currentPawnCoordinate;
 	}
 
-	$: console.log(currentPawnCoordinate);
-
 	const dispatch = createEventDispatcher();
 
 	function onClick(coordinate) {
@@ -73,6 +71,7 @@
 		r="16"
 		class="cursor-pointer"
 		fill={currentPawnCoordinate &&
+		$suggestPath &&
 		currentPawnCoordinate.possiblePaths.some(
 			(path) => path.x === coordinate.x && path.y === coordinate.y
 		)

@@ -145,6 +145,8 @@ export const boardCoordinate = [
 			{ x: 900, y: 300 },
 			{ x: 900, y: 500 },
 			{ x: 900, y: 700 },
+			{ x: 700, y: 700 },
+			{ x: 500, y: 700 },
 		],
 	},
 	{
@@ -226,7 +228,7 @@ export const boardCoordinate = [
 		y: 900,
 		possiblePaths: [
 			{ x: 100, y: 700 },
-			{ x: 300, y: 900 },
+			{ x: 300, y: 700 },
 			{ x: 500, y: 700 },
 			{ x: 500, y: 900 },
 			{ x: 500, y: 1100 },

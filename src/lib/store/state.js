@@ -17,3 +17,5 @@ export const activePawn = writable({
 	y: null,
 	color: null,
 });
+
+export const suggestPath = writable(false);

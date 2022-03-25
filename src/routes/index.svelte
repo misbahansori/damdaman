@@ -1,7 +1,7 @@
 <script>
 	import Board from '$lib/components/Board.svelte';
 	import Pawn from '$lib/components/Pawn.svelte';
-	import { activePawn, changeTurn, turn } from '$lib/store/state';
+	import { activePawn, changeTurn, suggestPath, turn } from '$lib/store/state';
 
 	let pawnCoordinates = [
 		{ x: 300, y: 100, color: 'red' },
@@ -39,6 +39,7 @@
 	];
 
 	function onPawnSelected(event) {
+		$suggestPath = true;
 		const { x, y, color } = event.detail;
 
 		if (color !== $turn) {
@@ -70,11 +71,7 @@
 			color: null,
 		};
 
-		// $activePawn = {
-		// 	x: event.detail.x,
-		// 	y: event.detail.y,
-		// 	color: $activePawn.color
-		// };
+		$suggestPath = false;
 
 		changeTurn();
 	}
