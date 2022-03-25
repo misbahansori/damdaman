@@ -1,9 +1,9 @@
-<script>
+<script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 
-	export let cx;
-	export let cy;
-	export let color;
+	export let cx: number;
+	export let cy: number;
+	export let color: string;
 
 	const dispatch = createEventDispatcher();
 
@@ -11,7 +11,7 @@
 		dispatch('click', {
 			x: cx,
 			y: cy,
-			color: color
+			color: color,
 		});
 	}
 </script>

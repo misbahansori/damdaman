@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import Board from '$lib/components/Board.svelte';
 	import Pawn from '$lib/components/Pawn.svelte';
 	import { activePawn, changeTurn, suggestPath, turn } from '$lib/store/state';
@@ -38,7 +38,7 @@
 		{ x: 700, y: 1300, color: 'blue' },
 	];
 
-	function onPawnSelected(event) {
+	function onPawnSelected(event: CustomEvent<{ x: number; y: number; color: string }>) {
 		$suggestPath = true;
 		const { x, y, color } = event.detail;
 
@@ -49,11 +49,11 @@
 		$activePawn = { x, y, color };
 	}
 
-	function findPawn(x, y) {
+	function findPawn(x: number, y: number) {
 		return pawnCoordinates.findIndex((pawn) => pawn.x === x && pawn.y === y);
 	}
 
-	function movePawn(event) {
+	function movePawn(event: CustomEvent<{ x: number; y: number; color: string }>) {
 		if (!$activePawn.x && !$activePawn.y && !$activePawn.color) {
 			return;
 		}

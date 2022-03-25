@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { boardCoordinate } from '$lib/store/board';
 	import { activePawn, suggestPath } from '$lib/store/state';
 

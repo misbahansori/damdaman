@@ -12,7 +12,7 @@ export function changeTurn() {
 	});
 }
 
-export const activePawn = writable({
+export const activePawn = writable<{ x: number; y: number; color: string }>({
 	x: null,
 	y: null,
 	color: null,
