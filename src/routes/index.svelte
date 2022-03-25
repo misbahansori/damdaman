@@ -4,7 +4,7 @@
 	import { activePawn, changeTurn, suggestPath, turn } from '$lib/store/state';
 	import { Color, type Pawn as PawnType } from '$lib/types/coordinate.type';
 
-	let pawnCoordinates: PawnType[] = [
+	let pawnCoordinates: Array<PawnType> = [
 		{ x: 300, y: 100, color: Color.RED },
 		{ x: 500, y: 100, color: Color.RED },
 		{ x: 500, y: 200, color: Color.RED },
@@ -40,12 +40,13 @@
 	];
 
 	function onPawnSelected(event: CustomEvent<PawnType>) {
-		$suggestPath = true;
 		const { x, y, color } = event.detail;
 
 		if (color !== $turn) {
 			return;
 		}
+
+		$suggestPath = true;
 
 		$activePawn = { x, y, color };
 	}
