@@ -1,18 +1,19 @@
+import { Color, type Pawn } from '$lib/types/coordinate.type';
 import { writable } from 'svelte/store';
 
-export const turn = writable('blue');
+export const turn = writable<Color>(Color.BLUE);
 
-export function changeTurn() {
+export function changeTurn(): void {
 	turn.update((t) => {
-		if (t === 'blue') {
-			return 'red';
+		if (t === Color.BLUE) {
+			return Color.RED;
 		} else {
-			return 'blue';
+			return Color.BLUE;
 		}
 	});
 }
 
-export const activePawn = writable<{ x: number; y: number; color: string }>({
+export const activePawn = writable<Pawn>({
 	x: null,
 	y: null,
 	color: null,

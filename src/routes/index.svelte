@@ -2,43 +2,44 @@
 	import Board from '$lib/components/Board.svelte';
 	import Pawn from '$lib/components/Pawn.svelte';
 	import { activePawn, changeTurn, suggestPath, turn } from '$lib/store/state';
+	import { Color, type Pawn as PawnType } from '$lib/types/coordinate.type';
 
-	let pawnCoordinates = [
-		{ x: 300, y: 100, color: 'red' },
-		{ x: 500, y: 100, color: 'red' },
-		{ x: 500, y: 200, color: 'red' },
-		{ x: 700, y: 100, color: 'red' },
-		{ x: 400, y: 200, color: 'red' },
-		{ x: 600, y: 200, color: 'red' },
-		{ x: 100, y: 300, color: 'red' },
-		{ x: 300, y: 300, color: 'red' },
-		{ x: 500, y: 300, color: 'red' },
-		{ x: 700, y: 300, color: 'red' },
-		{ x: 900, y: 300, color: 'red' },
-		{ x: 100, y: 500, color: 'red' },
-		{ x: 300, y: 500, color: 'red' },
-		{ x: 500, y: 500, color: 'red' },
-		{ x: 700, y: 500, color: 'red' },
-		{ x: 900, y: 500, color: 'red' },
-		{ x: 100, y: 900, color: 'blue' },
-		{ x: 300, y: 900, color: 'blue' },
-		{ x: 500, y: 900, color: 'blue' },
-		{ x: 700, y: 900, color: 'blue' },
-		{ x: 900, y: 900, color: 'blue' },
-		{ x: 100, y: 1100, color: 'blue' },
-		{ x: 300, y: 1100, color: 'blue' },
-		{ x: 500, y: 1100, color: 'blue' },
-		{ x: 700, y: 1100, color: 'blue' },
-		{ x: 900, y: 1100, color: 'blue' },
-		{ x: 400, y: 1200, color: 'blue' },
-		{ x: 500, y: 1200, color: 'blue' },
-		{ x: 600, y: 1200, color: 'blue' },
-		{ x: 300, y: 1300, color: 'blue' },
-		{ x: 500, y: 1300, color: 'blue' },
-		{ x: 700, y: 1300, color: 'blue' },
+	let pawnCoordinates: PawnType[] = [
+		{ x: 300, y: 100, color: Color.RED },
+		{ x: 500, y: 100, color: Color.RED },
+		{ x: 500, y: 200, color: Color.RED },
+		{ x: 700, y: 100, color: Color.RED },
+		{ x: 400, y: 200, color: Color.RED },
+		{ x: 600, y: 200, color: Color.RED },
+		{ x: 100, y: 300, color: Color.RED },
+		{ x: 300, y: 300, color: Color.RED },
+		{ x: 500, y: 300, color: Color.RED },
+		{ x: 700, y: 300, color: Color.RED },
+		{ x: 900, y: 300, color: Color.RED },
+		{ x: 100, y: 500, color: Color.RED },
+		{ x: 300, y: 500, color: Color.RED },
+		{ x: 500, y: 500, color: Color.RED },
+		{ x: 700, y: 500, color: Color.RED },
+		{ x: 900, y: 500, color: Color.RED },
+		{ x: 100, y: 900, color: Color.BLUE },
+		{ x: 300, y: 900, color: Color.BLUE },
+		{ x: 500, y: 900, color: Color.BLUE },
+		{ x: 700, y: 900, color: Color.BLUE },
+		{ x: 900, y: 900, color: Color.BLUE },
+		{ x: 100, y: 1100, color: Color.BLUE },
+		{ x: 300, y: 1100, color: Color.BLUE },
+		{ x: 500, y: 1100, color: Color.BLUE },
+		{ x: 700, y: 1100, color: Color.BLUE },
+		{ x: 900, y: 1100, color: Color.BLUE },
+		{ x: 400, y: 1200, color: Color.BLUE },
+		{ x: 500, y: 1200, color: Color.BLUE },
+		{ x: 600, y: 1200, color: Color.BLUE },
+		{ x: 300, y: 1300, color: Color.BLUE },
+		{ x: 500, y: 1300, color: Color.BLUE },
+		{ x: 700, y: 1300, color: Color.BLUE },
 	];
 
-	function onPawnSelected(event: CustomEvent<{ x: number; y: number; color: string }>) {
+	function onPawnSelected(event: CustomEvent<PawnType>) {
 		$suggestPath = true;
 		const { x, y, color } = event.detail;
 

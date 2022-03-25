@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { boardCoordinate } from '$lib/store/board';
 	import { activePawn, suggestPath } from '$lib/store/state';
+	import type { Coordinate } from '$lib/types/coordinate.type';
 
 	import { createEventDispatcher } from 'svelte';
 
@@ -42,7 +43,7 @@
 
 	const dispatch = createEventDispatcher();
 
-	function onClick(coordinate) {
+	function onClick(coordinate: Coordinate) {
 		dispatch('click', { ...coordinate });
 	}
 </script>

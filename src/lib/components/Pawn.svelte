@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { Color, type Pawn } from '$lib/types/coordinate.type';
+
 	import { createEventDispatcher } from 'svelte';
 
 	export let cx: number;
@@ -8,7 +10,7 @@
 	const dispatch = createEventDispatcher();
 
 	function onClick() {
-		dispatch('click', {
+		dispatch('click', <Pawn>{
 			x: cx,
 			y: cy,
 			color: color,
@@ -22,7 +24,7 @@
 	{cy}
 	r="16"
 	class="cursor-pointer"
-	fill={color === 'red' ? '#FF005C' : '#426AF5'}
-	stroke={color === 'red' ? '#FF7BAB' : '#AAC7FF'}
+	fill={color === Color.RED ? '#FF005C' : '#426AF5'}
+	stroke={color === Color.RED ? '#FF7BAB' : '#AAC7FF'}
 	stroke-width="6"
 />

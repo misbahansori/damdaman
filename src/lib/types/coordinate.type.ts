@@ -1,0 +1,13 @@
+export interface Coordinate {
+	x: number;
+	y: number;
+}
+
+export enum Color {
+	BLUE = 'blue',
+	RED = 'red',
+}
+
+export interface Pawn extends Coordinate {
+	color: Color;
+}
