@@ -555,41 +555,41 @@ export const boardCoordinate: Array<PawnCoordinate> = [
 	},
 ];
 
-export const suggestionPaths = derived(
-	[activePawn, pawnCoordinates],
-	([$activePawn, $pawnCoordinates]) => {
-		// Get the current pawn's coordinates in the board.
-		const activePawnCoordinate = getActivePawnCoordinate($activePawn);
-		if (!activePawnCoordinate) {
-			return [];
-		}
-		// Check if there are enemy pawns in the possible path.
-		const enemiesInContact = getEnemiesInContact(
-			$pawnCoordinates,
-			activePawnCoordinate,
-			$activePawn
-		);
-		// Get the possible paths of the enemy, so we can search for the intersecting path.
-		const possibleEnemyPaths = boardCoordinate
-			.filter((coordinate) =>
-				enemiesInContact.some((enemy) => enemy.x === coordinate.x && enemy.y === coordinate.y)
-			)
-			.flatMap((enemy) =>
-				enemy.possiblePaths.filter((coordinate) => {
-					return checkStraightLine([
-						[$activePawn.x, $activePawn.y],
-						[enemy.x, enemy.y],
-						[coordinate.x, coordinate.y],
-					]);
-				})
-			);
-
-		const eatSuggestionCoordinates = activePawnCoordinate.eatingPaths.filter((coordinate) =>
-			possibleEnemyPaths.some(
-				(possiblePath) => possiblePath.x === coordinate.x && possiblePath.y === coordinate.y
-			)
-		);
-
-		return activePawnCoordinate.possiblePaths.concat(eatSuggestionCoordinates);
+export const suggestionPaths = derived([activePawn, pawnCoordinates], ([$activePawn, $pawnCoordinates]) => {
+	// Get the current pawn's coordinates in the board.
+	const activePawnCoordinate = getActivePawnCoordinate($activePawn);
+	if (!activePawnCoordinate) {
+		return [];
 	}
-);
+	// Check if there are enemy pawns in the possible path.
+	const enemiesInContact = getEnemiesInContact($pawnCoordinates, activePawnCoordinate, $activePawn);
+	// Get the possible paths of the enemy, so we can search for the intersecting path.
+	const possibleEnemyPaths = boardCoordinate
+		.filter((coordinate) =>
+			enemiesInContact.some((enemy) => enemy.x === coordinate.x && enemy.y === coordinate.y)
+		)
+		.flatMap((enemy) =>
+			enemy.possiblePaths.filter((coordinate) => {
+				return checkStraightLine([
+					[$activePawn.x, $activePawn.y],
+					[enemy.x, enemy.y],
+					[coordinate.x, coordinate.y],
+				]);
+			})
+		);
+
+	const eatSuggestionCoordinates = activePawnCoordinate.eatingPaths.filter((coordinate) =>
+		possibleEnemyPaths.some(
+			(possiblePath) => possiblePath.x === coordinate.x && possiblePath.y === coordinate.y
+		)
+	);
+
+	const possiblePaths = activePawnCoordinate.possiblePaths.filter(
+		(coordinate) =>
+			!$pawnCoordinates.some(
+				(pawnCoordinate) => pawnCoordinate.x === coordinate.x && pawnCoordinate.y === coordinate.y
+			)
+	);
+
+	return possiblePaths.concat(eatSuggestionCoordinates);
+});

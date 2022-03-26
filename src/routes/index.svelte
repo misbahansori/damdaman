@@ -67,6 +67,10 @@
 		$pawnCoordinates[index].x = event.detail.x;
 		$pawnCoordinates[index].y = event.detail.y;
 
+		$activePawn = { id: null, x: event.detail.x, y: event.detail.y, color: null };
+
+		// TODO : Determine if the turn is over or not
+
 		$activePawn = {
 			id: null,
 			x: null,
