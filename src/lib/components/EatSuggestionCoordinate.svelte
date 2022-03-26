@@ -8,6 +8,6 @@
 	const dispatch = createEventDispatcher();
 </script>
 
-{#each eatSuggestionCoordinates as coordinate}
+{#each eatSuggestionCoordinates as coordinate, index (index)}
 	<SuggestionPawn on:click={(event) => dispatch('click', event.detail)} {coordinate} />
 {/each}

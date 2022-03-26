@@ -2,7 +2,7 @@
 	import Board from '$lib/components/Board.svelte';
 	import Pawn from '$lib/components/Pawn.svelte';
 	import { activePawn, changeTurn, pawnCoordinates, suggestPath, turn } from '$lib/store/state';
-	import type { Pawn as PawnType } from '$lib/types/coordinate.type';
+	import { Color, type Pawn as PawnType } from '$lib/types/coordinate.type';
 	import { isDebugging } from '$lib/variable';
 
 	function onPawnSelected(event: CustomEvent<PawnType>) {
@@ -60,11 +60,19 @@
 		</svg>
 	</div>
 	{#if isDebugging}
-		<div class="absolute right-4 top-4 bg-white rounded-md p-4 w-64">
+		<div class="absolute right-4 top-4 bg-white rounded-md p-4 shadow-lg">
 			<table>
 				<tr>
 					<td>Turn : </td>
-					<td>{$turn}</td>
+					<td>
+						<div
+							class="px-2 py-0.5"
+							class:bg-red-500={$turn === Color.RED}
+							class:bg-blue-500={$turn === Color.BLUE}
+						>
+							{$turn}
+						</div>
+					</td>
 				</tr>
 			</table>
 		</div>

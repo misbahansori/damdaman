@@ -59,7 +59,7 @@
 	/>
 {/each}
 {#if $suggestPath && currentPawnCoordinate}
-	{#each currentPawnCoordinate.possiblePaths as possiblePath}
+	{#each currentPawnCoordinate.possiblePaths as possiblePath, index (index)}
 		<SuggestionPawn
 			on:click={(event) => dispatch('click', event.detail)}
 			coordinate={possiblePath}
