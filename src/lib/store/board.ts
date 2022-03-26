@@ -8,7 +8,10 @@ export const boardCoordinate: Array<PawnCoordinate> = [
 			{ x: 500, y: 100 },
 			{ x: 400, y: 200 },
 		],
-		eatingPaths: [],
+		eatingPaths: [
+			{ x: 700, y: 100 },
+			{ x: 500, y: 300 },
+		],
 	},
 	{
 		x: 500,
@@ -18,7 +21,7 @@ export const boardCoordinate: Array<PawnCoordinate> = [
 			{ x: 700, y: 100 },
 			{ x: 500, y: 200 },
 		],
-		eatingPaths: [],
+		eatingPaths: [{ x: 500, y: 300 }],
 	},
 	{
 		x: 500,
@@ -29,7 +32,7 @@ export const boardCoordinate: Array<PawnCoordinate> = [
 			{ x: 400, y: 200 },
 			{ x: 500, y: 300 },
 		],
-		eatingPaths: [],
+		eatingPaths: [{ x: 500, y: 500 }],
 	},
 	{
 		x: 700,
@@ -38,7 +41,7 @@ export const boardCoordinate: Array<PawnCoordinate> = [
 			{ x: 500, y: 100 },
 			{ x: 600, y: 200 },
 		],
-		eatingPaths: [],
+		eatingPaths: [{ x: 500, y: 300 }],
 	},
 	{
 		x: 400,
@@ -48,7 +51,10 @@ export const boardCoordinate: Array<PawnCoordinate> = [
 			{ x: 300, y: 100 },
 			{ x: 500, y: 300 },
 		],
-		eatingPaths: [],
+		eatingPaths: [
+			{ x: 600, y: 200 },
+			{ x: 700, y: 500 },
+		],
 	},
 	{
 		x: 600,
@@ -58,7 +64,10 @@ export const boardCoordinate: Array<PawnCoordinate> = [
 			{ x: 500, y: 200 },
 			{ x: 500, y: 300 },
 		],
-		eatingPaths: [],
+		eatingPaths: [
+			{ x: 400, y: 200 },
+			{ x: 300, y: 500 },
+		],
 	},
 	{
 		x: 100,
@@ -68,7 +77,11 @@ export const boardCoordinate: Array<PawnCoordinate> = [
 			{ x: 300, y: 300 },
 			{ x: 300, y: 500 },
 		],
-		eatingPaths: [],
+		eatingPaths: [
+			{ x: 100, y: 700 },
+			{ x: 500, y: 300 },
+			{ x: 500, y: 700 },
+		],
 	},
 	{
 		x: 300,
@@ -78,7 +91,10 @@ export const boardCoordinate: Array<PawnCoordinate> = [
 			{ x: 300, y: 500 },
 			{ x: 500, y: 300 },
 		],
-		eatingPaths: [],
+		eatingPaths: [
+			{ x: 700, y: 300 },
+			{ x: 300, y: 700 },
+		],
 	},
 	{
 		x: 500,
@@ -93,7 +109,16 @@ export const boardCoordinate: Array<PawnCoordinate> = [
 			{ x: 300, y: 500 },
 			{ x: 300, y: 300 },
 		],
-		eatingPaths: [],
+		eatingPaths: [
+			{ x: 300, y: 100 },
+			{ x: 500, y: 100 },
+			{ x: 700, y: 100 },
+			{ x: 100, y: 300 },
+			{ x: 100, y: 700 },
+			{ x: 500, y: 700 },
+			{ x: 900, y: 700 },
+			{ x: 900, y: 300 },
+		],
 	},
 	{
 		x: 700,
@@ -103,7 +128,10 @@ export const boardCoordinate: Array<PawnCoordinate> = [
 			{ x: 700, y: 500 },
 			{ x: 900, y: 300 },
 		],
-		eatingPaths: [],
+		eatingPaths: [
+			{ x: 300, y: 300 },
+			{ x: 700, y: 700 },
+		],
 	},
 	{
 		x: 900,
@@ -113,7 +141,11 @@ export const boardCoordinate: Array<PawnCoordinate> = [
 			{ x: 900, y: 500 },
 			{ x: 700, y: 500 },
 		],
-		eatingPaths: [],
+		eatingPaths: [
+			{ x: 500, y: 300 },
+			{ x: 500, y: 700 },
+			{ x: 900, y: 700 },
+		],
 	},
 	{
 		x: 100,
@@ -123,7 +155,10 @@ export const boardCoordinate: Array<PawnCoordinate> = [
 			{ x: 300, y: 500 },
 			{ x: 100, y: 700 },
 		],
-		eatingPaths: [],
+		eatingPaths: [
+			{ x: 500, y: 500 },
+			{ x: 100, y: 900 },
+		],
 	},
 	{
 		x: 300,
@@ -138,7 +173,11 @@ export const boardCoordinate: Array<PawnCoordinate> = [
 			{ x: 100, y: 700 },
 			{ x: 100, y: 500 },
 		],
-		eatingPaths: [],
+		eatingPaths: [
+			{ x: 300, y: 900 },
+			{ x: 700, y: 900 },
+			{ x: 700, y: 500 },
+		],
 	},
 	{
 		x: 500,
@@ -169,7 +208,12 @@ export const boardCoordinate: Array<PawnCoordinate> = [
 			{ x: 700, y: 700 },
 			{ x: 500, y: 700 },
 		],
-		eatingPaths: [],
+		eatingPaths: [
+			{ x: 300, y: 500 },
+			{ x: 400, y: 200 },
+			{ x: 700, y: 900 },
+			{ x: 300, y: 900 },
+		],
 	},
 	{
 		x: 900,
@@ -179,7 +223,7 @@ export const boardCoordinate: Array<PawnCoordinate> = [
 			{ x: 900, y: 300 },
 			{ x: 900, y: 700 },
 		],
-		eatingPaths: [],
+		eatingPaths: [{ x: 500, y: 500 }],
 	},
 	{
 		x: 100,
@@ -191,7 +235,13 @@ export const boardCoordinate: Array<PawnCoordinate> = [
 			{ x: 300, y: 900 },
 			{ x: 100, y: 900 },
 		],
-		eatingPaths: [],
+		eatingPaths: [
+			{ x: 100, y: 300 },
+			{ x: 500, y: 300 },
+			{ x: 500, y: 700 },
+			{ x: 500, y: 1100 },
+			{ x: 100, y: 1100 },
+		],
 	},
 	{
 		x: 300,
@@ -202,7 +252,11 @@ export const boardCoordinate: Array<PawnCoordinate> = [
 			{ x: 500, y: 700 },
 			{ x: 300, y: 900 },
 		],
-		eatingPaths: [],
+		eatingPaths: [
+			{ x: 300, y: 300 },
+			{ x: 700, y: 700 },
+			{ x: 300, y: 1100 },
+		],
 	},
 	{
 		x: 500,
@@ -217,7 +271,16 @@ export const boardCoordinate: Array<PawnCoordinate> = [
 			{ x: 500, y: 900 },
 			{ x: 300, y: 900 },
 		],
-		eatingPaths: [],
+		eatingPaths: [
+			{ x: 100, y: 300 },
+			{ x: 500, y: 300 },
+			{ x: 900, y: 300 },
+			{ x: 900, y: 700 },
+			{ x: 900, y: 1100 },
+			{ x: 500, y: 1100 },
+			{ x: 100, y: 1100 },
+			{ x: 100, y: 700 },
+		],
 	},
 	{
 		x: 700,
@@ -228,7 +291,11 @@ export const boardCoordinate: Array<PawnCoordinate> = [
 			{ x: 900, y: 700 },
 			{ x: 700, y: 900 },
 		],
-		eatingPaths: [],
+		eatingPaths: [
+			{ x: 300, y: 700 },
+			{ x: 700, y: 300 },
+			{ x: 700, y: 1100 },
+		],
 	},
 	{
 		x: 900,
@@ -240,7 +307,13 @@ export const boardCoordinate: Array<PawnCoordinate> = [
 			{ x: 900, y: 900 },
 			{ x: 700, y: 900 },
 		],
-		eatingPaths: [],
+		eatingPaths: [
+			{ x: 500, y: 700 },
+			{ x: 500, y: 300 },
+			{ x: 900, y: 300 },
+			{ x: 900, y: 1100 },
+			{ x: 500, y: 1100 },
+		],
 	},
 	{
 		x: 100,
@@ -250,7 +323,10 @@ export const boardCoordinate: Array<PawnCoordinate> = [
 			{ x: 300, y: 900 },
 			{ x: 100, y: 1100 },
 		],
-		eatingPaths: [],
+		eatingPaths: [
+			{ x: 100, y: 500 },
+			{ x: 500, y: 900 },
+		],
 	},
 	{
 		x: 300,
@@ -265,7 +341,12 @@ export const boardCoordinate: Array<PawnCoordinate> = [
 			{ x: 100, y: 1100 },
 			{ x: 100, y: 900 },
 		],
-		eatingPaths: [],
+		eatingPaths: [
+			{ x: 300, y: 500 },
+			{ x: 700, y: 500 },
+			{ x: 700, y: 900 },
+			{ x: 600, y: 1200 },
+		],
 	},
 	{
 		x: 500,
@@ -276,7 +357,12 @@ export const boardCoordinate: Array<PawnCoordinate> = [
 			{ x: 700, y: 900 },
 			{ x: 500, y: 1100 },
 		],
-		eatingPaths: [],
+		eatingPaths: [
+			{ x: 100, y: 900 },
+			{ x: 500, y: 500 },
+			{ x: 900, y: 900 },
+			{ x: 500, y: 1200 },
+		],
 	},
 	{
 		x: 700,
@@ -291,7 +377,12 @@ export const boardCoordinate: Array<PawnCoordinate> = [
 			{ x: 700, y: 1100 },
 			{ x: 500, y: 1100 },
 		],
-		eatingPaths: [],
+		eatingPaths: [
+			{ x: 300, y: 900 },
+			{ x: 300, y: 500 },
+			{ x: 700, y: 500 },
+			{ x: 400, y: 1200 },
+		],
 	},
 	{
 		x: 900,
@@ -301,7 +392,10 @@ export const boardCoordinate: Array<PawnCoordinate> = [
 			{ x: 900, y: 700 },
 			{ x: 900, y: 1100 },
 		],
-		eatingPaths: [],
+		eatingPaths: [
+			{ x: 500, y: 900 },
+			{ x: 900, y: 500 },
+		],
 	},
 	{
 		x: 100,
@@ -311,7 +405,11 @@ export const boardCoordinate: Array<PawnCoordinate> = [
 			{ x: 300, y: 900 },
 			{ x: 300, y: 1100 },
 		],
-		eatingPaths: [],
+		eatingPaths: [
+			{ x: 100, y: 700 },
+			{ x: 500, y: 700 },
+			{ x: 500, y: 1100 },
+		],
 	},
 	{
 		x: 300,
@@ -321,7 +419,10 @@ export const boardCoordinate: Array<PawnCoordinate> = [
 			{ x: 300, y: 900 },
 			{ x: 500, y: 1100 },
 		],
-		eatingPaths: [],
+		eatingPaths: [
+			{ x: 300, y: 700 },
+			{ x: 700, y: 1100 },
+		],
 	},
 	{
 		x: 500,
@@ -336,7 +437,16 @@ export const boardCoordinate: Array<PawnCoordinate> = [
 			{ x: 500, y: 1200 },
 			{ x: 400, y: 1200 },
 		],
-		eatingPaths: [],
+		eatingPaths: [
+			{ x: 100, y: 1100 },
+			{ x: 100, y: 700 },
+			{ x: 500, y: 700 },
+			{ x: 900, y: 700 },
+			{ x: 900, y: 1100 },
+			{ x: 700, y: 1300 },
+			{ x: 500, y: 1300 },
+			{ x: 300, y: 1300 },
+		],
 	},
 	{
 		x: 700,
@@ -346,7 +456,10 @@ export const boardCoordinate: Array<PawnCoordinate> = [
 			{ x: 700, y: 900 },
 			{ x: 900, y: 1100 },
 		],
-		eatingPaths: [],
+		eatingPaths: [
+			{ x: 300, y: 1100 },
+			{ x: 700, y: 700 },
+		],
 	},
 	{
 		x: 900,
@@ -356,7 +469,11 @@ export const boardCoordinate: Array<PawnCoordinate> = [
 			{ x: 700, y: 900 },
 			{ x: 900, y: 900 },
 		],
-		eatingPaths: [],
+		eatingPaths: [
+			{ x: 500, y: 1100 },
+			{ x: 500, y: 700 },
+			{ x: 900, y: 700 },
+		],
 	},
 	{
 		x: 400,
@@ -366,7 +483,10 @@ export const boardCoordinate: Array<PawnCoordinate> = [
 			{ x: 500, y: 1200 },
 			{ x: 300, y: 1300 },
 		],
-		eatingPaths: [],
+		eatingPaths: [
+			{ x: 700, y: 900 },
+			{ x: 600, y: 1200 },
+		],
 	},
 	{
 		x: 500,
@@ -377,7 +497,7 @@ export const boardCoordinate: Array<PawnCoordinate> = [
 			{ x: 600, y: 1200 },
 			{ x: 500, y: 1300 },
 		],
-		eatingPaths: [],
+		eatingPaths: [{ x: 500, y: 900 }],
 	},
 	{
 		x: 600,
@@ -387,7 +507,10 @@ export const boardCoordinate: Array<PawnCoordinate> = [
 			{ x: 500, y: 1100 },
 			{ x: 700, y: 1300 },
 		],
-		eatingPaths: [],
+		eatingPaths: [
+			{ x: 400, y: 1200 },
+			{ x: 300, y: 900 },
+		],
 	},
 	{
 		x: 300,
@@ -396,7 +519,10 @@ export const boardCoordinate: Array<PawnCoordinate> = [
 			{ x: 400, y: 1200 },
 			{ x: 500, y: 1300 },
 		],
-		eatingPaths: [],
+		eatingPaths: [
+			{ x: 500, y: 1100 },
+			{ x: 700, y: 1300 },
+		],
 	},
 	{
 		x: 500,
@@ -406,7 +532,7 @@ export const boardCoordinate: Array<PawnCoordinate> = [
 			{ x: 500, y: 1200 },
 			{ x: 700, y: 1300 },
 		],
-		eatingPaths: [],
+		eatingPaths: [{ x: 500, y: 1100 }],
 	},
 	{
 		x: 700,
@@ -415,6 +541,9 @@ export const boardCoordinate: Array<PawnCoordinate> = [
 			{ x: 500, y: 1300 },
 			{ x: 600, y: 1200 },
 		],
-		eatingPaths: [],
+		eatingPaths: [
+			{ x: 300, y: 1300 },
+			{ x: 500, y: 1100 },
+		],
 	},
 ];
