@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { boardCoordinate } from '$lib/store/board';
-	import { activePawn, suggestPath } from '$lib/store/state';
-	import { Color, type Coordinate } from '$lib/types/coordinate.type';
+	import { activePawn, pawnCoordinates, suggestPath } from '$lib/store/state';
+	import { Color, type Coordinate, type PawnCoordinate } from '$lib/types/coordinate.type';
 	import { isDebugging } from '$lib/variable';
 	import { createEventDispatcher } from 'svelte';
 
@@ -28,14 +28,11 @@
 		{ x1: '900', y1: '300', x2: '100', y2: '1100' },
 	];
 
-	let currentPawnCoordinate: {
-		x: number;
-		y: number;
-		possiblePaths: Coordinate[];
-	} = {
+	let currentPawnCoordinate: PawnCoordinate = {
 		x: null,
 		y: null,
 		possiblePaths: [],
+		eatingPaths: [],
 	};
 
 	$: {
@@ -46,10 +43,6 @@
 	}
 
 	const dispatch = createEventDispatcher();
-
-	function onClick(coordinate: Coordinate) {
-		dispatch('click', { ...coordinate });
-	}
 </script>
 
 {#each boardLines as line}
@@ -63,24 +56,40 @@
 		stroke-dasharray="6 6"
 	/>
 {/each}
-{#if isDebugging}
-	{#each boardCoordinate as coordinate}
-		<text x={coordinate.x + 20} y={coordinate.y} class="text-gray-500 text-sm fill-current">
-			[{coordinate.x},{coordinate.y}]
-		</text>
-	{/each}
-{/if}
 {#if $suggestPath && currentPawnCoordinate}
-	{#each currentPawnCoordinate.possiblePaths as coordinate}
+	{#each currentPawnCoordinate.possiblePaths as possiblePath}
 		<circle
-			on:click={() => onClick(coordinate)}
-			cx={coordinate.x}
-			cy={coordinate.y}
+			on:click={() => dispatch('click', possiblePath)}
+			cx={possiblePath.x}
+			cy={possiblePath.y}
 			r="28"
 			class="cursor-pointer"
 			fill={$activePawn.color === Color.RED ? '#FF9CC0' : '#A8BBFF'}
 			stroke={$activePawn.color === Color.RED ? '#FFCEE0' : '#D0E0FF'}
 			stroke-width="16"
 		/>
+
+		{#if $pawnCoordinates.some((pawnCoordinate) => pawnCoordinate.x === possiblePath.x && pawnCoordinate.y === possiblePath.y && pawnCoordinate.color !== $activePawn.color)}
+			{#each currentPawnCoordinate.eatingPaths as eatingPath}
+				<circle
+					on:click={() => dispatch('click', eatingPath)}
+					cx={eatingPath.x}
+					cy={eatingPath.y}
+					r="28"
+					class="cursor-pointer"
+					fill={$activePawn.color === Color.RED ? '#FF9CC0' : '#A8BBFF'}
+					stroke={$activePawn.color === Color.RED ? '#FFCEE0' : '#D0E0FF'}
+					stroke-width="16"
+				/>
+			{/each}
+		{/if}
+	{/each}
+{/if}
+
+{#if isDebugging}
+	{#each boardCoordinate as coordinate}
+		<text x={coordinate.x + 40} y={coordinate.y - 10} class="text-gray-500 text-sm fill-current">
+			[{coordinate.x},{coordinate.y}]
+		</text>
 	{/each}
 {/if}

@@ -6,6 +6,7 @@ export const boardCoordinate = [
 			{ x: 500, y: 100 },
 			{ x: 400, y: 200 },
 		],
+		eatingPaths: [],
 	},
 	{
 		x: 500,
@@ -15,6 +16,7 @@ export const boardCoordinate = [
 			{ x: 700, y: 100 },
 			{ x: 500, y: 200 },
 		],
+		eatingPaths: [],
 	},
 	{
 		x: 500,
@@ -25,6 +27,7 @@ export const boardCoordinate = [
 			{ x: 400, y: 200 },
 			{ x: 500, y: 300 },
 		],
+		eatingPaths: [],
 	},
 	{
 		x: 700,
@@ -33,6 +36,7 @@ export const boardCoordinate = [
 			{ x: 500, y: 100 },
 			{ x: 600, y: 200 },
 		],
+		eatingPaths: [],
 	},
 	{
 		x: 400,
@@ -42,6 +46,7 @@ export const boardCoordinate = [
 			{ x: 300, y: 100 },
 			{ x: 500, y: 300 },
 		],
+		eatingPaths: [],
 	},
 	{
 		x: 600,
@@ -51,6 +56,7 @@ export const boardCoordinate = [
 			{ x: 500, y: 200 },
 			{ x: 500, y: 300 },
 		],
+		eatingPaths: [],
 	},
 	{
 		x: 100,
@@ -60,6 +66,7 @@ export const boardCoordinate = [
 			{ x: 300, y: 300 },
 			{ x: 300, y: 500 },
 		],
+		eatingPaths: [],
 	},
 	{
 		x: 300,
@@ -69,6 +76,7 @@ export const boardCoordinate = [
 			{ x: 300, y: 500 },
 			{ x: 500, y: 300 },
 		],
+		eatingPaths: [],
 	},
 	{
 		x: 500,
@@ -83,6 +91,7 @@ export const boardCoordinate = [
 			{ x: 300, y: 500 },
 			{ x: 300, y: 300 },
 		],
+		eatingPaths: [],
 	},
 	{
 		x: 700,
@@ -92,6 +101,7 @@ export const boardCoordinate = [
 			{ x: 700, y: 500 },
 			{ x: 900, y: 300 },
 		],
+		eatingPaths: [],
 	},
 	{
 		x: 900,
@@ -101,6 +111,7 @@ export const boardCoordinate = [
 			{ x: 900, y: 500 },
 			{ x: 700, y: 500 },
 		],
+		eatingPaths: [],
 	},
 	{
 		x: 100,
@@ -110,6 +121,7 @@ export const boardCoordinate = [
 			{ x: 300, y: 500 },
 			{ x: 100, y: 700 },
 		],
+		eatingPaths: [],
 	},
 	{
 		x: 300,
@@ -124,6 +136,7 @@ export const boardCoordinate = [
 			{ x: 100, y: 700 },
 			{ x: 100, y: 500 },
 		],
+		eatingPaths: [],
 	},
 	{
 		x: 500,
@@ -133,6 +146,12 @@ export const boardCoordinate = [
 			{ x: 500, y: 300 },
 			{ x: 700, y: 500 },
 			{ x: 500, y: 700 },
+		],
+		eatingPaths: [
+			{ x: 100, y: 500 },
+			{ x: 500, y: 900 },
+			{ x: 500, y: 200 },
+			{ x: 900, y: 500 },
 		],
 	},
 	{
@@ -148,6 +167,7 @@ export const boardCoordinate = [
 			{ x: 700, y: 700 },
 			{ x: 500, y: 700 },
 		],
+		eatingPaths: [],
 	},
 	{
 		x: 900,
@@ -157,6 +177,7 @@ export const boardCoordinate = [
 			{ x: 900, y: 300 },
 			{ x: 900, y: 700 },
 		],
+		eatingPaths: [],
 	},
 	{
 		x: 100,
@@ -168,6 +189,7 @@ export const boardCoordinate = [
 			{ x: 300, y: 900 },
 			{ x: 100, y: 900 },
 		],
+		eatingPaths: [],
 	},
 	{
 		x: 300,
@@ -178,6 +200,7 @@ export const boardCoordinate = [
 			{ x: 500, y: 700 },
 			{ x: 300, y: 900 },
 		],
+		eatingPaths: [],
 	},
 	{
 		x: 500,
@@ -192,6 +215,7 @@ export const boardCoordinate = [
 			{ x: 500, y: 900 },
 			{ x: 300, y: 900 },
 		],
+		eatingPaths: [],
 	},
 	{
 		x: 700,
@@ -202,6 +226,7 @@ export const boardCoordinate = [
 			{ x: 900, y: 700 },
 			{ x: 700, y: 900 },
 		],
+		eatingPaths: [],
 	},
 	{
 		x: 900,
@@ -213,6 +238,7 @@ export const boardCoordinate = [
 			{ x: 900, y: 900 },
 			{ x: 700, y: 900 },
 		],
+		eatingPaths: [],
 	},
 	{
 		x: 100,
@@ -222,6 +248,7 @@ export const boardCoordinate = [
 			{ x: 300, y: 900 },
 			{ x: 100, y: 1100 },
 		],
+		eatingPaths: [],
 	},
 	{
 		x: 300,
@@ -236,6 +263,7 @@ export const boardCoordinate = [
 			{ x: 100, y: 1100 },
 			{ x: 100, y: 900 },
 		],
+		eatingPaths: [],
 	},
 	{
 		x: 500,
@@ -246,6 +274,7 @@ export const boardCoordinate = [
 			{ x: 700, y: 900 },
 			{ x: 500, y: 1100 },
 		],
+		eatingPaths: [],
 	},
 	{
 		x: 700,
@@ -260,6 +289,7 @@ export const boardCoordinate = [
 			{ x: 700, y: 1100 },
 			{ x: 500, y: 1100 },
 		],
+		eatingPaths: [],
 	},
 	{
 		x: 900,
@@ -269,6 +299,7 @@ export const boardCoordinate = [
 			{ x: 900, y: 700 },
 			{ x: 900, y: 1100 },
 		],
+		eatingPaths: [],
 	},
 	{
 		x: 100,
@@ -278,6 +309,7 @@ export const boardCoordinate = [
 			{ x: 300, y: 900 },
 			{ x: 300, y: 1100 },
 		],
+		eatingPaths: [],
 	},
 	{
 		x: 300,
@@ -287,6 +319,7 @@ export const boardCoordinate = [
 			{ x: 300, y: 900 },
 			{ x: 500, y: 1100 },
 		],
+		eatingPaths: [],
 	},
 	{
 		x: 500,
@@ -301,6 +334,7 @@ export const boardCoordinate = [
 			{ x: 500, y: 1200 },
 			{ x: 400, y: 1200 },
 		],
+		eatingPaths: [],
 	},
 	{
 		x: 700,
@@ -310,6 +344,7 @@ export const boardCoordinate = [
 			{ x: 700, y: 900 },
 			{ x: 900, y: 1100 },
 		],
+		eatingPaths: [],
 	},
 	{
 		x: 900,
@@ -319,6 +354,7 @@ export const boardCoordinate = [
 			{ x: 700, y: 900 },
 			{ x: 900, y: 900 },
 		],
+		eatingPaths: [],
 	},
 	{
 		x: 400,
@@ -328,6 +364,7 @@ export const boardCoordinate = [
 			{ x: 500, y: 1200 },
 			{ x: 300, y: 1300 },
 		],
+		eatingPaths: [],
 	},
 	{
 		x: 500,
@@ -338,6 +375,7 @@ export const boardCoordinate = [
 			{ x: 600, y: 1200 },
 			{ x: 500, y: 1300 },
 		],
+		eatingPaths: [],
 	},
 	{
 		x: 600,
@@ -347,6 +385,7 @@ export const boardCoordinate = [
 			{ x: 500, y: 1100 },
 			{ x: 700, y: 1300 },
 		],
+		eatingPaths: [],
 	},
 	{
 		x: 300,
@@ -355,6 +394,7 @@ export const boardCoordinate = [
 			{ x: 400, y: 1200 },
 			{ x: 500, y: 1300 },
 		],
+		eatingPaths: [],
 	},
 	{
 		x: 500,
@@ -364,6 +404,7 @@ export const boardCoordinate = [
 			{ x: 500, y: 1200 },
 			{ x: 700, y: 1300 },
 		],
+		eatingPaths: [],
 	},
 	{
 		x: 700,
@@ -372,5 +413,6 @@ export const boardCoordinate = [
 			{ x: 500, y: 1300 },
 			{ x: 600, y: 1200 },
 		],
+		eatingPaths: [],
 	},
 ];

@@ -11,3 +11,8 @@ export enum Color {
 export interface Pawn extends Coordinate {
 	color: Color;
 }
+
+export interface PawnCoordinate extends Coordinate {
+	possiblePaths: Array<Coordinate>;
+	eatingPaths: Array<Coordinate>;
+}
