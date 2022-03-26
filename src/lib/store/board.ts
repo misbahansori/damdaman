@@ -226,7 +226,10 @@ export const boardCoordinate: Array<PawnCoordinate> = [
 			{ x: 900, y: 300 },
 			{ x: 900, y: 700 },
 		],
-		eatingPaths: [{ x: 500, y: 500 }],
+		eatingPaths: [
+			{ x: 500, y: 500 },
+			{ x: 900, y: 900 },
+		],
 	},
 	{
 		x: 100,

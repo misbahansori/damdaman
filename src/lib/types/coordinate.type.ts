@@ -9,6 +9,7 @@ export enum Color {
 }
 
 export interface Pawn extends Coordinate {
+	id: number;
 	color: Color;
 }
 

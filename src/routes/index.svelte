@@ -2,11 +2,13 @@
 	import { isDebugging } from '$lib/variable';
 	import Pawn from '$lib/components/Pawn.svelte';
 	import Board from '$lib/components/Board.svelte';
-	import { Color, type Pawn as PawnType } from '$lib/types/coordinate.type';
+	import { Color, type Pawn as PawnType, type PawnCoordinate } from '$lib/types/coordinate.type';
 	import { activePawn, changeTurn, pawnCoordinates, suggestPath, turn } from '$lib/store/state';
+	import { boardCoordinate } from '$lib/store/board';
+	import { checkStraightLine } from '$lib/helper';
 
 	function onPawnSelected(event: CustomEvent<PawnType>) {
-		const { x, y, color } = event.detail;
+		const { id, x, y, color } = event.detail;
 
 		if (
 			color !== $turn ||
@@ -17,7 +19,7 @@
 
 		$suggestPath = true;
 
-		$activePawn = { x, y, color };
+		$activePawn = { id, x, y, color };
 	}
 
 	function findPawn(x: number, y: number) {
@@ -28,15 +30,57 @@
 		if (!$activePawn.x && !$activePawn.y && !$activePawn.color) {
 			return;
 		}
+
+		const activePawnCoordinate = boardCoordinate.find(
+			(coordinate) => coordinate.x === $activePawn.x && coordinate.y === $activePawn.y
+		);
+
+		const isEatingEnemy = activePawnCoordinate.eatingPaths.some(
+			(coordinate) => coordinate.x === event.detail.x && coordinate.y === event.detail.y
+		);
+
+		if (isEatingEnemy) {
+			const enemiesInContact = $pawnCoordinates.filter((pawnCoordinate) =>
+				activePawnCoordinate.possiblePaths.some(
+					(coordinate) =>
+						coordinate.x === pawnCoordinate.x &&
+						coordinate.y === pawnCoordinate.y &&
+						$activePawn.color !== pawnCoordinate.color
+				)
+			);
+
+			const eatenEnemy = enemiesInContact.filter((pawnCoordinate) =>
+				checkStraightLine([
+					[$activePawn.x, $activePawn.y],
+					[pawnCoordinate.x, pawnCoordinate.y],
+					[event.detail.x, event.detail.y],
+				])
+			);
+
+			const enemyIndex = $pawnCoordinates.findIndex((pawnCoordinate) =>
+				eatenEnemy.some(
+					(coordinate) => coordinate.x === pawnCoordinate.x && coordinate.y === pawnCoordinate.y
+				)
+			);
+
+			if (enemyIndex === -1) {
+				return;
+			}
+
+			$pawnCoordinates.splice(enemyIndex, 1);
+		}
+
 		const index = findPawn($activePawn.x, $activePawn.y);
 
 		if (index === -1) {
 			return;
 		}
+
 		$pawnCoordinates[index].x = event.detail.x;
 		$pawnCoordinates[index].y = event.detail.y;
 
 		$activePawn = {
+			id: null,
 			x: null,
 			y: null,
 			color: null,
@@ -52,7 +96,7 @@
 	<div class="max-w-5xl flex mx-auto h-screen md:max-h-screen">
 		<svg class="w-full" viewBox="0 0 1000 1400" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<Board on:click={movePawn} />
-			{#each $pawnCoordinates as coordinate}
+			{#each $pawnCoordinates as coordinate (coordinate.id)}
 				<Pawn
 					on:click={onPawnSelected}
 					cx={coordinate.x}
