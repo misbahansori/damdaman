@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { activePawn, turn } from '$lib/store/state';
 
-	import { Color, type Pawn } from '$lib/types/coordinate.type';
+	import { Color, type Pawn } from '$lib/types/global.type';
 
 	import { createEventDispatcher } from 'svelte';
 

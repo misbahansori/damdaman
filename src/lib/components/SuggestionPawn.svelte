@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { activePawn } from '$lib/store/state';
 	import { fade } from 'svelte/transition';
-	import { Color, type Coordinate } from '$lib/types/coordinate.type';
+	import { Color, type Coordinate } from '$lib/types/global.type';
 	import { createEventDispatcher } from 'svelte';
 
 	const dispatch = createEventDispatcher();

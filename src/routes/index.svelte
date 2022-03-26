@@ -2,7 +2,7 @@
 	import { isDebugging } from '$lib/variable';
 	import Pawn from '$lib/components/Pawn.svelte';
 	import Board from '$lib/components/Board.svelte';
-	import { Color, type Pawn as PawnType, type PawnCoordinate } from '$lib/types/coordinate.type';
+	import { Color, type Pawn as PawnType } from '$lib/types/global.type';
 	import { activePawn, changeTurn, pawnCoordinates, suggestPath, turn } from '$lib/store/state';
 	import { boardCoordinate } from '$lib/store/board';
 	import { checkStraightLine } from '$lib/helper';

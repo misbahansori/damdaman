@@ -1,4 +1,4 @@
-import { Color, type Pawn } from '$lib/types/coordinate.type';
+import { Color, type Pawn } from '$lib/types/global.type';
 import { writable } from 'svelte/store';
 
 export const pawnCoordinates = writable<Array<Pawn>>([

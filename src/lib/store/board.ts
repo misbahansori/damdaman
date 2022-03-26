@@ -1,7 +1,7 @@
 import { checkStraightLine } from './../helper';
-import type { PawnCoordinate, Coordinate } from '$lib/types/coordinate.type';
+import type { PawnCoordinate } from '$lib/types/global.type';
 import { derived } from 'svelte/store';
-import { activePawn, pawnCoordinates, turn } from '$lib/store/state';
+import { activePawn, pawnCoordinates } from '$lib/store/state';
 
 export const boardCoordinate: Array<PawnCoordinate> = [
 	{
