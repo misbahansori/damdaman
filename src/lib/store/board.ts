@@ -1,3 +1,4 @@
+import { checkStraightLine } from './../helper';
 import type { PawnCoordinate, Coordinate } from '$lib/types/coordinate.type';
 import { derived } from 'svelte/store';
 import { activePawn, pawnCoordinates, turn } from '$lib/store/state';
@@ -553,12 +554,14 @@ export const boardCoordinate: Array<PawnCoordinate> = [
 export const suggestionPaths = derived(
 	[activePawn, pawnCoordinates],
 	([$activePawn, $pawnCoordinates]) => {
+		// Get the current pawn's coordinates in the board.
 		const activePawnCoordinate: PawnCoordinate = boardCoordinate.find(
 			(coordinate) => coordinate.x === $activePawn.x && coordinate.y === $activePawn.y
 		);
 		if (!activePawnCoordinate) {
 			return [];
 		}
+		// Check if there are enemy pawns in the possible path.
 		const enemiesInContact = $pawnCoordinates.filter((pawnCoordinate) =>
 			activePawnCoordinate.possiblePaths.some(
 				(coordinate) =>
@@ -567,12 +570,23 @@ export const suggestionPaths = derived(
 					$activePawn.color !== pawnCoordinate.color
 			)
 		);
-
+		// Get the possible paths of the enemy, so we can search for the intersecting path.
 		const possibleEnemyPaths = boardCoordinate
 			.filter((coordinate) =>
 				enemiesInContact.some((enemy) => enemy.x === coordinate.x && enemy.y === coordinate.y)
 			)
-			.flatMap((coordinate) => coordinate.possiblePaths);
+			.flatMap((enemy) =>
+				enemy.possiblePaths.filter((coordinate) =>
+					checkStraightLine([
+						[$activePawn.x, $activePawn.y],
+						[enemy.x, enemy.y],
+						[coordinate.x, coordinate.y],
+					])
+				)
+			);
+		// .flatMap((coordinate) => coordinate.possiblePaths);
+
+		console.log(possibleEnemyPaths);
 
 		const eatSuggestionCoordinates = activePawnCoordinate.eatingPaths.filter((coordinate) =>
 			possibleEnemyPaths.some(
