@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { isDebugging } from '$lib/variable';
 	import { createEventDispatcher } from 'svelte';
-	import { boardCoordinate, suggestionPaths } from '$lib/store/board';
-	import SuggestionPawn from './SuggestionPawn.svelte';
 	import { suggestPath } from '$lib/store/state';
+	import SuggestionPawn from './SuggestionPawn.svelte';
+	import { boardCoordinate, suggestionPaths } from '$lib/store/board';
 
 	const boardLines = [
 		{ x1: '100', y1: '300', x2: '900', y2: '300' },

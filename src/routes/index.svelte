@@ -1,14 +1,17 @@
 <script lang="ts">
-	import Board from '$lib/components/Board.svelte';
-	import Pawn from '$lib/components/Pawn.svelte';
-	import { activePawn, changeTurn, pawnCoordinates, suggestPath, turn } from '$lib/store/state';
-	import { Color, type Pawn as PawnType } from '$lib/types/coordinate.type';
 	import { isDebugging } from '$lib/variable';
+	import Pawn from '$lib/components/Pawn.svelte';
+	import Board from '$lib/components/Board.svelte';
+	import { Color, type Pawn as PawnType } from '$lib/types/coordinate.type';
+	import { activePawn, changeTurn, pawnCoordinates, suggestPath, turn } from '$lib/store/state';
 
 	function onPawnSelected(event: CustomEvent<PawnType>) {
 		const { x, y, color } = event.detail;
 
-		if (color !== $turn) {
+		if (
+			color !== $turn ||
+			($activePawn.x === x && $activePawn.y === y && $activePawn.color === color)
+		) {
 			return;
 		}
 
