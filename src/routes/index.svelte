@@ -4,16 +4,13 @@
 	import Board from '$lib/components/Board.svelte';
 	import { Color, type Pawn as PawnType } from '$lib/types/global.type';
 	import { activePawn, changeTurn, pawnCoordinates, suggestPath, turn } from '$lib/store/state';
-	import { boardCoordinate } from '$lib/store/board';
 	import { checkStraightLine } from '$lib/helper';
+	import { getActivePawnCoordinate, getEnemiesInContact } from '$lib/functions';
 
 	function onPawnSelected(event: CustomEvent<PawnType>) {
 		const { id, x, y, color } = event.detail;
 
-		if (
-			color !== $turn ||
-			($activePawn.x === x && $activePawn.y === y && $activePawn.color === color)
-		) {
+		if (color !== $turn || ($activePawn.x === x && $activePawn.y === y && $activePawn.color === color)) {
 			return;
 		}
 
@@ -31,23 +28,14 @@
 			return;
 		}
 
-		const activePawnCoordinate = boardCoordinate.find(
-			(coordinate) => coordinate.x === $activePawn.x && coordinate.y === $activePawn.y
-		);
+		const activePawnCoordinate = getActivePawnCoordinate($activePawn);
 
 		const isEatingEnemy = activePawnCoordinate.eatingPaths.some(
 			(coordinate) => coordinate.x === event.detail.x && coordinate.y === event.detail.y
 		);
 
 		if (isEatingEnemy) {
-			const enemiesInContact = $pawnCoordinates.filter((pawnCoordinate) =>
-				activePawnCoordinate.possiblePaths.some(
-					(coordinate) =>
-						coordinate.x === pawnCoordinate.x &&
-						coordinate.y === pawnCoordinate.y &&
-						$activePawn.color !== pawnCoordinate.color
-				)
-			);
+			const enemiesInContact = getEnemiesInContact($pawnCoordinates, activePawnCoordinate, $activePawn);
 
 			const eatenEnemy = enemiesInContact.filter((pawnCoordinate) =>
 				checkStraightLine([
@@ -97,12 +85,7 @@
 		<svg class="w-full" viewBox="0 0 1000 1400" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<Board on:click={movePawn} />
 			{#each $pawnCoordinates as coordinate (coordinate.id)}
-				<Pawn
-					on:click={onPawnSelected}
-					cx={coordinate.x}
-					cy={coordinate.y}
-					color={coordinate.color}
-				/>
+				<Pawn on:click={onPawnSelected} cx={coordinate.x} cy={coordinate.y} color={coordinate.color} />
 			{/each}
 		</svg>
 	</div>

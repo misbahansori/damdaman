@@ -2,6 +2,7 @@ import { checkStraightLine } from './../helper';
 import type { PawnCoordinate } from '$lib/types/global.type';
 import { derived } from 'svelte/store';
 import { activePawn, pawnCoordinates } from '$lib/store/state';
+import { getActivePawnCoordinate, getEnemiesInContact } from '$lib/functions';
 
 export const boardCoordinate: Array<PawnCoordinate> = [
 	{
@@ -558,20 +559,15 @@ export const suggestionPaths = derived(
 	[activePawn, pawnCoordinates],
 	([$activePawn, $pawnCoordinates]) => {
 		// Get the current pawn's coordinates in the board.
-		const activePawnCoordinate: PawnCoordinate = boardCoordinate.find(
-			(coordinate) => coordinate.x === $activePawn.x && coordinate.y === $activePawn.y
-		);
+		const activePawnCoordinate = getActivePawnCoordinate($activePawn);
 		if (!activePawnCoordinate) {
 			return [];
 		}
 		// Check if there are enemy pawns in the possible path.
-		const enemiesInContact = $pawnCoordinates.filter((pawnCoordinate) =>
-			activePawnCoordinate.possiblePaths.some(
-				(coordinate) =>
-					coordinate.x === pawnCoordinate.x &&
-					coordinate.y === pawnCoordinate.y &&
-					$activePawn.color !== pawnCoordinate.color
-			)
+		const enemiesInContact = getEnemiesInContact(
+			$pawnCoordinates,
+			activePawnCoordinate,
+			$activePawn
 		);
 		// Get the possible paths of the enemy, so we can search for the intersecting path.
 		const possibleEnemyPaths = boardCoordinate
