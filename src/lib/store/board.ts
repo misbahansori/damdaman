@@ -1,4 +1,6 @@
-import type { PawnCoordinate } from '$lib/types/coordinate.type';
+import type { PawnCoordinate, Coordinate } from '$lib/types/coordinate.type';
+import { derived } from 'svelte/store';
+import { activePawn, pawnCoordinates, turn } from '$lib/store/state';
 
 export const boardCoordinate: Array<PawnCoordinate> = [
 	{
@@ -547,3 +549,37 @@ export const boardCoordinate: Array<PawnCoordinate> = [
 		],
 	},
 ];
+
+export const suggestionPaths = derived(
+	[activePawn, pawnCoordinates],
+	([$activePawn, $pawnCoordinates]) => {
+		const activePawnCoordinate: PawnCoordinate = boardCoordinate.find(
+			(coordinate) => coordinate.x === $activePawn.x && coordinate.y === $activePawn.y
+		);
+		if (!activePawnCoordinate) {
+			return [];
+		}
+		const enemiesInContact = $pawnCoordinates.filter((pawnCoordinate) =>
+			activePawnCoordinate.possiblePaths.some(
+				(coordinate) =>
+					coordinate.x === pawnCoordinate.x &&
+					coordinate.y === pawnCoordinate.y &&
+					$activePawn.color !== pawnCoordinate.color
+			)
+		);
+
+		const possibleEnemyPaths = boardCoordinate
+			.filter((coordinate) =>
+				enemiesInContact.some((enemy) => enemy.x === coordinate.x && enemy.y === coordinate.y)
+			)
+			.flatMap((coordinate) => coordinate.possiblePaths);
+
+		const eatSuggestionCoordinates = activePawnCoordinate.eatingPaths.filter((coordinate) =>
+			possibleEnemyPaths.some(
+				(possiblePath) => possiblePath.x === coordinate.x && possiblePath.y === coordinate.y
+			)
+		);
+
+		return activePawnCoordinate.possiblePaths.concat(eatSuggestionCoordinates);
+	}
+);

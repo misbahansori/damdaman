@@ -1,11 +1,9 @@
 <script lang="ts">
 	import { isDebugging } from '$lib/variable';
 	import { createEventDispatcher } from 'svelte';
-	import { boardCoordinate } from '$lib/store/board';
+	import { boardCoordinate, suggestionPaths } from '$lib/store/board';
 	import SuggestionPawn from './SuggestionPawn.svelte';
-	import type { PawnCoordinate } from '$lib/types/coordinate.type';
-	import { activePawn, pawnCoordinates, suggestPath } from '$lib/store/state';
-	import EatSuggestionPawn from './EatSuggestionPawn.svelte';
+	import { suggestPath } from '$lib/store/state';
 
 	const boardLines = [
 		{ x1: '100', y1: '300', x2: '900', y2: '300' },
@@ -30,20 +28,6 @@
 		{ x1: '900', y1: '300', x2: '100', y2: '1100' },
 	];
 
-	let currentPawnCoordinate: PawnCoordinate = {
-		x: null,
-		y: null,
-		possiblePaths: [],
-		eatingPaths: [],
-	};
-
-	$: {
-		currentPawnCoordinate =
-			boardCoordinate.find(
-				(coordinate) => coordinate.x === $activePawn.x && coordinate.y === $activePawn.y
-			) ?? currentPawnCoordinate;
-	}
-
 	const dispatch = createEventDispatcher();
 </script>
 
@@ -58,27 +42,10 @@
 		stroke-dasharray="6 6"
 	/>
 {/each}
-{#if $suggestPath && currentPawnCoordinate}
-	{#each currentPawnCoordinate.possiblePaths as possiblePath, index (index)}
-		<SuggestionPawn
-			on:click={(event) => dispatch('click', event.detail)}
-			coordinate={possiblePath}
-		/>
 
-		{@const enemiesInContact = $pawnCoordinates.filter(
-			(pawnCoordinate) =>
-				pawnCoordinate.x === possiblePath.x &&
-				pawnCoordinate.y === possiblePath.y &&
-				pawnCoordinate.color !== $activePawn.color
-		)}
-
-		{#if enemiesInContact.length}
-			<EatSuggestionPawn
-				on:click={(event) => dispatch('click', event.detail)}
-				{enemiesInContact}
-				{currentPawnCoordinate}
-			/>
-		{/if}
+{#if $suggestPath && $suggestionPaths}
+	{#each $suggestionPaths as coordinate}
+		<SuggestionPawn on:click={(event) => dispatch('click', event.detail)} {coordinate} />
 	{/each}
 {/if}
 
