@@ -4,6 +4,7 @@
 	import { Color, type Coordinate, type PawnCoordinate } from '$lib/types/coordinate.type';
 	import { isDebugging } from '$lib/variable';
 	import { createEventDispatcher } from 'svelte';
+	import SuggestionPawn from './SuggestionPawn.svelte';
 
 	const boardLines = [
 		{ x1: '100', y1: '300', x2: '900', y2: '300' },
@@ -58,28 +59,16 @@
 {/each}
 {#if $suggestPath && currentPawnCoordinate}
 	{#each currentPawnCoordinate.possiblePaths as possiblePath}
-		<circle
-			on:click={() => dispatch('click', possiblePath)}
-			cx={possiblePath.x}
-			cy={possiblePath.y}
-			r="28"
-			class="cursor-pointer"
-			fill={$activePawn.color === Color.RED ? '#FF9CC0' : '#A8BBFF'}
-			stroke={$activePawn.color === Color.RED ? '#FFCEE0' : '#D0E0FF'}
-			stroke-width="16"
+		<SuggestionPawn
+			on:click={(event) => dispatch('click', event.detail)}
+			coordinate={possiblePath}
 		/>
 
 		{#if $pawnCoordinates.some((pawnCoordinate) => pawnCoordinate.x === possiblePath.x && pawnCoordinate.y === possiblePath.y && pawnCoordinate.color !== $activePawn.color)}
 			{#each currentPawnCoordinate.eatingPaths as eatingPath}
-				<circle
-					on:click={() => dispatch('click', eatingPath)}
-					cx={eatingPath.x}
-					cy={eatingPath.y}
-					r="28"
-					class="cursor-pointer"
-					fill={$activePawn.color === Color.RED ? '#FF9CC0' : '#A8BBFF'}
-					stroke={$activePawn.color === Color.RED ? '#FFCEE0' : '#D0E0FF'}
-					stroke-width="16"
+				<SuggestionPawn
+					on:click={(event) => dispatch('click', event.detail)}
+					coordinate={eatingPath}
 				/>
 			{/each}
 		{/if}

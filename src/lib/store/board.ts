@@ -1,4 +1,6 @@
-export const boardCoordinate = [
+import type { PawnCoordinate } from '$lib/types/coordinate.type';
+
+export const boardCoordinate: Array<PawnCoordinate> = [
 	{
 		x: 300,
 		y: 100,

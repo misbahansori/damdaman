@@ -30,7 +30,7 @@
 	class:pointer-event-none={color !== $turn}
 	fill={color === Color.RED ? '#FF005C' : '#426AF5'}
 	stroke={color === Color.RED ? '#FF7BAB' : '#AAC7FF'}
-	stroke-width="12"
+	stroke-width="16"
 />
 
 <style>
