@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { activePawn } from '$lib/store/state';
+	import { activePawn, turn } from '$lib/store/state';
 
 	import { Color, type Pawn } from '$lib/types/coordinate.type';
 
@@ -27,9 +27,10 @@
 	r={$activePawn.x === cx && $activePawn.y === cy ? 40 : 28}
 	class="pawn"
 	class:selected={$activePawn.x === cx && $activePawn.y === cy}
+	class:pointer-event-none={color !== $turn}
 	fill={color === Color.RED ? '#FF005C' : '#426AF5'}
 	stroke={color === Color.RED ? '#FF7BAB' : '#AAC7FF'}
-	stroke-width="6"
+	stroke-width="12"
 />
 
 <style>

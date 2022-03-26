@@ -28,7 +28,11 @@
 		{ x1: '900', y1: '300', x2: '100', y2: '1100' },
 	];
 
-	let currentPawnCoordinate = {
+	let currentPawnCoordinate: {
+		x: number;
+		y: number;
+		possiblePaths: Coordinate[];
+	} = {
 		x: null,
 		y: null,
 		possiblePaths: [],
@@ -66,22 +70,17 @@
 		</text>
 	{/each}
 {/if}
-{#if $suggestPath}
-	{#each boardCoordinate as coordinate}
-		{@const showSuggestion =
-			currentPawnCoordinate &&
-			currentPawnCoordinate.possiblePaths.some(
-				(path) => path.x === coordinate.x && path.y === coordinate.y
-			)}
+{#if $suggestPath && currentPawnCoordinate}
+	{#each currentPawnCoordinate.possiblePaths as coordinate}
 		<circle
 			on:click={() => onClick(coordinate)}
 			cx={coordinate.x}
 			cy={coordinate.y}
 			r="28"
 			class="cursor-pointer"
-			fill={showSuggestion && $activePawn.color === Color.RED ? '#FF9CC0' : '#839EFC'}
-			stroke={showSuggestion && $activePawn.color === Color.RED ? '#FFCEE0' : '#D0E0FF'}
-			stroke-width="6"
+			fill={$activePawn.color === Color.RED ? '#FF9CC0' : '#A8BBFF'}
+			stroke={$activePawn.color === Color.RED ? '#FFCEE0' : '#D0E0FF'}
+			stroke-width="16"
 		/>
 	{/each}
 {/if}
