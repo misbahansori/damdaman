@@ -2,6 +2,7 @@
 	import { boardCoordinate } from '$lib/store/board';
 	import { activePawn, suggestPath } from '$lib/store/state';
 	import type { Coordinate } from '$lib/types/coordinate.type';
+	import { isDebugging } from '$lib/variable';
 
 	import { createEventDispatcher } from 'svelte';
 
@@ -59,11 +60,13 @@
 		stroke-dasharray="6 6"
 	/>
 {/each}
-{#each boardCoordinate as coordinate}
-	<text x={coordinate.x + 20} y={coordinate.y} class="text-gray-500 text-sm fill-current">
-		[{coordinate.x},{coordinate.y}]
-	</text>
-{/each}
+{#if isDebugging}
+	{#each boardCoordinate as coordinate}
+		<text x={coordinate.x + 20} y={coordinate.y} class="text-gray-500 text-sm fill-current">
+			[{coordinate.x},{coordinate.y}]
+		</text>
+	{/each}
+{/if}
 {#each boardCoordinate as coordinate}
 	{@const showSuggestion =
 		$suggestPath &&

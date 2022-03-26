@@ -3,6 +3,7 @@
 	import Pawn from '$lib/components/Pawn.svelte';
 	import { activePawn, changeTurn, suggestPath, turn } from '$lib/store/state';
 	import { Color, type Pawn as PawnType } from '$lib/types/coordinate.type';
+	import { isDebugging } from '$lib/variable';
 
 	let pawnCoordinates: Array<PawnType> = [
 		{ x: 300, y: 100, color: Color.RED },
@@ -93,12 +94,14 @@
 			{/each}
 		</svg>
 	</div>
-	<div class="absolute right-4 top-4 bg-white rounded-md p-4 w-64">
-		<table>
-			<tr>
-				<td>Turn : </td>
-				<td>{$turn}</td>
-			</tr>
-		</table>
-	</div>
+	{#if isDebugging}
+		<div class="absolute right-4 top-4 bg-white rounded-md p-4 w-64">
+			<table>
+				<tr>
+					<td>Turn : </td>
+					<td>{$turn}</td>
+				</tr>
+			</table>
+		</div>
+	{/if}
 </div>
