@@ -6,9 +6,9 @@ export const checkStraightLine = (coordinates = []) => {
 	for (let i = 1; i < coordinates.length; i++) {
 		let x2 = coordinates[i][0];
 		let y2 = coordinates[i][1];
-		if (x2 - x1 === 0) {
-			return false;
-		}
+		// if (x2 - x1 === 0) {
+		// 	return false;
+		// }
 		if (slope1 === null) {
 			slope1 = (y2 - y1) / (x2 - x1);
 			continue;

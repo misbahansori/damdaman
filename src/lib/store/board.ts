@@ -576,17 +576,14 @@ export const suggestionPaths = derived(
 				enemiesInContact.some((enemy) => enemy.x === coordinate.x && enemy.y === coordinate.y)
 			)
 			.flatMap((enemy) =>
-				enemy.possiblePaths.filter((coordinate) =>
-					checkStraightLine([
+				enemy.possiblePaths.filter((coordinate) => {
+					return checkStraightLine([
 						[$activePawn.x, $activePawn.y],
 						[enemy.x, enemy.y],
 						[coordinate.x, coordinate.y],
-					])
-				)
+					]);
+				})
 			);
-		// .flatMap((coordinate) => coordinate.possiblePaths);
-
-		console.log(possibleEnemyPaths);
 
 		const eatSuggestionCoordinates = activePawnCoordinate.eatingPaths.filter((coordinate) =>
 			possibleEnemyPaths.some(
