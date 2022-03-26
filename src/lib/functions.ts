@@ -38,10 +38,12 @@ export function getEnemyPossiblePaths(enemiesInContact: Pawn[], activePawn: Pawn
 }
 
 export function getEatSuggestionCoordinates(
+	pawnCoordinates: Pawn[],
 	activePawnCoordinate: PawnCoordinate,
-	enemyPossiblePaths: Coordinate[],
-	pawnCoordinates: Pawn[]
+	activePawn: Pawn
 ): Coordinate[] {
+	const enemiesInContact = getEnemiesInContact(pawnCoordinates, activePawnCoordinate, activePawn);
+	const enemyPossiblePaths = getEnemyPossiblePaths(enemiesInContact, activePawn);
 	return activePawnCoordinate.eatingPaths
 		.filter((coordinate) =>
 			enemyPossiblePaths.some(
