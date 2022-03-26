@@ -24,7 +24,7 @@
 	on:click={onClick}
 	{cx}
 	{cy}
-	r={$activePawn.x === cx && $activePawn.y === cy ? 24 : 16}
+	r={$activePawn.x === cx && $activePawn.y === cy ? 40 : 28}
 	class="pawn"
 	class:selected={$activePawn.x === cx && $activePawn.y === cy}
 	fill={color === Color.RED ? '#FF005C' : '#426AF5'}
