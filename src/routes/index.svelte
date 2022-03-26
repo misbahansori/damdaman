@@ -6,6 +6,7 @@
 	import { activePawn, changeTurn, pawnCoordinates, suggestPath, turn } from '$lib/store/state';
 	import { checkStraightLine } from '$lib/helper';
 	import { getActivePawnCoordinate, getEnemiesInContact } from '$lib/functions';
+	import { suggestionPaths } from '$lib/store/board';
 
 	function onPawnSelected(event: CustomEvent<PawnType>) {
 		const { id, x, y, color } = event.detail;
@@ -69,7 +70,7 @@
 
 		$activePawn = { id: null, x: event.detail.x, y: event.detail.y, color: null };
 
-		// TODO : Determine if the turn is over or not
+		console.log($suggestionPaths);
 
 		$activePawn = {
 			id: null,
