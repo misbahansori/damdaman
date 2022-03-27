@@ -112,7 +112,7 @@
 	{:else}
 		<div transition:fade={{ duration: 150 }} class="bg-[#426AF5] inset-x-0 bottom-0 absolute h-4" />
 	{/if}
-	<div class="sm:max-w-xl flex mx-auto">
+	<div class="sm:max-w-xl h-screen flex mx-auto">
 		<div class=" flex relative w-full py-6">
 			<svg class="w-full" viewBox="0 0 1000 1500" fill="none" xmlns="http://www.w3.org/2000/svg">
 				<Board on:click={onPawnMoved} />
