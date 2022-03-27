@@ -24,7 +24,7 @@
 	on:click={onClick}
 	{cx}
 	{cy}
-	r={$activePawn.x === cx && $activePawn.y === cy ? 40 : 28}
+	r={$activePawn.x === cx && $activePawn.y === cy ? 54 : 40}
 	class="pawn"
 	class:selected={$activePawn.x === cx && $activePawn.y === cy}
 	class:pointer-event-none={color !== $turn}
