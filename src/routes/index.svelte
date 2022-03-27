@@ -5,7 +5,12 @@
 	import { Color, type Pawn as PawnType } from '$lib/types/global.type';
 	import { activePawn, changeTurn, pawnCoordinates, suggestPath, turn } from '$lib/store/state';
 	import { checkStraightLine } from '$lib/helper';
-	import { getActivePawnCoordinate, getEatSuggestionCoordinates, getEnemiesInContact } from '$lib/functions';
+	import {
+		getActivePawnCoordinate,
+		getEatSuggestionCoordinates,
+		getEnemiesInContact,
+		getEnemyPossiblePaths,
+	} from '$lib/functions';
 
 	function onPawnSelected(event: CustomEvent<PawnType>) {
 		const { id, x, y, color } = event.detail;
@@ -68,6 +73,20 @@
 		$pawnCoordinates[index].y = event.detail.y;
 
 		$activePawn = { id: null, x: event.detail.x, y: event.detail.y, color: $turn };
+
+		if (isEatingEnemy) {
+			const activePawnCoordinate = getActivePawnCoordinate($activePawn);
+
+			const eatSuggestionCoordinates = getEatSuggestionCoordinates(
+				$pawnCoordinates,
+				activePawnCoordinate,
+				$activePawn
+			);
+
+			if (eatSuggestionCoordinates.length) {
+				return;
+			}
+		}
 
 		$activePawn = {
 			id: null,
