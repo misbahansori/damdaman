@@ -106,8 +106,8 @@
 </svelte:head>
 
 <div class="w-full min-h-screen bg-gray-100">
-	<div class="max-w-5xl flex mx-auto h-screen md:max-h-screen">
-		<svg class="w-full" viewBox="0 0 1000 1400" fill="none" xmlns="http://www.w3.org/2000/svg">
+	<div class="max-w-5xl flex mx-auto p-6 max-h-screen">
+		<svg class="w-full" viewBox="0 0 1000 1500" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<Board on:click={onPawnMoved} />
 			{#each $pawnCoordinates as pawn (pawn.id)}
 				<Pawn on:click={onPawnSelected} {pawn} />
