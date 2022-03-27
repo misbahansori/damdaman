@@ -19,7 +19,7 @@
 	cx={pawn.x}
 	cy={pawn.y}
 	r={$activePawn.x === pawn.x && $activePawn.y === pawn.y ? 54 : 40}
-	class="pawn"
+	class="pawn select-none outline-none"
 	class:selected={$activePawn.x === pawn.x && $activePawn.y === pawn.y}
 	class:pointer-event-none={pawn.color !== $turn}
 	fill={pawn.color === Color.RED ? '#FF005C' : '#426AF5'}

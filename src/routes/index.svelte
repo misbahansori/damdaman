@@ -1,8 +1,7 @@
 <script lang="ts">
-	import { isDebugging } from '$lib/variable';
 	import Pawn from '$lib/components/Pawn.svelte';
 	import Board from '$lib/components/Board.svelte';
-	import { Color, type Pawn as PawnType } from '$lib/types/global.type';
+	import type { Pawn as PawnType } from '$lib/types/global.type';
 	import { activePawn, numberOfTurns, pawnCoordinates, suggestionPaths, turn } from '$lib/store/state';
 	import { checkStraightLine } from '$lib/helper';
 	import {
@@ -111,22 +110,4 @@
 			{/each}
 		</svg>
 	</div>
-	{#if isDebugging}
-		<div class="absolute right-4 top-4 bg-white rounded-md p-4 shadow-lg">
-			<table>
-				<tr>
-					<td>Turn : </td>
-					<td>
-						<div
-							class="px-2 py-0.5"
-							class:bg-red-500={$turn === Color.RED}
-							class:bg-blue-500={$turn === Color.BLUE}
-						>
-							{$turn}
-						</div>
-					</td>
-				</tr>
-			</table>
-		</div>
-	{/if}
 </div>

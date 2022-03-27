@@ -2,31 +2,8 @@
 	import { isDebugging } from '$lib/variable';
 	import { createEventDispatcher } from 'svelte';
 	import SuggestionPawn from './SuggestionPawn.svelte';
-	import { boardCoordinate } from '$lib/store/board';
+	import { boardCoordinate, boardLines } from '$lib/store/board';
 	import { suggestionPaths } from '$lib/store/state';
-
-	const boardLines = [
-		{ x1: '100', y1: '300', x2: '900', y2: '300' },
-		{ x1: '100', y1: '500', x2: '900', y2: '500' },
-		{ x1: '100', y1: '700', x2: '900', y2: '700' },
-		{ x1: '100', y1: '900', x2: '900', y2: '900' },
-		{ x1: '100', y1: '1100', x2: '900', y2: '1100' },
-		{ x1: '100', y1: '1100', x2: '100', y2: '300' },
-		{ x1: '300', y1: '1100', x2: '300', y2: '300' },
-		{ x1: '500', y1: '1300', x2: '500', y2: '100' },
-		{ x1: '700', y1: '1100', x2: '700', y2: '300' },
-		{ x1: '900', y1: '1100', x2: '900', y2: '300' },
-		{ x1: '100', y1: '700', x2: '700', y2: '1300' },
-		{ x1: '900', y1: '700', x2: '300', y2: '1300' },
-		{ x1: '100', y1: '700', x2: '700', y2: '100' },
-		{ x1: '900', y1: '700', x2: '300', y2: '100' },
-		{ x1: '300', y1: '100', x2: '700', y2: '100' },
-		{ x1: '300', y1: '1300', x2: '700', y2: '1300' },
-		{ x1: '400', y1: '200', x2: '600', y2: '200' },
-		{ x1: '400', y1: '1200', x2: '600', y2: '1200' },
-		{ x1: '100', y1: '300', x2: '900', y2: '1100' },
-		{ x1: '900', y1: '300', x2: '100', y2: '1100' },
-	];
 
 	const dispatch = createEventDispatcher();
 </script>
