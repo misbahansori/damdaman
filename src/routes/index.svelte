@@ -38,6 +38,8 @@
 			return;
 		}
 
+		console.log($activePawn);
+
 		const activePawnCoordinate = getActivePawnCoordinate($activePawn);
 
 		const isEatingEnemy = activePawnCoordinate.eatingPaths.some(
