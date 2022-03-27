@@ -1,9 +1,10 @@
 <script lang="ts">
 	import Pawn from '$lib/components/Pawn.svelte';
 	import Board from '$lib/components/Board.svelte';
-	import type { Pawn as PawnType } from '$lib/types/global.type';
+	import { Color, type Pawn as PawnType } from '$lib/types/global.type';
 	import { activePawn, numberOfTurns, pawnCoordinates, suggestionPaths, turn } from '$lib/store/state';
 	import { checkStraightLine } from '$lib/helper';
+	import { fade } from 'svelte/transition';
 	import {
 		changeTurn,
 		getActivePawnCoordinate,
@@ -105,13 +106,20 @@
 	<title>DamDaman</title>
 </svelte:head>
 
-<div class="w-full min-h-screen bg-gray-100">
-	<div class="max-w-5xl flex mx-auto p-6 max-h-screen">
-		<svg class="w-full" viewBox="0 0 1000 1500" fill="none" xmlns="http://www.w3.org/2000/svg">
-			<Board on:click={onPawnMoved} />
-			{#each $pawnCoordinates as pawn (pawn.id)}
-				<Pawn on:click={onPawnSelected} {pawn} />
-			{/each}
-		</svg>
+<div class="w-full items-center min-h-screen bg-gray-100 relative">
+	{#if $turn === Color.RED}
+		<div transition:fade={{ duration: 150 }} class="bg-[#FF005C] inset-x-0 top-0 absolute h-4" />
+	{:else}
+		<div transition:fade={{ duration: 150 }} class="bg-[#426AF5] inset-x-0 bottom-0 absolute h-4" />
+	{/if}
+	<div class="sm:max-w-xl flex mx-auto">
+		<div class=" flex relative w-full py-6">
+			<svg class="w-full" viewBox="0 0 1000 1500" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<Board on:click={onPawnMoved} />
+				{#each $pawnCoordinates as pawn (pawn.id)}
+					<Pawn on:click={onPawnSelected} {pawn} />
+				{/each}
+			</svg>
+		</div>
 	</div>
 </div>
