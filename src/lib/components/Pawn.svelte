@@ -3,7 +3,7 @@
 	import { Color, type Pawn } from '$lib/types/global.type';
 	import { createEventDispatcher } from 'svelte';
 	import { fade } from 'svelte/transition';
-	import { cubicOut } from 'svelte/easing';
+	import { cubicOut, quintOut } from 'svelte/easing';
 	import { tweened } from 'svelte/motion';
 
 	export let pawn: Pawn;
@@ -12,10 +12,12 @@
 
 	const tweenedX = tweened(pawn.x, { duration: 400, easing: cubicOut });
 	const tweenedY = tweened(pawn.y, { duration: 400, easing: cubicOut });
+	const tweenedR = tweened(40, { duration: 300, easing: quintOut, delay: 0 });
 
 	$: {
 		tweenedX.set(pawn.x);
 		tweenedY.set(pawn.y);
+		$activePawn.x === pawn.x && $activePawn.y === pawn.y ? tweenedR.set(54) : tweenedR.set(40);
 	}
 
 	function onClick() {
@@ -27,7 +29,7 @@
 	on:click={onClick}
 	cx={$tweenedX}
 	cy={$tweenedY + 50}
-	r={$activePawn.x === pawn.x && $activePawn.y === pawn.y ? 54 : 40}
+	r={$tweenedR}
 	class="pawn select-none outline-none"
 	class:selected={$activePawn.x === pawn.x && $activePawn.y === pawn.y}
 	class:pointer-event-none={pawn.color !== $turn}
@@ -36,14 +38,3 @@
 	stroke-width="12"
 	transition:fade={{ duration: 400, easing: cubicOut }}
 />
-
-<!-- <style>
-	.pawn {
-		cursor: pointer;
-		transition: all 500ms cubic-bezier(0.13, 0.67, 0.34, 0.93);
-		transform-origin: initial;
-	}
-	.pawn.selected {
-		transition: all 150ms cubic-bezier(0.13, 0.67, 0.34, 0.93);
-	}
-</style> -->
