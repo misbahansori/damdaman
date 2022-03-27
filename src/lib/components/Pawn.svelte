@@ -5,31 +5,25 @@
 	import { fade } from 'svelte/transition';
 	import { quintOut } from 'svelte/easing';
 
-	export let cx: number;
-	export let cy: number;
-	export let color: string;
+	export let pawn: Pawn;
 
 	const dispatch = createEventDispatcher();
 
 	function onClick() {
-		dispatch('click', <Pawn>{
-			x: cx,
-			y: cy,
-			color: color,
-		});
+		dispatch('click', pawn);
 	}
 </script>
 
 <circle
 	on:click={onClick}
-	{cx}
-	{cy}
-	r={$activePawn.x === cx && $activePawn.y === cy ? 54 : 40}
+	cx={pawn.x}
+	cy={pawn.y}
+	r={$activePawn.x === pawn.x && $activePawn.y === pawn.y ? 54 : 40}
 	class="pawn"
-	class:selected={$activePawn.x === cx && $activePawn.y === cy}
-	class:pointer-event-none={color !== $turn}
-	fill={color === Color.RED ? '#FF005C' : '#426AF5'}
-	stroke={color === Color.RED ? '#FF7BAB' : '#AAC7FF'}
+	class:selected={$activePawn.x === pawn.x && $activePawn.y === pawn.y}
+	class:pointer-event-none={pawn.color !== $turn}
+	fill={pawn.color === Color.RED ? '#FF005C' : '#426AF5'}
+	stroke={pawn.color === Color.RED ? '#FF7BAB' : '#AAC7FF'}
 	stroke-width="12"
 	transition:fade={{ duration: 500, easing: quintOut }}
 />

@@ -3,25 +3,25 @@
 	import Pawn from '$lib/components/Pawn.svelte';
 	import Board from '$lib/components/Board.svelte';
 	import { Color, type Pawn as PawnType } from '$lib/types/global.type';
-	import { activePawn, changeTurn, pawnCoordinates, suggestPath, turn } from '$lib/store/state';
+	import { activePawn, changeTurn, pawnCoordinates, suggestionPaths, turn } from '$lib/store/state';
 	import { checkStraightLine } from '$lib/helper';
 	import {
 		getActivePawnCoordinate,
 		getEatSuggestionCoordinates,
 		getEnemiesInContact,
-		getEnemyPossiblePaths,
+		getSuggestionPath,
 	} from '$lib/functions';
 
 	function onPawnSelected(event: CustomEvent<PawnType>) {
-		const { id, x, y, color } = event.detail;
+		const { x, y, color } = event.detail;
 
 		if (color !== $turn || ($activePawn.x === x && $activePawn.y === y && $activePawn.color === color)) {
 			return;
 		}
 
-		$suggestPath = true;
+		$activePawn = event.detail;
 
-		$activePawn = { id, x, y, color };
+		$suggestionPaths = getSuggestionPath($activePawn, $pawnCoordinates);
 	}
 
 	function findPawn(x: number, y: number) {
@@ -83,6 +83,7 @@
 				$activePawn
 			);
 
+			console.log(eatSuggestionCoordinates);
 			if (eatSuggestionCoordinates.length) {
 				return;
 			}
@@ -95,7 +96,7 @@
 			color: null,
 		};
 
-		$suggestPath = false;
+		$suggestionPaths = [];
 
 		changeTurn();
 	}
@@ -105,8 +106,8 @@
 	<div class="max-w-5xl flex mx-auto h-screen md:max-h-screen">
 		<svg class="w-full" viewBox="0 0 1000 1400" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<Board on:click={movePawn} />
-			{#each $pawnCoordinates as coordinate (coordinate.id)}
-				<Pawn on:click={onPawnSelected} cx={coordinate.x} cy={coordinate.y} color={coordinate.color} />
+			{#each $pawnCoordinates as pawn (pawn.id)}
+				<Pawn on:click={onPawnSelected} {pawn} />
 			{/each}
 		</svg>
 	</div>

@@ -1,7 +1,4 @@
 import type { PawnCoordinate } from '$lib/types/global.type';
-import { derived } from 'svelte/store';
-import { activePawn, pawnCoordinates } from '$lib/store/state';
-import { getActivePawnCoordinate, getEatSuggestionCoordinates } from '$lib/functions';
 
 export const boardCoordinate: Array<PawnCoordinate> = [
 	{
@@ -553,26 +550,3 @@ export const boardCoordinate: Array<PawnCoordinate> = [
 		],
 	},
 ];
-
-export const suggestionPaths = derived([activePawn, pawnCoordinates], ([$activePawn, $pawnCoordinates]) => {
-	const activePawnCoordinate = getActivePawnCoordinate($activePawn);
-
-	if (!activePawnCoordinate) {
-		return [];
-	}
-
-	const eatSuggestionCoordinates = getEatSuggestionCoordinates(
-		$pawnCoordinates,
-		activePawnCoordinate,
-		$activePawn
-	);
-
-	const possiblePaths = activePawnCoordinate.possiblePaths.filter(
-		(coordinate) =>
-			!$pawnCoordinates.some(
-				(pawnCoordinate) => pawnCoordinate.x === coordinate.x && pawnCoordinate.y === coordinate.y
-			)
-	);
-
-	return possiblePaths.concat(eatSuggestionCoordinates);
-});

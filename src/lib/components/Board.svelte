@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { isDebugging } from '$lib/variable';
 	import { createEventDispatcher } from 'svelte';
-	import { suggestPath } from '$lib/store/state';
 	import SuggestionPawn from './SuggestionPawn.svelte';
-	import { boardCoordinate, suggestionPaths } from '$lib/store/board';
+	import { boardCoordinate } from '$lib/store/board';
+	import { suggestionPaths } from '$lib/store/state';
 
 	const boardLines = [
 		{ x1: '100', y1: '300', x2: '900', y2: '300' },
@@ -43,11 +43,9 @@
 	/>
 {/each}
 
-{#if $suggestPath && $suggestionPaths}
-	{#each $suggestionPaths as coordinate}
-		<SuggestionPawn on:click={(event) => dispatch('click', event.detail)} {coordinate} />
-	{/each}
-{/if}
+{#each $suggestionPaths as coordinate}
+	<SuggestionPawn on:click={(event) => dispatch('click', event.detail)} {coordinate} />
+{/each}
 
 {#if isDebugging}
 	{#each boardCoordinate as coordinate}
