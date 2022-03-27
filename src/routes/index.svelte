@@ -3,9 +3,10 @@
 	import Pawn from '$lib/components/Pawn.svelte';
 	import Board from '$lib/components/Board.svelte';
 	import { Color, type Pawn as PawnType } from '$lib/types/global.type';
-	import { activePawn, changeTurn, pawnCoordinates, suggestionPaths, turn } from '$lib/store/state';
+	import { activePawn, numberOfTurns, pawnCoordinates, suggestionPaths, turn } from '$lib/store/state';
 	import { checkStraightLine } from '$lib/helper';
 	import {
+		changeTurn,
 		getActivePawnCoordinate,
 		getEatSuggestionCoordinates,
 		getEnemiesInContact,
@@ -15,7 +16,15 @@
 	function onPawnSelected(event: CustomEvent<PawnType>) {
 		const { x, y, color } = event.detail;
 
-		if (color !== $turn || ($activePawn.x === x && $activePawn.y === y && $activePawn.color === color)) {
+		if (color !== $turn) {
+			return;
+		}
+
+		if ($activePawn.x === x && $activePawn.y === y && $activePawn.color === color) {
+			return;
+		}
+
+		if ($numberOfTurns >= 1) {
 			return;
 		}
 
@@ -24,11 +33,7 @@
 		$suggestionPaths = getSuggestionPath($activePawn, $pawnCoordinates);
 	}
 
-	function findPawn(x: number, y: number) {
-		return $pawnCoordinates.findIndex((pawn) => pawn.x === x && pawn.y === y);
-	}
-
-	function movePawn(event: CustomEvent<{ x: number; y: number; color: string }>) {
+	function onPawnMoved(event: CustomEvent<PawnType>) {
 		if (!$activePawn.x && !$activePawn.y && !$activePawn.color) {
 			return;
 		}
@@ -63,7 +68,9 @@
 			$pawnCoordinates.splice(enemyIndex, 1);
 		}
 
-		const index = findPawn($activePawn.x, $activePawn.y);
+		const index = $pawnCoordinates.findIndex(
+			(coordinate) => coordinate.x === $activePawn.x && coordinate.y === $activePawn.y
+		);
 
 		if (index === -1) {
 			return;
@@ -83,20 +90,13 @@
 				$activePawn
 			);
 
-			console.log(eatSuggestionCoordinates);
+			$numberOfTurns += 1;
+
 			if (eatSuggestionCoordinates.length) {
+				$suggestionPaths = eatSuggestionCoordinates;
 				return;
 			}
 		}
-
-		$activePawn = {
-			id: null,
-			x: null,
-			y: null,
-			color: null,
-		};
-
-		$suggestionPaths = [];
 
 		changeTurn();
 	}
@@ -105,7 +105,7 @@
 <div class="w-full min-h-screen bg-gray-100">
 	<div class="max-w-5xl flex mx-auto h-screen md:max-h-screen">
 		<svg class="w-full" viewBox="0 0 1000 1400" fill="none" xmlns="http://www.w3.org/2000/svg">
-			<Board on:click={movePawn} />
+			<Board on:click={onPawnMoved} />
 			{#each $pawnCoordinates as pawn (pawn.id)}
 				<Pawn on:click={onPawnSelected} {pawn} />
 			{/each}
