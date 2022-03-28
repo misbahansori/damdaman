@@ -10,6 +10,15 @@ test('should return true if the line is horizontal', () => {
 		])
 	).toBe(true);
 });
+test('should return false if the last is coordinate is not align', () => {
+	expect(
+		checkStraightLine([
+			[100, 500],
+			[300, 500],
+			[500, 700],
+		])
+	).toBe(false);
+});
 
 test('should return true if the line is diagonal', () => {
 	expect(
@@ -24,9 +33,9 @@ test('should return true if the line is diagonal', () => {
 test('should return false if the line is diagonal but not in correct order', () => {
 	expect(
 		checkStraightLine([
-			[300, 500],
-			[675, 125],
-			[500, 300],
+			[300, 900],
+			[500, 700],
+			[700, 500],
 		])
 	).toBe(false);
 });
