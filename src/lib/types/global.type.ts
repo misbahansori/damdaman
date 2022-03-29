@@ -16,4 +16,5 @@ export interface Pawn extends Coordinate {
 export interface PawnCoordinate extends Coordinate {
 	possiblePaths: Array<Coordinate>;
 	eatingPaths: Array<Coordinate>;
+	additionalPaths: Array<Coordinate>;
 }

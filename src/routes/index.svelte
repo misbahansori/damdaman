@@ -30,6 +30,10 @@
 
 		$activePawn = event.detail;
 
+		const isAlone = $pawnCoordinates.filter((pawn) => pawn.color === $activePawn.color).length === 1;
+
+		console.log({ isAlone });
+
 		$suggestionPaths = getSuggestionPath($activePawn, $pawnCoordinates);
 	}
 
@@ -37,8 +41,6 @@
 		if (!$activePawn.x && !$activePawn.y && !$activePawn.color) {
 			return;
 		}
-
-		console.log($activePawn);
 
 		const activePawnCoordinate = getActivePawnCoordinate($activePawn);
 
