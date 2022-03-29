@@ -2,7 +2,14 @@
 	import Pawn from '$lib/components/Pawn.svelte';
 	import Board from '$lib/components/Board.svelte';
 	import { Color, type Pawn as PawnType } from '$lib/types/global.type';
-	import { activePawn, numberOfTurns, pawnCoordinates, suggestionPaths, turn } from '$lib/store/state';
+	import {
+		activePawn,
+		isAlone,
+		numberOfTurns,
+		pawnCoordinates,
+		suggestionPaths,
+		turn,
+	} from '$lib/store/state';
 	import { checkStraightLine } from '$lib/helper';
 	import { fade } from 'svelte/transition';
 	import {
@@ -30,9 +37,7 @@
 
 		$activePawn = event.detail;
 
-		const isAlone = $pawnCoordinates.filter((pawn) => pawn.color === $activePawn.color).length === 1;
-
-		$suggestionPaths = getSuggestionPath($activePawn, $pawnCoordinates, isAlone);
+		$suggestionPaths = getSuggestionPath($activePawn, $pawnCoordinates, $isAlone);
 	}
 
 	function onPawnMoved(event: CustomEvent<PawnType>) {
@@ -42,21 +47,26 @@
 
 		const activePawnCoordinate = getActivePawnCoordinate($activePawn);
 
-		const isEatingEnemy = activePawnCoordinate.eatingPaths.some(
+		const possibilityEnemyHasBeenEaten = activePawnCoordinate.eatingPaths.some(
 			(coordinate) => coordinate.x === event.detail.x && coordinate.y === event.detail.y
 		);
+		console.log({ possibilityEnemyHasBeenEaten });
 
-		if (isEatingEnemy) {
-			const enemiesInContact = getEnemiesInContact($pawnCoordinates, activePawnCoordinate, $activePawn);
+		const enemiesInContact = getEnemiesInContact($pawnCoordinates, activePawnCoordinate, $activePawn);
 
-			const eatenEnemy = enemiesInContact.filter((pawnCoordinate) =>
-				checkStraightLine([
-					[$activePawn.x, $activePawn.y],
-					[pawnCoordinate.x, pawnCoordinate.y],
-					[event.detail.x, event.detail.y],
-				])
-			);
+		console.log({ enemiesInContact });
 
+		const eatenEnemy = enemiesInContact.filter((pawnCoordinate) =>
+			checkStraightLine([
+				[$activePawn.x, $activePawn.y],
+				[pawnCoordinate.x, pawnCoordinate.y],
+				[event.detail.x, event.detail.y],
+			])
+		);
+
+		console.log({ eatenEnemy });
+
+		if (possibilityEnemyHasBeenEaten && eatenEnemy.length > 0) {
 			const enemyIndex = $pawnCoordinates.findIndex((pawnCoordinate) =>
 				eatenEnemy.some(
 					(coordinate) => coordinate.x === pawnCoordinate.x && coordinate.y === pawnCoordinate.y
@@ -83,13 +93,14 @@
 
 		$activePawn = { id: null, x: event.detail.x, y: event.detail.y, color: $turn };
 
-		if (isEatingEnemy) {
+		if (possibilityEnemyHasBeenEaten && eatenEnemy.length > 0) {
 			const activePawnCoordinate = getActivePawnCoordinate($activePawn);
 
 			const eatSuggestionCoordinates = getEatSuggestionCoordinates(
 				$pawnCoordinates,
 				activePawnCoordinate,
-				$activePawn
+				$activePawn,
+				$isAlone
 			);
 
 			$numberOfTurns += 1;

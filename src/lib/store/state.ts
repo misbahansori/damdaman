@@ -1,5 +1,5 @@
 import { Color, type Coordinate, type Pawn } from '$lib/types/global.type';
-import { writable } from 'svelte/store';
+import { derived, writable } from 'svelte/store';
 
 export const pawnCoordinates = writable<Array<Pawn>>([
 	{ id: 1, x: 200, y: 0, color: Color.RED },
@@ -37,6 +37,11 @@ export const pawnCoordinates = writable<Array<Pawn>>([
 ]);
 
 export const turn = writable<Color>(Color.BLUE);
+
+export const isAlone = derived([pawnCoordinates, turn], ([$pawnCoordinates, $turn]) => {
+	return $pawnCoordinates.filter((pawn) => pawn.color === $turn).length === 1;
+});
+
 export const numberOfTurns = writable<number>(0);
 
 export const activePawn = writable<Pawn>({
