@@ -47,12 +47,22 @@
 
 		const activePawnCoordinate = getActivePawnCoordinate($activePawn);
 
-		const possibilityEnemyHasBeenEaten = activePawnCoordinate.eatingPaths.some(
-			(coordinate) => coordinate.x === event.detail.x && coordinate.y === event.detail.y
-		);
+		const possibilityEnemyHasBeenEaten =
+			activePawnCoordinate.eatingPaths.some(
+				(coordinate) => coordinate.x === event.detail.x && coordinate.y === event.detail.y
+			) ||
+			activePawnCoordinate.additionalPaths.some(
+				(coordinate) => coordinate.x === event.detail.x && coordinate.y === event.detail.y
+			);
+
 		console.log({ possibilityEnemyHasBeenEaten });
 
-		const enemiesInContact = getEnemiesInContact($pawnCoordinates, activePawnCoordinate, $activePawn);
+		const enemiesInContact = getEnemiesInContact(
+			$pawnCoordinates,
+			activePawnCoordinate,
+			$activePawn,
+			$isAlone
+		);
 
 		console.log({ enemiesInContact });
 

@@ -31,9 +31,10 @@ export function getActivePawnCoordinate(activePawn: Pawn): PawnCoordinate {
 export function getEnemiesInContact(
 	pawnCoordinates: Pawn[],
 	activePawnCoordinate: PawnCoordinate,
-	activePawn: Pawn
+	activePawn: Pawn,
+	isAlone
 ): Pawn[] {
-	return pawnCoordinates.filter((pawnCoordinate) =>
+	let enemiesInContact = pawnCoordinates.filter((pawnCoordinate) =>
 		activePawnCoordinate.possiblePaths.some(
 			(coordinate) =>
 				coordinate.x === pawnCoordinate.x &&
@@ -41,6 +42,29 @@ export function getEnemiesInContact(
 				activePawn.color !== pawnCoordinate.color
 		)
 	);
+
+	if (isAlone) {
+		const eatingPaths = pawnCoordinates.filter((pawnCoordinate) =>
+			activePawnCoordinate.eatingPaths.some(
+				(coordinate) =>
+					coordinate.x === pawnCoordinate.x &&
+					coordinate.y === pawnCoordinate.y &&
+					activePawn.color !== pawnCoordinate.color
+			)
+		);
+		const additionalPaths = pawnCoordinates.filter((pawnCoordinate) =>
+			activePawnCoordinate.additionalPaths.some(
+				(coordinate) =>
+					coordinate.x === pawnCoordinate.x &&
+					coordinate.y === pawnCoordinate.y &&
+					activePawn.color !== pawnCoordinate.color
+			)
+		);
+
+		enemiesInContact = [...enemiesInContact, ...eatingPaths, ...additionalPaths];
+	}
+
+	return enemiesInContact;
 }
 
 export function getEnemyPossiblePaths(enemiesInContact: Pawn[], activePawn: Pawn) {
@@ -65,12 +89,10 @@ export function getEatSuggestionCoordinates(
 	activePawn: Pawn,
 	isAlone: boolean
 ): Coordinate[] {
-	if (isAlone) {
-		return activePawnCoordinate.eatingPaths;
-	}
 	const enemiesInContact = getEnemiesInContact(pawnCoordinates, activePawnCoordinate, activePawn);
 	const enemyPossiblePaths = getEnemyPossiblePaths(enemiesInContact, activePawn);
-	return activePawnCoordinate.eatingPaths
+
+	const eatingPaths = activePawnCoordinate.eatingPaths
 		.filter((coordinate) =>
 			enemyPossiblePaths.some(
 				(possiblePath) => possiblePath.x === coordinate.x && possiblePath.y === coordinate.y
@@ -82,6 +104,27 @@ export function getEatSuggestionCoordinates(
 					(pawnCoordinate) => pawnCoordinate.x === coordinate.x && pawnCoordinate.y === coordinate.y
 				)
 		);
+
+	let additionalEatingPaths = [];
+
+	console.log({ enemyPossiblePaths });
+
+	if (isAlone) {
+		additionalEatingPaths = activePawnCoordinate.additionalPaths
+			.filter((coordinate) =>
+				enemyPossiblePaths.some(
+					(possiblePath) => possiblePath.x === coordinate.x && possiblePath.y === coordinate.y
+				)
+			)
+			.filter(
+				(coordinate) =>
+					!pawnCoordinates.some(
+						(pawnCoordinate) => pawnCoordinate.x === coordinate.x && pawnCoordinate.y === coordinate.y
+					)
+			);
+	}
+
+	return eatingPaths.concat(additionalEatingPaths);
 }
 
 export function getSuggestionPath(activePawn: Pawn, pawnCoordinates: Pawn[], isAlone: boolean): Coordinate[] {
@@ -99,6 +142,7 @@ export function getSuggestionPath(activePawn: Pawn, pawnCoordinates: Pawn[], isA
 	);
 
 	if (isAlone) {
+		eatSuggestionCoordinates = eatSuggestionCoordinates.concat(activePawnCoordinate.eatingPaths);
 		eatSuggestionCoordinates = eatSuggestionCoordinates.concat(activePawnCoordinate.additionalPaths);
 	}
 
