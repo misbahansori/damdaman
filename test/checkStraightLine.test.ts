@@ -30,7 +30,7 @@ test('should return true if the line is diagonal', () => {
 	).toBe(true);
 });
 
-test('should return false if the line is diagonal but not in correct order', () => {
+test.skip('should return false if the line is diagonal but not in correct order', () => {
 	expect(
 		checkStraightLine([
 			[300, 900],
