@@ -25,16 +25,16 @@
 	}
 </script>
 
-<g filter={pawn.color === Color.RED ? 'url(#filter_red)' : 'url(#filter_blue)'}>
-	<circle
-		on:click={onClick}
-		cx={$tweenedX}
-		cy={$tweenedY + 50}
-		r={$tweenedR}
-		class="pawn select-none outline-none"
-		class:selected={$activePawn.x === pawn.x && $activePawn.y === pawn.y}
-		class:pointer-event-none={pawn.color !== $turn}
-		fill={pawn.color === Color.RED ? 'url(#gradient_red)' : 'url(#gradient_blue)'}
-		transition:fade={{ duration: 400, easing: cubicOut }}
-	/>
-</g>
+<circle
+	on:click={onClick}
+	cx={$tweenedX}
+	cy={$tweenedY + 50}
+	r={$tweenedR}
+	class="pawn select-none outline-none"
+	class:selected={$activePawn.x === pawn.x && $activePawn.y === pawn.y}
+	class:pointer-event-none={pawn.color !== $turn}
+	fill={pawn.color === Color.RED ? '#FF005C' : '#426AF5'}
+	stroke={pawn.color === Color.RED ? '#FF7BAB' : '#AAC7FF'}
+	stroke-width="12"
+	transition:fade={{ duration: 400, easing: cubicOut }}
+/>

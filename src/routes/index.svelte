@@ -108,7 +108,7 @@
 	<title>DamDaman</title>
 </svelte:head>
 
-<div class="w-full items-center min-h-screen bg-gray-100 relative bg-[url(/img/wood-2.jpeg)]">
+<div class="w-full items-center min-h-screen bg-gray-100 relative">
 	{#if $turn === Color.RED}
 		<div transition:fade={{ duration: 150 }} class="bg-[#FF005C] inset-x-0 top-0 absolute h-4" />
 	{:else}
@@ -121,22 +121,6 @@
 				{#each $pawnCoordinates as pawn (pawn.id)}
 					<Pawn on:click={onPawnSelected} {pawn} />
 				{/each}
-				<defs>
-					<filter id="filter_red" primitiveUnits="objectBoundingBox">
-						<feDropShadow dx="2" dy="4" stdDeviation="8" flood-color="#C32323" flood-opacity="100" />
-					</filter>
-					<linearGradient id="gradient_red" gradientTransform="rotate(45)">
-						<stop offset="0.2" stop-color="#FF5353" />
-						<stop offset="0.8" stop-color="#EB0505" />
-					</linearGradient>
-					<filter id="filter_blue" primitiveUnits="objectBoundingBox">
-						<feDropShadow dx="2" dy="4" stdDeviation="8" flood-color="#C32323" flood-opacity="100" />
-					</filter>
-					<linearGradient id="gradient_blue" gradientTransform="rotate(45)">
-						<stop offset="0.2" stop-color="#6486FF" />
-						<stop offset="0.8" stop-color="#0033E7" />
-					</linearGradient>
-				</defs>
 			</svg>
 		</div>
 	</div>

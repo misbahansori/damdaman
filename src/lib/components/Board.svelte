@@ -14,7 +14,7 @@
 		y1={line.y1 + 50}
 		x2={line.x2}
 		y2={line.y2 + 50}
-		stroke="#fff"
+		stroke="#525252"
 		stroke-linecap="round"
 		stroke-dasharray="6 6"
 	/>
