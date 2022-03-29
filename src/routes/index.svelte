@@ -32,9 +32,7 @@
 
 		const isAlone = $pawnCoordinates.filter((pawn) => pawn.color === $activePawn.color).length === 1;
 
-		console.log({ isAlone });
-
-		$suggestionPaths = getSuggestionPath($activePawn, $pawnCoordinates);
+		$suggestionPaths = getSuggestionPath($activePawn, $pawnCoordinates, isAlone);
 	}
 
 	function onPawnMoved(event: CustomEvent<PawnType>) {
