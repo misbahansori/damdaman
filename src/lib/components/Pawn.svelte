@@ -30,7 +30,7 @@
 	cx={$tweenedX}
 	cy={$tweenedY + 50}
 	r={$tweenedR}
-	class="pawn select-none outline-none"
+	class="pawn select-none outline-none cursor-pointer"
 	class:selected={$activePawn.x === pawn.x && $activePawn.y === pawn.y}
 	class:pointer-event-none={pawn.color !== $turn}
 	fill={pawn.color === Color.RED ? '#FF005C' : '#426AF5'}
