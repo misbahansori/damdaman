@@ -32,7 +32,7 @@ export function getEnemiesInContact(
 	pawnCoordinates: Pawn[],
 	activePawnCoordinate: PawnCoordinate,
 	activePawn: Pawn,
-	isAlone
+	isAlone: boolean
 ): Pawn[] {
 	let enemiesInContact = pawnCoordinates.filter((pawnCoordinate) =>
 		activePawnCoordinate.possiblePaths.some(
@@ -89,7 +89,7 @@ export function getEatSuggestionCoordinates(
 	activePawn: Pawn,
 	isAlone: boolean
 ): Coordinate[] {
-	const enemiesInContact = getEnemiesInContact(pawnCoordinates, activePawnCoordinate, activePawn);
+	const enemiesInContact = getEnemiesInContact(pawnCoordinates, activePawnCoordinate, activePawn, isAlone);
 	const enemyPossiblePaths = getEnemyPossiblePaths(enemiesInContact, activePawn);
 
 	const eatingPaths = activePawnCoordinate.eatingPaths
@@ -106,8 +106,6 @@ export function getEatSuggestionCoordinates(
 		);
 
 	let additionalEatingPaths = [];
-
-	console.log({ enemyPossiblePaths });
 
 	if (isAlone) {
 		additionalEatingPaths = activePawnCoordinate.additionalPaths
