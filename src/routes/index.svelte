@@ -153,7 +153,7 @@
 					/>
 				{/each}
 			</div>
-			<div class="absolute flex flex-col gap-0.5 h-20 flex-wrap right-6 bottom-6">
+			<div dir="rtl" class="absolute flex flex-col gap-0.5 h-20 flex-wrap right-6 bottom-6">
 				{#each Array(bluePawnKillCount) as item}
 					<div
 						transition:fade={{ duration: 300 }}
