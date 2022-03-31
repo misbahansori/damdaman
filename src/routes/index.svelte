@@ -55,16 +55,12 @@
 				(coordinate) => coordinate.x === event.detail.x && coordinate.y === event.detail.y
 			);
 
-		console.log({ possibilityEnemyHasBeenEaten });
-
 		const enemiesInContact = getEnemiesInContact(
 			$pawnCoordinates,
 			activePawnCoordinate,
 			$activePawn,
 			$isAlone
 		);
-
-		console.log({ enemiesInContact });
 
 		const eatenEnemy = enemiesInContact.filter((pawnCoordinate) =>
 			checkStraightLine([
@@ -73,8 +69,6 @@
 				[event.detail.x, event.detail.y],
 			])
 		);
-
-		console.log({ eatenEnemy });
 
 		if (possibilityEnemyHasBeenEaten && eatenEnemy.length > 0) {
 			const enemyIndex = $pawnCoordinates.findIndex((pawnCoordinate) =>
@@ -123,6 +117,12 @@
 
 		changeTurn();
 	}
+
+	$: redPawnKillCount =
+		16 - $pawnCoordinates.filter((pawnCoordinate) => pawnCoordinate.color === Color.RED).length;
+
+	$: bluePawnKillCount =
+		16 - $pawnCoordinates.filter((pawnCoordinate) => pawnCoordinate.color === Color.BLUE).length;
 </script>
 
 <svelte:head>
@@ -136,13 +136,29 @@
 		<div transition:fade={{ duration: 150 }} class="bg-[#426AF5] inset-x-0 bottom-0 absolute h-4" />
 	{/if}
 	<div class="sm:max-w-xl h-screen flex mx-auto">
-		<div class=" flex relative w-full py-6">
+		<div class="flex relative w-full py-6">
 			<svg class="w-full" viewBox="0 0 1000 1500" fill="none" xmlns="http://www.w3.org/2000/svg">
 				<Board on:click={onPawnMoved} />
 				{#each $pawnCoordinates as pawn (pawn.id)}
 					<Pawn on:click={onPawnSelected} {pawn} />
 				{/each}
 			</svg>
+			<div class="absolute flex flex-col gap-0.5 h-20 flex-wrap left-6 top-6">
+				{#each Array(redPawnKillCount) as item}
+					<div
+						transition:fade={{ duration: 300 }}
+						class="w-3 h-3 bg-[#FF005C] border-2 border-[#FF7BAB] rounded-full"
+					/>
+				{/each}
+			</div>
+			<div class="absolute flex flex-col gap-0.5 h-20 flex-wrap right-6 bottom-6">
+				{#each Array(bluePawnKillCount) as item}
+					<div
+						transition:fade={{ duration: 300 }}
+						class="w-3 h-3 bg-[#426AF5] border-2 border-[#AAC7FF] rounded-full"
+					/>
+				{/each}
+			</div>
 		</div>
 	</div>
 </div>
