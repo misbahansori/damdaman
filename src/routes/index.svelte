@@ -88,16 +88,16 @@
 			$pawnCoordinates.splice(enemyIndex, 1);
 		}
 
-		const index = $pawnCoordinates.findIndex(
+		const activePawnindex = $pawnCoordinates.findIndex(
 			(coordinate) => coordinate.x === $activePawn.x && coordinate.y === $activePawn.y
 		);
 
-		if (index === -1) {
+		if (activePawnindex === -1) {
 			return;
 		}
 
-		$pawnCoordinates[index].x = event.detail.x;
-		$pawnCoordinates[index].y = event.detail.y;
+		$pawnCoordinates[activePawnindex].x = event.detail.x;
+		$pawnCoordinates[activePawnindex].y = event.detail.y;
 
 		$activePawn = { id: null, x: event.detail.x, y: event.detail.y, color: $turn };
 
