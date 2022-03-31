@@ -551,7 +551,7 @@ export const boardCoordinate: Array<PawnCoordinate> = [
 		additionalPaths: [
 			{ x: 100, y: 900 },
 			{ x: 300, y: 900 },
-			{ x: 300, y: 300 },
+			{ x: 900, y: 300 },
 		],
 	},
 	{
