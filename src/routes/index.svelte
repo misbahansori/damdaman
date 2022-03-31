@@ -49,14 +49,6 @@
 
 		const activePawnCoordinate = getActivePawnCoordinate($activePawn);
 
-		const possibilityEnemyHasBeenEaten =
-			activePawnCoordinate.eatingPaths.some(
-				(coordinate) => coordinate.x === event.detail.x && coordinate.y === event.detail.y
-			) ||
-			activePawnCoordinate.additionalPaths.some(
-				(coordinate) => coordinate.x === event.detail.x && coordinate.y === event.detail.y
-			);
-
 		const enemiesInContact = getEnemiesInContact(
 			$pawnCoordinates,
 			activePawnCoordinate,
@@ -82,7 +74,7 @@
 			])
 		);
 
-		if (possibilityEnemyHasBeenEaten && eatenEnemy.length > 0) {
+		if (eatenEnemy.length > 0) {
 			const enemyIndex = $pawnCoordinates.findIndex((pawnCoordinate) =>
 				eatenEnemy.some(
 					(coordinate) => coordinate.x === pawnCoordinate.x && coordinate.y === pawnCoordinate.y
@@ -109,7 +101,7 @@
 
 		$activePawn = { id: null, x: event.detail.x, y: event.detail.y, color: $turn };
 
-		if (possibilityEnemyHasBeenEaten && eatenEnemy.length > 0) {
+		if (eatenEnemy.length > 0) {
 			const activePawnCoordinate = getActivePawnCoordinate($activePawn);
 
 			const eatSuggestionCoordinates = getEatSuggestionCoordinates(
