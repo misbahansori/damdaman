@@ -141,7 +141,14 @@ export function getSuggestionPath(activePawn: Pawn, pawnCoordinates: Pawn[], isA
 
 	if (isAlone) {
 		eatSuggestionCoordinates = eatSuggestionCoordinates.concat(activePawnCoordinate.eatingPaths);
-		eatSuggestionCoordinates = eatSuggestionCoordinates.concat(activePawnCoordinate.additionalPaths);
+		const additionalEatingPaths = activePawnCoordinate.additionalPaths.filter(
+			(coordinate) =>
+				!pawnCoordinates.some(
+					(pawnCoordinate) => pawnCoordinate.x === coordinate.x && pawnCoordinate.y === coordinate.y
+				)
+		);
+		console.log({ additionalEatingPaths, pawnCoordinates });
+		eatSuggestionCoordinates = eatSuggestionCoordinates.concat(additionalEatingPaths);
 	}
 
 	const possiblePaths = activePawnCoordinate.possiblePaths.filter(

@@ -1,3 +1,5 @@
+import type { Coordinate } from './types/global.type';
+
 export const checkStraightLine = (coordinates = []) => {
 	const [coordinate1, coordinate2, coordinate3] = coordinates;
 	const [x1, y1] = coordinate1;
@@ -13,4 +15,31 @@ export const checkStraightLine = (coordinates = []) => {
 	const slope2 = (y3 - y2) / (x3 - x2);
 
 	return slope1 === slope2;
+};
+
+export const checkTwoEnemiesInARow = (
+	currentCoordinate: Coordinate,
+	enemiesCoordinate: Coordinate[],
+	targetCoordinate: Coordinate
+) => {
+	const enemies = enemiesCoordinate.filter(
+		(enemyCoordinate) =>
+			enemyCoordinate[0] !== currentCoordinate.x && enemyCoordinate[1] !== currentCoordinate.y
+	);
+
+	const [enemy1, enemy2] = enemies;
+
+	const straightLine1 = checkStraightLine([
+		[currentCoordinate.x, currentCoordinate.y],
+		[enemy1.x, enemy1.y],
+		[targetCoordinate.x, targetCoordinate.y],
+	]);
+
+	const straightLine2 = checkStraightLine([
+		[currentCoordinate.x, currentCoordinate.y],
+		[enemy2.x, enemy2.y],
+		[targetCoordinate.x, targetCoordinate.y],
+	]);
+
+	return straightLine1 && straightLine2;
 };
