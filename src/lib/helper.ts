@@ -26,20 +26,13 @@ export const checkTwoEnemiesInARow = (
 		(enemyCoordinate) =>
 			enemyCoordinate[0] !== currentCoordinate.x && enemyCoordinate[1] !== currentCoordinate.y
 	);
-
-	const [enemy1, enemy2] = enemies;
-
-	const straightLine1 = checkStraightLine([
-		[currentCoordinate.x, currentCoordinate.y],
-		[enemy1.x, enemy1.y],
-		[targetCoordinate.x, targetCoordinate.y],
-	]);
-
-	const straightLine2 = checkStraightLine([
-		[currentCoordinate.x, currentCoordinate.y],
-		[enemy2.x, enemy2.y],
-		[targetCoordinate.x, targetCoordinate.y],
-	]);
-
-	return straightLine1 && straightLine2;
+	return (
+		enemies.filter((enemy) =>
+			checkStraightLine([
+				[currentCoordinate.x, currentCoordinate.y],
+				[enemy.x, enemy.y],
+				[targetCoordinate.x, targetCoordinate.y],
+			])
+		).length >= 2
+	);
 };

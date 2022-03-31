@@ -39,3 +39,29 @@ test('Check two enemies in a row', () => {
 
 	expect(checkTwoEnemiesInARow(currentCoordinate, enemiesCoordinate, targetCoordinate)).toBe(true);
 });
+
+test('Check two enemies in a row', () => {
+	const currentCoordinate = { x: 800, y: 1400 };
+
+	const enemiesCoordinate = [
+		{ x: 500, y: 1100 },
+		{ x: 300, y: 900 },
+	];
+
+	const targetCoordinate = { x: 100, y: 700 };
+
+	expect(checkTwoEnemiesInARow(currentCoordinate, enemiesCoordinate, targetCoordinate)).toBe(true);
+});
+
+test('Check two enemies in a row', () => {
+	const currentCoordinate = { x: 800, y: 1400 };
+
+	const enemiesCoordinate = [
+		{ x: 675, y: 1275 },
+		{ x: 300, y: 900 },
+	];
+
+	const targetCoordinate = { x: 100, y: 700 };
+
+	expect(checkTwoEnemiesInARow(currentCoordinate, enemiesCoordinate, targetCoordinate)).toBe(true);
+});
