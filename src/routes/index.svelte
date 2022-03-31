@@ -23,10 +23,12 @@
 	function onPawnSelected(event: CustomEvent<PawnType>) {
 		const { x, y, color } = event.detail;
 
+		// If the selected pawn the enemy, then we can't select it
 		if (color !== $turn) {
 			return;
 		}
 
+		// If the pawn is already selected, then we can't select it
 		if ($activePawn.x === x && $activePawn.y === y && $activePawn.color === color) {
 			return;
 		}
@@ -61,6 +63,16 @@
 			$activePawn,
 			$isAlone
 		);
+
+		// Check for DAM
+		// const currentPawnCoordinates = $pawnCoordinates.filter((pawn) => pawn.color === $activePawn.color);
+
+		// currentPawnCoordinates
+		// 	.filter((pawn) => {
+		// 		const activePawnCoordinate = getActivePawnCoordinate(pawn);
+		// 		return getEnemiesInContact($pawnCoordinates, activePawnCoordinate, pawn, $isAlone).length > 0;
+		// 	})
+		// 	.filter((pawn) => {});
 
 		const eatenEnemy = enemiesInContact.filter((pawnCoordinate) =>
 			checkStraightLine([
@@ -118,11 +130,9 @@
 		changeTurn();
 	}
 
-	$: redPawnKillCount =
-		16 - $pawnCoordinates.filter((pawnCoordinate) => pawnCoordinate.color === Color.RED).length;
+	$: redPawnKillCount = 16 - $pawnCoordinates.filter((pawn) => pawn.color === Color.RED).length;
 
-	$: bluePawnKillCount =
-		16 - $pawnCoordinates.filter((pawnCoordinate) => pawnCoordinate.color === Color.BLUE).length;
+	$: bluePawnKillCount = 16 - $pawnCoordinates.filter((pawn) => pawn.color === Color.BLUE).length;
 </script>
 
 <svelte:head>
