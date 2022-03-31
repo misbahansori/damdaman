@@ -4,6 +4,11 @@ export const checkStraightLine = (coordinates = []) => {
 	const [x2, y2] = coordinate2;
 	const [x3, y3] = coordinate3;
 
+	if (x2 - x1 > 0 && x3 - x2 < 0) return false;
+	if (x2 - x1 < 0 && x3 - x2 > 0) return false;
+	if (y2 - y1 > 0 && y3 - y2 < 0) return false;
+	if (y2 - y1 < 0 && y3 - y2 > 0) return false;
+
 	const slope1 = (y2 - y1) / (x2 - x1);
 	const slope2 = (y3 - y2) / (x3 - x2);
 
