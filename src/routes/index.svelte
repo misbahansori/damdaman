@@ -57,14 +57,24 @@
 		);
 
 		// Check for DAM
-		// const currentPawnCoordinates = $pawnCoordinates.filter((pawn) => pawn.color === $activePawn.color);
+		const currentPawnCoordinates = $pawnCoordinates.filter((pawn) => pawn.color === $activePawn.color);
 
-		// currentPawnCoordinates
-		// 	.filter((pawn) => {
-		// 		const activePawnCoordinate = getActivePawnCoordinate(pawn);
-		// 		return getEnemiesInContact($pawnCoordinates, activePawnCoordinate, pawn, $isAlone).length > 0;
-		// 	})
-		// 	.filter((pawn) => {});
+		const areThereEnemiesToEat = currentPawnCoordinates.some((pawn) => {
+			const activePawnCoordinate = getActivePawnCoordinate(pawn);
+			const enemiesInContact = getEnemiesInContact($pawnCoordinates, activePawnCoordinate, pawn, $isAlone);
+			return enemiesInContact.some((pawn) => {
+				const pawnCoordinate = getActivePawnCoordinate(pawn);
+				return pawnCoordinate.possiblePaths.some((coordinate) =>
+					checkStraightLine([
+						[activePawnCoordinate.x, activePawnCoordinate.y],
+						[pawnCoordinate.x, pawnCoordinate.y],
+						[coordinate.x, coordinate.y],
+					])
+				);
+			});
+		});
+
+		console.log(areThereEnemiesToEat);
 
 		const eatenEnemy = enemiesInContact.filter((pawnCoordinate) =>
 			checkStraightLine([
