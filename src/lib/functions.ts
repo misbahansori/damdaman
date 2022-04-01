@@ -1,4 +1,4 @@
-import { checkStraightLine } from './helper';
+import { checkStraightLine, checkTwoEnemiesInARow } from './helper';
 import { boardCoordinate } from './store/board';
 import { activePawn, numberOfTurns, suggestionPaths, turn } from './store/state';
 import { Color, type Coordinate, type Pawn, type PawnCoordinate } from './types/global.type';
@@ -141,14 +141,10 @@ export function getSuggestionPath(activePawn: Pawn, pawnCoordinates: Pawn[], isA
 
 	if (isAlone) {
 		eatSuggestionCoordinates = eatSuggestionCoordinates.concat(activePawnCoordinate.eatingPaths);
-		const additionalEatingPaths = activePawnCoordinate.additionalPaths.filter(
-			(coordinate) =>
-				!pawnCoordinates.some(
-					(pawnCoordinate) => pawnCoordinate.x === coordinate.x && pawnCoordinate.y === coordinate.y
-				)
+		eatSuggestionCoordinates = eatSuggestionCoordinates.concat(activePawnCoordinate.additionalPaths);
+		eatSuggestionCoordinates = eatSuggestionCoordinates.filter(
+			(coordinate) => !checkTwoEnemiesInARow(activePawnCoordinate, pawnCoordinates, coordinate)
 		);
-		console.log({ additionalEatingPaths, pawnCoordinates });
-		eatSuggestionCoordinates = eatSuggestionCoordinates.concat(additionalEatingPaths);
 	}
 
 	const possiblePaths = activePawnCoordinate.possiblePaths.filter(
