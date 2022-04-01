@@ -32,7 +32,7 @@
 	fill="#000"
 	opacity="0"
 	r="64"
-	class="cursor-pointer"
+	class="cursor-pointer highlight-none"
 />
 
 <circle
@@ -47,3 +47,9 @@
 	stroke-width="12"
 	transition:fade={{ duration: 400, easing: cubicOut }}
 />
+
+<style>
+	.highlight-none {
+		-webkit-tap-highlight-color: transparent;
+	}
+</style>
