@@ -14,10 +14,11 @@
 	import { fade } from 'svelte/transition';
 	import {
 		changeTurn,
-		getActivePawnCoordinate,
+		getPawnCoordinate,
 		getEatSuggestionCoordinates,
 		getEnemiesInContact,
 		getSuggestionPath,
+		getEnemiesToEat,
 	} from '$lib/functions';
 
 	function onPawnSelected(event: CustomEvent<PawnType>) {
@@ -47,7 +48,7 @@
 			return;
 		}
 
-		const activePawnCoordinate = getActivePawnCoordinate($activePawn);
+		const activePawnCoordinate = getPawnCoordinate($activePawn);
 
 		const enemiesInContact = getEnemiesInContact(
 			$pawnCoordinates,
@@ -57,22 +58,9 @@
 		);
 
 		// Check for DAM
-		const currentPawnCoordinates = $pawnCoordinates.filter((pawn) => pawn.color === $activePawn.color);
+		const activePawnCoordinates = $pawnCoordinates.filter((pawn) => pawn.color === $activePawn.color);
 
-		const areThereEnemiesToEat = currentPawnCoordinates.some((pawn) => {
-			const activePawnCoordinate = getActivePawnCoordinate(pawn);
-			const enemiesInContact = getEnemiesInContact($pawnCoordinates, activePawnCoordinate, pawn, $isAlone);
-			return enemiesInContact.some((pawn) => {
-				const pawnCoordinate = getActivePawnCoordinate(pawn);
-				return pawnCoordinate.possiblePaths.some((coordinate) =>
-					checkStraightLine([
-						[activePawnCoordinate.x, activePawnCoordinate.y],
-						[pawnCoordinate.x, pawnCoordinate.y],
-						[coordinate.x, coordinate.y],
-					])
-				);
-			});
-		});
+		const areThereEnemiesToEat = getEnemiesToEat(activePawnCoordinates, $pawnCoordinates, $isAlone);
 
 		console.log(areThereEnemiesToEat);
 
@@ -112,7 +100,7 @@
 		$activePawn = { id: null, x: event.detail.x, y: event.detail.y, color: $turn };
 
 		if (eatenEnemy.length > 0) {
-			const activePawnCoordinate = getActivePawnCoordinate($activePawn);
+			const activePawnCoordinate = getPawnCoordinate($activePawn);
 
 			const eatSuggestionCoordinates = getEatSuggestionCoordinates(
 				$pawnCoordinates,

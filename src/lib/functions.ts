@@ -24,7 +24,7 @@ export function changeTurn(): void {
 	numberOfTurns.set(0);
 }
 
-export function getActivePawnCoordinate(activePawn: Pawn): PawnCoordinate {
+export function getPawnCoordinate(activePawn: Pawn): PawnCoordinate {
 	return boardCoordinate.find((coordinate) => coordinate.x === activePawn.x && coordinate.y === activePawn.y);
 }
 
@@ -126,7 +126,7 @@ export function getEatSuggestionCoordinates(
 }
 
 export function getSuggestionPath(activePawn: Pawn, pawnCoordinates: Pawn[], isAlone: boolean): Coordinate[] {
-	const activePawnCoordinate = getActivePawnCoordinate(activePawn);
+	const activePawnCoordinate = getPawnCoordinate(activePawn);
 
 	if (!activePawnCoordinate) {
 		return [];
@@ -164,4 +164,25 @@ export function getSuggestionPath(activePawn: Pawn, pawnCoordinates: Pawn[], isA
 	);
 
 	return possiblePaths;
+}
+
+export function getEnemiesToEat(
+	activePawnCoordinates: Pawn[],
+	pawnCoordinates: Pawn[],
+	isAlone: boolean
+): boolean {
+	return activePawnCoordinates.some((pawn) => {
+		const activePawnCoordinate = getPawnCoordinate(pawn);
+		const enemiesInContact = getEnemiesInContact(pawnCoordinates, activePawnCoordinate, pawn, isAlone);
+		return enemiesInContact.some((pawn) => {
+			const pawnCoordinate = getPawnCoordinate(pawn);
+			return pawnCoordinate.possiblePaths.some((coordinate) =>
+				checkStraightLine([
+					[activePawnCoordinate.x, activePawnCoordinate.y],
+					[pawnCoordinate.x, pawnCoordinate.y],
+					[coordinate.x, coordinate.y],
+				])
+			);
+		});
+	});
 }
