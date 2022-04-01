@@ -61,7 +61,7 @@ export function getEnemiesInContact(
 			)
 		);
 
-		enemiesInContact = [...enemiesInContact, ...eatingPaths, ...additionalPaths];
+		enemiesInContact = eatingPaths.concat(eatingPaths).concat(additionalPaths);
 	}
 
 	return enemiesInContact;
@@ -162,8 +162,6 @@ export function getSuggestionPath(activePawn: Pawn, pawnCoordinates: Pawn[], isA
 				(pawnCoordinate) => pawnCoordinate.x === coordinate.x && pawnCoordinate.y === coordinate.y
 			)
 	);
-
-	console.log({ possiblePaths });
 
 	return possiblePaths;
 }

@@ -146,7 +146,7 @@
 				{/each}
 			</svg>
 			<div class="absolute flex flex-col gap-0.5 h-20 flex-wrap left-6 top-6">
-				{#each Array(redPawnKillCount) as item}
+				{#each Array(redPawnKillCount) as _}
 					<div
 						transition:fade={{ duration: 300 }}
 						class="w-3 h-3 bg-[#FF005C] border-2 border-[#FF7BAB] rounded-full"
@@ -154,7 +154,7 @@
 				{/each}
 			</div>
 			<div dir="rtl" class="absolute flex flex-col gap-0.5 h-20 flex-wrap right-6 bottom-6">
-				{#each Array(bluePawnKillCount) as item}
+				{#each Array(bluePawnKillCount) as _}
 					<div
 						transition:fade={{ duration: 300 }}
 						class="w-3 h-3 bg-[#426AF5] border-2 border-[#AAC7FF] rounded-full"
