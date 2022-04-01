@@ -7,6 +7,8 @@ test('Check two enemies in a row', () => {
 	const enemiesCoordinate = [
 		{ x: 500, y: 500 },
 		{ x: 500, y: 700 },
+		{ x: 700, y: 500 },
+		{ x: 300, y: 500 },
 	];
 
 	const targetCoordinate = { x: 500, y: 300 };
@@ -62,6 +64,21 @@ test('Check two enemies in a row', () => {
 	];
 
 	const targetCoordinate = { x: 100, y: 700 };
+
+	expect(checkTwoEnemiesInARow(currentCoordinate, enemiesCoordinate, targetCoordinate)).toBe(true);
+});
+
+test('Check two enemies in a row', () => {
+	const currentCoordinate = { x: 500, y: 1400 };
+
+	const enemiesCoordinate = [
+		{ x: 675, y: 1275 },
+		{ x: 500, y: 300 },
+		{ x: 500, y: 125 },
+		{ x: 200, y: 0 },
+	];
+
+	const targetCoordinate = { x: 500, y: 0 };
 
 	expect(checkTwoEnemiesInARow(currentCoordinate, enemiesCoordinate, targetCoordinate)).toBe(true);
 });
