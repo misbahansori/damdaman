@@ -132,27 +132,38 @@ export function getSuggestionPath(activePawn: Pawn, pawnCoordinates: Pawn[], isA
 		return [];
 	}
 
-	let eatSuggestionCoordinates = getEatSuggestionCoordinates(
-		pawnCoordinates,
-		activePawnCoordinate,
-		activePawn,
-		isAlone
-	);
+	let possiblePaths = activePawnCoordinate.possiblePaths;
+
+	const enemiesInContact = getEnemiesInContact(pawnCoordinates, activePawnCoordinate, activePawn, isAlone);
+
+	if (enemiesInContact.length > 0) {
+		const enemyPossiblePaths = getEnemyPossiblePaths(enemiesInContact, activePawn);
+
+		possiblePaths = possiblePaths.concat(enemyPossiblePaths);
+	}
 
 	if (isAlone) {
-		eatSuggestionCoordinates = eatSuggestionCoordinates.concat(activePawnCoordinate.eatingPaths);
-		eatSuggestionCoordinates = eatSuggestionCoordinates.concat(activePawnCoordinate.additionalPaths);
-		eatSuggestionCoordinates = eatSuggestionCoordinates.filter(
-			(coordinate) => !checkTwoEnemiesInARow(activePawnCoordinate, pawnCoordinates, coordinate)
+		possiblePaths = possiblePaths
+			.concat(activePawnCoordinate.eatingPaths)
+			.concat(activePawnCoordinate.additionalPaths);
+
+		const enemiesCoordinates = pawnCoordinates.filter(
+			(pawnCoordinate) => pawnCoordinate.color !== activePawn.color
+		);
+
+		possiblePaths = possiblePaths.filter(
+			(coordinate) => !checkTwoEnemiesInARow(activePawnCoordinate, enemiesCoordinates, coordinate)
 		);
 	}
 
-	const possiblePaths = activePawnCoordinate.possiblePaths.filter(
+	possiblePaths = possiblePaths.filter(
 		(coordinate) =>
 			!pawnCoordinates.some(
 				(pawnCoordinate) => pawnCoordinate.x === coordinate.x && pawnCoordinate.y === coordinate.y
 			)
 	);
 
-	return possiblePaths.concat(eatSuggestionCoordinates);
+	console.log({ possiblePaths });
+
+	return possiblePaths;
 }
