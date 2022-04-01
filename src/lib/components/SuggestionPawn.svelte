@@ -12,7 +12,7 @@
 <circle
 	on:click={() => dispatch('click', coordinate)}
 	cx={coordinate.x}
-	cy={coordinate.y + 100}
+	cy={coordinate.y}
 	r="40"
 	class="cursor-pointer"
 	fill={$activePawn.color === Color.RED ? '#FF9CC0' : '#A8BBFF'}

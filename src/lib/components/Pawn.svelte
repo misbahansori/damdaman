@@ -28,7 +28,7 @@
 <circle
 	on:click={onClick}
 	cx={pawn.x}
-	cy={pawn.y + 100}
+	cy={pawn.y}
 	fill="#000"
 	opacity="0"
 	r="64"
@@ -37,7 +37,7 @@
 
 <circle
 	cx={$tweenedX}
-	cy={$tweenedY + 100}
+	cy={$tweenedY}
 	r={$tweenedR}
 	class="pointer-events-none"
 	class:selected={$activePawn.x === pawn.x && $activePawn.y === pawn.y}

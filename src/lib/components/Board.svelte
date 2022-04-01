@@ -11,9 +11,9 @@
 {#each boardLines as line}
 	<line
 		x1={line.x1}
-		y1={line.y1 + 100}
+		y1={line.y1}
 		x2={line.x2}
-		y2={line.y2 + 100}
+		y2={line.y2}
 		stroke="#525252"
 		stroke-linecap="round"
 		stroke-dasharray="6 6"
@@ -26,7 +26,7 @@
 
 {#if isDebugging}
 	{#each boardCoordinate as coordinate}
-		<text x={coordinate.x + 50} y={coordinate.y + 80} class="text-gray-500 text-sm fill-current">
+		<text x={coordinate.x + 50} y={coordinate.y + 40} class="text-gray-500 text-sm fill-current">
 			[{coordinate.x},{coordinate.y}]
 		</text>
 	{/each}
