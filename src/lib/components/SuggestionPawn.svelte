@@ -12,11 +12,11 @@
 <circle
 	on:click={() => dispatch('click', coordinate)}
 	cx={coordinate.x}
-	cy={coordinate.y + 50}
+	cy={coordinate.y + 100}
 	r="40"
 	class="cursor-pointer"
 	fill={$activePawn.color === Color.RED ? '#FF9CC0' : '#A8BBFF'}
 	stroke={$activePawn.color === Color.RED ? '#FFCEE0' : '#D0E0FF'}
 	stroke-width="12"
-	transition:fade={{ duration: 100 }}
+	transition:fade={{ duration: 150 }}
 />

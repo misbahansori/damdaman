@@ -11,22 +11,22 @@
 {#each boardLines as line}
 	<line
 		x1={line.x1}
-		y1={line.y1 + 50}
+		y1={line.y1 + 100}
 		x2={line.x2}
-		y2={line.y2 + 50}
+		y2={line.y2 + 100}
 		stroke="#525252"
 		stroke-linecap="round"
 		stroke-dasharray="6 6"
 	/>
 {/each}
 
-{#each $suggestionPaths as coordinate}
+{#each $suggestionPaths as coordinate (`${coordinate.x},${coordinate.y}`)}
 	<SuggestionPawn on:click={(event) => dispatch('click', event.detail)} {coordinate} />
 {/each}
 
 {#if isDebugging}
 	{#each boardCoordinate as coordinate}
-		<text x={coordinate.x + 40} y={coordinate.y + 40} class="text-gray-500 text-sm fill-current">
+		<text x={coordinate.x + 50} y={coordinate.y + 80} class="text-gray-500 text-sm fill-current">
 			[{coordinate.x},{coordinate.y}]
 		</text>
 	{/each}

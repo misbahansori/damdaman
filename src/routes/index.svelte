@@ -137,7 +137,7 @@
 	{/if}
 	<div class="sm:max-w-xl h-screen flex mx-auto">
 		<div class="flex relative w-full py-6">
-			<svg class="w-full" viewBox="0 0 1000 1500" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<svg class="w-full" viewBox="0 0 1000 1600" fill="none" xmlns="http://www.w3.org/2000/svg">
 				<Board on:click={onPawnMoved} />
 				{#each $pawnCoordinates as pawn (pawn.id)}
 					<Pawn on:click={onPawnSelected} {pawn} />

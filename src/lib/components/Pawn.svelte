@@ -27,10 +27,19 @@
 
 <circle
 	on:click={onClick}
+	cx={pawn.x}
+	cy={pawn.y + 100}
+	fill="#000"
+	opacity="0"
+	r="64"
+	class="cursor-pointer"
+/>
+
+<circle
 	cx={$tweenedX}
-	cy={$tweenedY + 50}
+	cy={$tweenedY + 100}
 	r={$tweenedR}
-	class="pawn select-none outline-none cursor-pointer"
+	class="pointer-events-none"
 	class:selected={$activePawn.x === pawn.x && $activePawn.y === pawn.y}
 	class:pointer-event-none={pawn.color !== $turn}
 	fill={pawn.color === Color.RED ? '#FF005C' : '#426AF5'}
