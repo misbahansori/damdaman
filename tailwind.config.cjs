@@ -2,10 +2,21 @@ const config = {
 	content: ['./src/**/*.{html,js,svelte,ts}'],
 
 	theme: {
-		extend: {}
+		extend: {
+			colors: {
+				red: {
+					300: '#FF7BAB',
+					500: '#FF005C',
+				},
+				blue: {
+					300: '#AAC7FF',
+					500: '#426AF5',
+				},
+			},
+		},
 	},
 
-	plugins: []
+	plugins: [],
 };
 
 module.exports = config;

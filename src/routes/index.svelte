@@ -4,6 +4,7 @@
 	import { Color, type Pawn as PawnType } from '$lib/types/global.type';
 	import {
 		activePawn,
+		dam,
 		isAlone,
 		numberOfTurns,
 		pawnCoordinates,
@@ -11,7 +12,7 @@
 		turn,
 	} from '$lib/store/state';
 	import { checkStraightLine } from '$lib/helper';
-	import { fade } from 'svelte/transition';
+	import { fade, fly } from 'svelte/transition';
 	import {
 		changeTurn,
 		getPawnCoordinate,
@@ -57,13 +58,6 @@
 			$isAlone
 		);
 
-		// Check for DAM
-		const activePawnCoordinates = $pawnCoordinates.filter((pawn) => pawn.color === $activePawn.color);
-
-		const areThereEnemiesToEat = getEnemiesToEat(activePawnCoordinates, $pawnCoordinates, $isAlone);
-
-		console.log(areThereEnemiesToEat);
-
 		const eatenEnemy = enemiesInContact.filter((pawnCoordinate) =>
 			checkStraightLine([
 				[$activePawn.x, $activePawn.y],
@@ -71,6 +65,18 @@
 				[event.detail.x, event.detail.y],
 			])
 		);
+
+		// Check for DAM
+		const currentPawnCoordinates = $pawnCoordinates.filter((pawn) => pawn.color === $activePawn.color);
+
+		const enemiesToEat = getEnemiesToEat(currentPawnCoordinates, $pawnCoordinates, $isAlone);
+
+		if (enemiesToEat && !eatenEnemy.length) {
+			$dam = $activePawn.color;
+			setTimeout(() => {
+				$dam = null;
+			}, 2500);
+		}
 
 		if (eatenEnemy.length > 0) {
 			const enemyIndex = $pawnCoordinates.findIndex((pawnCoordinate) =>
@@ -147,7 +153,7 @@
 				{#each Array(redPawnKillCount) as _}
 					<div
 						transition:fade={{ duration: 300 }}
-						class="w-3 h-3 bg-[#FF005C] border-2 border-[#FF7BAB] rounded-full"
+						class="w-3 h-3 bg-red-500 border-2 border-red-300 rounded-full"
 					/>
 				{/each}
 			</div>
@@ -155,10 +161,24 @@
 				{#each Array(bluePawnKillCount) as _}
 					<div
 						transition:fade={{ duration: 300 }}
-						class="w-3 h-3 bg-[#426AF5] border-2 border-[#AAC7FF] rounded-full"
+						class="w-3 h-3 bg-blue-500 border-2 border-blue-300 rounded-full"
 					/>
 				{/each}
 			</div>
 		</div>
+		{#if $dam}
+			<div
+				in:fly={{ y: 200 }}
+				out:fade={{ duration: 200 }}
+				class="absolute flex items-center justify-center inset-0"
+			>
+				<div
+					class="py-5 w-full flex items-center justify-center 
+					{$dam === Color.RED ? 'bg-red-500/80' : 'bg-blue-500/80'}"
+				>
+					<span class="text-white text-4xl font-bold tracking-wide">DAM</span>
+				</div>
+			</div>
+		{/if}
 	</div>
 </div>
