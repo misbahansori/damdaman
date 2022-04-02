@@ -13,8 +13,17 @@
 	on:click={() => dispatch('click', coordinate)}
 	cx={coordinate.x}
 	cy={coordinate.y}
-	r="40"
+	fill="#000"
+	opacity="0"
+	r="64"
 	class="cursor-pointer highlight-none"
+/>
+
+<circle
+	cx={coordinate.x}
+	cy={coordinate.y}
+	r="40"
+	class="cursor-pointer highlight-none pointer-events-none"
 	fill={$activePawn.color === Color.RED ? '#FF9CC0' : '#A8BBFF'}
 	stroke={$activePawn.color === Color.RED ? '#FFCEE0' : '#D0E0FF'}
 	stroke-width="12"
