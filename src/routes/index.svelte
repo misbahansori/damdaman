@@ -19,7 +19,7 @@
 		getEatSuggestionCoordinates,
 		getEnemiesInContact,
 		getSuggestionPath,
-		getEnemiesToEat,
+		getDamCoordinates,
 	} from '$lib/functions';
 
 	function onPawnSelected(event: CustomEvent<PawnType>) {
@@ -69,9 +69,11 @@
 		// Check for DAM
 		const currentPawnCoordinates = $pawnCoordinates.filter((pawn) => pawn.color === $activePawn.color);
 
-		const enemiesToEat = getEnemiesToEat(currentPawnCoordinates, $pawnCoordinates, $isAlone);
+		const damCoordinates = getDamCoordinates(currentPawnCoordinates, $pawnCoordinates, $isAlone);
 
-		if (enemiesToEat && !eatenEnemy.length) {
+		console.log(damCoordinates);
+
+		if (damCoordinates.length && !eatenEnemy.length) {
 			$dam = $activePawn.color;
 			setTimeout(() => {
 				$dam = null;

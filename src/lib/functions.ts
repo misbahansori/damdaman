@@ -28,6 +28,12 @@ export function getPawnCoordinate(activePawn: Pawn): PawnCoordinate {
 	return boardCoordinate.find((coordinate) => coordinate.x === activePawn.x && coordinate.y === activePawn.y);
 }
 
+export function getEmptyCoordinate(pawnCoordinates: Pawn[]): PawnCoordinate[] {
+	return boardCoordinate.filter((coordinate) => {
+		return !pawnCoordinates.some((pawn) => pawn.x === coordinate.x && pawn.y === coordinate.y);
+	});
+}
+
 export function getEnemiesInContact(
 	pawnCoordinates: Pawn[],
 	activePawnCoordinate: PawnCoordinate,
@@ -166,23 +172,29 @@ export function getSuggestionPath(activePawn: Pawn, pawnCoordinates: Pawn[], isA
 	return possiblePaths;
 }
 
-export function getEnemiesToEat(
-	activePawnCoordinates: Pawn[],
-	pawnCoordinates: Pawn[],
-	isAlone: boolean
-): boolean {
-	return activePawnCoordinates.some((pawn) => {
-		const activePawnCoordinate = getPawnCoordinate(pawn);
-		const enemiesInContact = getEnemiesInContact(pawnCoordinates, activePawnCoordinate, pawn, isAlone);
-		return enemiesInContact.some((pawn) => {
-			const pawnCoordinate = getPawnCoordinate(pawn);
-			return pawnCoordinate.possiblePaths.some((coordinate) =>
-				checkStraightLine([
-					[activePawnCoordinate.x, activePawnCoordinate.y],
+export function getDamCoordinates(currentPawnCoordinates: Pawn[], pawnCoordinates: Pawn[], isAlone: boolean) {
+	const emptyCoordinates = getEmptyCoordinate(pawnCoordinates);
+
+	let damCoordinates: number[][][] = [];
+
+	currentPawnCoordinates.forEach((pawnCoordinate) => {
+		const activePawnCoordinate = getPawnCoordinate(pawnCoordinate);
+		const enemiesInContact = getEnemiesInContact(
+			pawnCoordinates,
+			activePawnCoordinate,
+			pawnCoordinate,
+			isAlone
+		);
+		enemiesInContact.forEach((enemy) => {
+			emptyCoordinates.forEach((empty) => {
+				damCoordinates.push([
 					[pawnCoordinate.x, pawnCoordinate.y],
-					[coordinate.x, coordinate.y],
-				])
-			);
+					[enemy.x, enemy.y],
+					[empty.x, empty.y],
+				]);
+			});
 		});
 	});
+
+	return damCoordinates.filter((coordinates) => checkStraightLine(coordinates));
 }
