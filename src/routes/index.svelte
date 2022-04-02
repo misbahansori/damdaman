@@ -68,21 +68,16 @@
 			])
 		);
 
-		const activePawnindex = $pawnCoordinates.findIndex(
-			(coordinate) => coordinate.x === $activePawn.x && coordinate.y === $activePawn.y
-		);
-
-		if (activePawnindex === -1) {
-			return;
-		}
-
 		// Check for DAM
 		const currentPawnCoordinates = $pawnCoordinates.filter(
-			(pawn, index) => pawn.color === $activePawn.color && index !== activePawnindex
+			(pawn) => pawn.color === $activePawn.color && pawn.x !== $activePawn.x && pawn.y !== $activePawn.y
 		);
 
 		// Fix silly bug
-		const pawnCoordinate = Object.assign({}, $pawnCoordinates[activePawnindex]);
+		const pawnCoordinate = Object.assign(
+			{},
+			$pawnCoordinates.find((pawn) => pawn.x === $activePawn.x && pawn.y === $activePawn.y)
+		);
 
 		const tempDamCoorinates = getDamCoordinates(
 			currentPawnCoordinates.concat(pawnCoordinate),
@@ -114,6 +109,14 @@
 			}
 
 			$pawnCoordinates.splice(enemyIndex, 1);
+		}
+
+		const activePawnindex = $pawnCoordinates.findIndex(
+			(coordinate) => coordinate.x === $activePawn.x && coordinate.y === $activePawn.y
+		);
+
+		if (activePawnindex === -1) {
+			return;
 		}
 
 		$pawnCoordinates[activePawnindex].x = event.detail.x;
