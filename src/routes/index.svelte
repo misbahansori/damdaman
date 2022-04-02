@@ -44,6 +44,10 @@
 			return;
 		}
 
+		if ($damCount > 0) {
+			return;
+		}
+
 		$activePawn = event.detail;
 
 		$suggestionPaths = getSuggestionPath($activePawn, $pawnCoordinates, $isAlone);
