@@ -22,7 +22,9 @@
 		getSuggestionPath,
 		getDamCoordinates,
 	} from '$lib/functions';
-	import { backInOut, backOut } from 'svelte/easing';
+	import { backInOut } from 'svelte/easing';
+
+	let showDamBanner = false;
 
 	function onPawnSelected(event: CustomEvent<PawnType>) {
 		const { x, y, color } = event.detail;
@@ -69,28 +71,29 @@
 		);
 
 		// Check for DAM
-		const currentPawnCoordinates = $pawnCoordinates.filter(
-			(pawn) => pawn.color === $activePawn.color && pawn.x !== $activePawn.x && pawn.y !== $activePawn.y
-		);
+		const currentPawnCoordinates = $pawnCoordinates
+			.filter((pawn) => pawn.color === $activePawn.color)
+			.filter((pawn) => !(pawn.x === $activePawn.x && pawn.y === $activePawn.y));
 
 		// Fix silly bug
-		const pawnCoordinate = Object.assign(
+		const currentPawnCoordinate = Object.assign(
 			{},
 			$pawnCoordinates.find((pawn) => pawn.x === $activePawn.x && pawn.y === $activePawn.y)
 		);
 
 		const tempDamCoorinates = getDamCoordinates(
-			currentPawnCoordinates.concat(pawnCoordinate),
+			currentPawnCoordinates.concat(currentPawnCoordinate),
 			$pawnCoordinates,
 			$isAlone
 		);
 
 		if (tempDamCoorinates.length && !eatenEnemy.length) {
 			$dam = $activePawn.color;
+			showDamBanner = true;
 			$damCoordinates = tempDamCoorinates;
 
 			setTimeout(() => {
-				$dam = null;
+				showDamBanner = false;
 				setTimeout(() => {
 					$damCoordinates = [];
 				}, 2500);
@@ -198,7 +201,7 @@
 				{/each}
 			</div>
 		</div>
-		{#if $dam}
+		{#if showDamBanner}
 			<div
 				in:fly={{ y: 200, delay: 200 }}
 				out:fade={{ duration: 200 }}
