@@ -14,9 +14,15 @@
 	cx={coordinate.x}
 	cy={coordinate.y}
 	r="40"
-	class="cursor-pointer"
+	class="cursor-pointer highlight-none"
 	fill={$activePawn.color === Color.RED ? '#FF9CC0' : '#A8BBFF'}
 	stroke={$activePawn.color === Color.RED ? '#FFCEE0' : '#D0E0FF'}
 	stroke-width="12"
 	transition:fade={{ duration: 150 }}
 />
+
+<style>
+	.highlight-none {
+		-webkit-tap-highlight-color: transparent;
+	}
+</style>
