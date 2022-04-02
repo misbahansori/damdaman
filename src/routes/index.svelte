@@ -84,14 +84,15 @@
 		// Fix silly bug
 		const pawnCoordinate = Object.assign({}, $pawnCoordinates[activePawnindex]);
 
-		$damCoordinates = getDamCoordinates(
+		const tempDamCoorinates = getDamCoordinates(
 			currentPawnCoordinates.concat(pawnCoordinate),
 			$pawnCoordinates,
 			$isAlone
 		);
 
-		if ($damCoordinates.length && !eatenEnemy.length) {
+		if (tempDamCoorinates.length && !eatenEnemy.length) {
 			$dam = $activePawn.color;
+			$damCoordinates = tempDamCoorinates;
 
 			setTimeout(() => {
 				$dam = null;
