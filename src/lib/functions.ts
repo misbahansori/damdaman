@@ -175,6 +175,12 @@ export function getSuggestionPath(activePawn: Pawn, pawnCoordinates: Pawn[], isA
 			)
 	);
 
+	// Make sure the coordinates are unique.
+	possiblePaths = possiblePaths.filter(
+		(coordinate, index, self) =>
+			self.findIndex((item) => item.x === coordinate.x && item.y === coordinate.y) === index
+	);
+
 	return possiblePaths;
 }
 
