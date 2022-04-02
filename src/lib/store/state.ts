@@ -1,4 +1,4 @@
-import { Color, type Coordinate, type Pawn } from '$lib/types/global.type';
+import { Color, type Coordinate, type DamCoordinate, type Pawn } from '$lib/types/global.type';
 import { derived, writable } from 'svelte/store';
 
 export const pawnCoordinates = writable<Array<Pawn>>([
@@ -39,6 +39,8 @@ export const pawnCoordinates = writable<Array<Pawn>>([
 export const turn = writable<Color>(Color.BLUE);
 
 export const dam = writable<Color | null>(null);
+
+export const damCoordinates = writable<Array<DamCoordinate>>([]);
 
 export const isAlone = derived([pawnCoordinates, turn], ([$pawnCoordinates, $turn]) => {
 	return $pawnCoordinates.filter((pawn) => pawn.color === $turn).length === 1;

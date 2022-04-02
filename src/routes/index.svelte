@@ -9,10 +9,11 @@
 		numberOfTurns,
 		pawnCoordinates,
 		suggestionPaths,
+		damCoordinates,
 		turn,
 	} from '$lib/store/state';
 	import { checkStraightLine } from '$lib/helper';
-	import { fade, fly } from 'svelte/transition';
+	import { draw, fade, fly } from 'svelte/transition';
 	import {
 		changeTurn,
 		getPawnCoordinate,
@@ -21,6 +22,7 @@
 		getSuggestionPath,
 		getDamCoordinates,
 	} from '$lib/functions';
+	import { backInOut, backOut } from 'svelte/easing';
 
 	function onPawnSelected(event: CustomEvent<PawnType>) {
 		const { x, y, color } = event.detail;
@@ -69,13 +71,18 @@
 		// Check for DAM
 		const currentPawnCoordinates = $pawnCoordinates.filter((pawn) => pawn.color === $activePawn.color);
 
-		const damCoordinates = getDamCoordinates(currentPawnCoordinates, $pawnCoordinates, $isAlone);
+		$damCoordinates = getDamCoordinates(currentPawnCoordinates, $pawnCoordinates, $isAlone);
 
-		if (damCoordinates.length && !eatenEnemy.length) {
+		if ($damCoordinates.length && !eatenEnemy.length) {
 			$dam = $activePawn.color;
+
 			setTimeout(() => {
 				$dam = null;
 			}, 2500);
+
+			setTimeout(() => {
+				$damCoordinates = [];
+			}, 5000);
 		}
 
 		if (eatenEnemy.length > 0) {
@@ -145,6 +152,19 @@
 		<div class="flex relative w-full py-6">
 			<svg class="w-full" viewBox="0 0 1000 1600" fill="none" xmlns="http://www.w3.org/2000/svg">
 				<Board on:click={onPawnMoved} />
+				{#each $damCoordinates as coordinates}
+					<line
+						in:draw={{ delay: 3000, easing: backInOut }}
+						out:fade
+						x1={coordinates.activePawn.x}
+						y1={coordinates.activePawn.y}
+						x2={coordinates.target.x}
+						y2={coordinates.target.y}
+						class="stroke-current text-red-500/40"
+						stroke-width="64"
+						stroke-linecap="round"
+					/>
+				{/each}
 				{#each $pawnCoordinates as pawn (pawn.id)}
 					<Pawn on:click={onPawnSelected} {pawn} />
 				{/each}
@@ -168,7 +188,7 @@
 		</div>
 		{#if $dam}
 			<div
-				in:fly={{ y: 200 }}
+				in:fly={{ y: 200, delay: 200 }}
 				out:fade={{ duration: 200 }}
 				class="absolute flex items-center justify-center inset-0"
 			>
