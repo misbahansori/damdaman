@@ -11,6 +11,7 @@
 		suggestionPaths,
 		damCoordinates,
 		turn,
+		damCount,
 	} from '$lib/store/state';
 	import { checkStraightLine } from '$lib/helper';
 	import { draw, fade, fly } from 'svelte/transition';
@@ -88,14 +89,16 @@
 		);
 
 		if (tempDamCoorinates.length && !eatenEnemy.length) {
-			$dam = $activePawn.color;
 			showDamBanner = true;
+			$damCount = 3;
 			$damCoordinates = tempDamCoorinates;
 
 			setTimeout(() => {
 				showDamBanner = false;
 				setTimeout(() => {
 					$damCoordinates = [];
+					$dam = currentPawnCoordinate.color;
+					console.log($dam);
 				}, 2500);
 			}, 2000);
 		}
@@ -148,6 +151,18 @@
 		changeTurn();
 	}
 
+	function removePawn(event: CustomEvent<PawnType>) {
+		$pawnCoordinates = $pawnCoordinates.filter(
+			(pawn) => !(pawn.x === event.detail.x && pawn.y === event.detail.y)
+		);
+
+		$damCount = $damCount - 1;
+
+		if ($damCount <= 0) {
+			$dam = null;
+		}
+	}
+
 	$: redPawnKillCount = 16 - $pawnCoordinates.filter((pawn) => pawn.color === Color.RED).length;
 
 	$: bluePawnKillCount = 16 - $pawnCoordinates.filter((pawn) => pawn.color === Color.BLUE).length;
@@ -181,7 +196,12 @@
 					/>
 				{/each}
 				{#each $pawnCoordinates as pawn (pawn.id)}
-					<Pawn on:click={onPawnSelected} {pawn} />
+					<Pawn
+						on:click={onPawnSelected}
+						on:removePawn={removePawn}
+						{pawn}
+						isActive={$dam ? $dam === pawn.color : $activePawn.x === pawn.x && $activePawn.y === pawn.y}
+					/>
 				{/each}
 			</svg>
 			<div class="absolute flex flex-col gap-0.5 h-20 flex-wrap left-6 top-6">
@@ -209,7 +229,7 @@
 			>
 				<div
 					class="py-5 w-full flex items-center justify-center 
-					{$dam === Color.RED ? 'bg-red-500/80' : 'bg-blue-500/80'}"
+					{$dam === Color.RED ? 'bg-blue-500/80' : 'bg-red-500/80'}"
 				>
 					<span class="text-white text-4xl font-bold tracking-wide">DAM</span>
 				</div>

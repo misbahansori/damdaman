@@ -40,6 +40,8 @@ export const turn = writable<Color>(Color.BLUE);
 
 export const dam = writable<Color | null>(null);
 
+export const damCount = writable<number>(0);
+
 export const damCoordinates = writable<Array<DamCoordinate>>([]);
 
 export const isAlone = derived([pawnCoordinates, turn], ([$pawnCoordinates, $turn]) => {

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { activePawn, turn } from '$lib/store/state';
+	import { activePawn, dam, turn } from '$lib/store/state';
 	import { Color, type Pawn } from '$lib/types/global.type';
 	import { createEventDispatcher } from 'svelte';
 	import { fade } from 'svelte/transition';
@@ -7,6 +7,7 @@
 	import { tweened } from 'svelte/motion';
 
 	export let pawn: Pawn;
+	export let isActive: boolean = false;
 
 	const dispatch = createEventDispatcher();
 
@@ -17,10 +18,14 @@
 	$: {
 		tweenedX.set(pawn.x);
 		tweenedY.set(pawn.y);
-		$activePawn.x === pawn.x && $activePawn.y === pawn.y ? tweenedR.set(54) : tweenedR.set(40);
+		isActive ? tweenedR.set(54) : tweenedR.set(40);
 	}
 
 	function onClick() {
+		if ($dam === pawn.color) {
+			dispatch('removePawn', pawn);
+			return;
+		}
 		dispatch('click', pawn);
 	}
 </script>
@@ -40,7 +45,6 @@
 	cy={$tweenedY}
 	r={$tweenedR}
 	class="pointer-events-none"
-	class:selected={$activePawn.x === pawn.x && $activePawn.y === pawn.y}
 	class:pointer-event-none={pawn.color !== $turn}
 	fill={pawn.color === Color.RED ? '#FF005C' : '#426AF5'}
 	stroke={pawn.color === Color.RED ? '#FF7BAB' : '#AAC7FF'}
