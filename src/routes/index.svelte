@@ -71,8 +71,6 @@
 
 		const damCoordinates = getDamCoordinates(currentPawnCoordinates, $pawnCoordinates, $isAlone);
 
-		console.log(damCoordinates);
-
 		if (damCoordinates.length && !eatenEnemy.length) {
 			$dam = $activePawn.color;
 			setTimeout(() => {

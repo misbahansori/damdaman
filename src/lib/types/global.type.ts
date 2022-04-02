@@ -18,3 +18,9 @@ export interface PawnCoordinate extends Coordinate {
 	eatingPaths: Array<Coordinate>;
 	additionalPaths: Array<Coordinate>;
 }
+
+export interface DamCoordinate {
+	activePawn: Coordinate;
+	enemyPawn: Coordinate;
+	target: Coordinate;
+}

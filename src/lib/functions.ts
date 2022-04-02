@@ -1,7 +1,13 @@
 import { checkStraightLine, checkTwoEnemiesInARow } from './helper';
 import { boardCoordinate } from './store/board';
 import { activePawn, numberOfTurns, suggestionPaths, turn } from './store/state';
-import { Color, type Coordinate, type Pawn, type PawnCoordinate } from './types/global.type';
+import {
+	Color,
+	type Coordinate,
+	type DamCoordinate,
+	type Pawn,
+	type PawnCoordinate,
+} from './types/global.type';
 
 export function changeTurn(): void {
 	activePawn.set({
@@ -175,7 +181,7 @@ export function getSuggestionPath(activePawn: Pawn, pawnCoordinates: Pawn[], isA
 export function getDamCoordinates(currentPawnCoordinates: Pawn[], pawnCoordinates: Pawn[], isAlone: boolean) {
 	const emptyCoordinates = getEmptyCoordinate(pawnCoordinates);
 
-	let damCoordinates: number[][][] = [];
+	let damCoordinates: DamCoordinate[] = [];
 
 	currentPawnCoordinates.forEach((pawnCoordinate) => {
 		const activePawnCoordinate = getPawnCoordinate(pawnCoordinate);
@@ -185,16 +191,31 @@ export function getDamCoordinates(currentPawnCoordinates: Pawn[], pawnCoordinate
 			pawnCoordinate,
 			isAlone
 		);
+
+		let enemyPossiblePaths = getEnemyPossiblePaths(enemiesInContact, pawnCoordinate);
+
+		enemyPossiblePaths = enemyPossiblePaths.filter((coordinate) =>
+			emptyCoordinates.some(
+				(emptyCoordinate) => emptyCoordinate.x === coordinate.x && emptyCoordinate.y === coordinate.y
+			)
+		);
+
 		enemiesInContact.forEach((enemy) => {
-			emptyCoordinates.forEach((empty) => {
-				damCoordinates.push([
-					[pawnCoordinate.x, pawnCoordinate.y],
-					[enemy.x, enemy.y],
-					[empty.x, empty.y],
-				]);
+			enemyPossiblePaths.forEach((coordinate) => {
+				damCoordinates.push({
+					activePawn: pawnCoordinate,
+					enemyPawn: enemy,
+					target: coordinate,
+				});
 			});
 		});
 	});
 
-	return damCoordinates.filter((coordinates) => checkStraightLine(coordinates));
+	return damCoordinates.filter((coordinates) =>
+		checkStraightLine([
+			[coordinates.activePawn.x, coordinates.activePawn.y],
+			[coordinates.enemyPawn.x, coordinates.enemyPawn.y],
+			[coordinates.target.x, coordinates.target.y],
+		])
+	);
 }
