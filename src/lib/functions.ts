@@ -73,7 +73,7 @@ export function getEnemiesInContact(
 			)
 		);
 
-		enemiesInContact = eatingPaths.concat(eatingPaths).concat(additionalPaths);
+		enemiesInContact = [...enemiesInContact, ...eatingPaths, ...additionalPaths];
 	}
 
 	return enemiesInContact;

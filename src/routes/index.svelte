@@ -102,7 +102,6 @@
 				setTimeout(() => {
 					$damCoordinates = [];
 					$dam = currentPawnCoordinate.color;
-					console.log($dam);
 				}, 2500);
 			}, 2000);
 		}
