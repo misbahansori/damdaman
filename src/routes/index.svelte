@@ -68,21 +68,37 @@
 			])
 		);
 
-		// Check for DAM
-		const currentPawnCoordinates = $pawnCoordinates.filter((pawn) => pawn.color === $activePawn.color);
+		const activePawnindex = $pawnCoordinates.findIndex(
+			(coordinate) => coordinate.x === $activePawn.x && coordinate.y === $activePawn.y
+		);
 
-		$damCoordinates = getDamCoordinates(currentPawnCoordinates, $pawnCoordinates, $isAlone);
+		if (activePawnindex === -1) {
+			return;
+		}
+
+		// Check for DAM
+		const currentPawnCoordinates = $pawnCoordinates.filter(
+			(pawn, index) => pawn.color === $activePawn.color && index !== activePawnindex
+		);
+
+		// Fix silly bug
+		const pawnCoordinate = Object.assign({}, $pawnCoordinates[activePawnindex]);
+
+		$damCoordinates = getDamCoordinates(
+			currentPawnCoordinates.concat(pawnCoordinate),
+			$pawnCoordinates,
+			$isAlone
+		);
 
 		if ($damCoordinates.length && !eatenEnemy.length) {
 			$dam = $activePawn.color;
 
 			setTimeout(() => {
 				$dam = null;
-			}, 2500);
-
-			setTimeout(() => {
-				$damCoordinates = [];
-			}, 5000);
+				setTimeout(() => {
+					$damCoordinates = [];
+				}, 2500);
+			}, 2000);
 		}
 
 		if (eatenEnemy.length > 0) {
@@ -97,14 +113,6 @@
 			}
 
 			$pawnCoordinates.splice(enemyIndex, 1);
-		}
-
-		const activePawnindex = $pawnCoordinates.findIndex(
-			(coordinate) => coordinate.x === $activePawn.x && coordinate.y === $activePawn.y
-		);
-
-		if (activePawnindex === -1) {
-			return;
 		}
 
 		$pawnCoordinates[activePawnindex].x = event.detail.x;
@@ -154,7 +162,7 @@
 				<Board on:click={onPawnMoved} />
 				{#each $damCoordinates as coordinates}
 					<line
-						in:draw={{ delay: 3000, easing: backInOut }}
+						in:draw={{ delay: 2200, easing: backInOut }}
 						out:fade
 						x1={coordinates.activePawn.x}
 						y1={coordinates.activePawn.y}
