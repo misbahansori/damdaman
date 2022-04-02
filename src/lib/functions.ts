@@ -195,7 +195,7 @@ export function getDamCoordinates(currentPawnCoordinates: Pawn[], pawnCoordinate
 			pawnCoordinates,
 			activePawnCoordinate,
 			pawnCoordinate,
-			isAlone
+			false
 		);
 
 		let enemyPossiblePaths = getEnemyPossiblePaths(enemiesInContact, pawnCoordinate);
@@ -216,6 +216,8 @@ export function getDamCoordinates(currentPawnCoordinates: Pawn[], pawnCoordinate
 			});
 		});
 	});
+
+	console.log(damCoordinates);
 
 	return damCoordinates.filter((coordinates) =>
 		checkStraightLine([
