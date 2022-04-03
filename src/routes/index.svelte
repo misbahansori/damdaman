@@ -227,10 +227,10 @@
 				class="absolute flex items-center justify-center inset-0"
 			>
 				<div
-					class="py-5 w-full flex items-center justify-center 
+					class="py-5 w-full flex items-center justify-center shadow-2xl
 					{$dam.color === Color.RED ? 'bg-red-500/80' : 'bg-blue-500/80'}"
 				>
-					<span class="text-white text-4xl font-bold tracking-wide">DAM</span>
+					<span class="text-white text-4xl font-bold tracking-wide drop-shadow-px">DAM</span>
 				</div>
 			</div>
 		{/if}

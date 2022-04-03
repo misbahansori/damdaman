@@ -16,6 +16,9 @@ const config = {
 					500: '#426AF5',
 				},
 			},
+			dropShadow: {
+				px: '0 1px 1px rgba(0, 0, 0, 1)',
+			},
 		},
 	},
 
