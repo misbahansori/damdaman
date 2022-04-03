@@ -44,10 +44,10 @@
 	cx={$tweenedX}
 	cy={$tweenedY}
 	r={$tweenedR}
-	class="pointer-events-none"
+	class="pointer-events-none fill-current {pawn.color === Color.RED ? 'text-red-500' : 'text-blue-600'}"
 	class:pointer-event-none={pawn.color !== $turn}
 	fill={pawn.color === Color.RED ? '#FF005C' : '#426AF5'}
-	stroke={pawn.color === Color.RED ? '#FF7BAB' : '#AAC7FF'}
+	stroke="#fff"
 	stroke-width="12"
 	transition:fade={{ duration: 400, easing: cubicOut }}
 />

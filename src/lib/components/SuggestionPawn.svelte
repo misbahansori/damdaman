@@ -23,9 +23,10 @@
 	cx={coordinate.x}
 	cy={coordinate.y}
 	r="40"
-	class="cursor-pointer highlight-none pointer-events-none"
-	fill={$activePawn.color === Color.RED ? '#FF9CC0' : '#A8BBFF'}
-	stroke={$activePawn.color === Color.RED ? '#FFCEE0' : '#D0E0FF'}
+	class="cursor-pointer highlight-none pointer-events-none fill-current 
+	{$activePawn.color === Color.RED ? 'text-red-400' : 'text-blue-400'}"
+	stroke="#fff"
+	opacity="0.7"
 	stroke-width="12"
 	transition:fade={{ duration: 150 }}
 />

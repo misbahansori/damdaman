@@ -6,7 +6,7 @@ const config = {
 			colors: {
 				red: {
 					300: '#FF7BAB',
-					500: '#FF005C',
+					500: '#D83333',
 				},
 				blue: {
 					300: '#AAC7FF',

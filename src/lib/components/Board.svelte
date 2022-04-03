@@ -17,7 +17,7 @@
 		y1={line.y1}
 		x2={line.x2}
 		y2={line.y2}
-		stroke="#525252"
+		stroke="#fff"
 		stroke-linecap="round"
 		stroke-dasharray="6 6"
 	/>
@@ -29,7 +29,7 @@
 
 {#if isDebugging}
 	{#each boardCoordinate as coordinate}
-		<text x={coordinate.x + 50} y={coordinate.y + 40} class="text-gray-500 text-sm fill-current">
+		<text x={coordinate.x + 40} y={coordinate.y + 20} class="text-white text-sm fill-current">
 			[{coordinate.x},{coordinate.y}]
 		</text>
 	{/each}
@@ -43,7 +43,7 @@
 		y1={coordinates.activePawn.y}
 		x2={coordinates.target.x}
 		y2={coordinates.target.y}
-		class="stroke-current {$dam.color === Color.RED ? 'text-red-500/30' : 'text-blue-500/30'}"
+		class="stroke-current {$dam.color === Color.RED ? 'text-red-500/50' : 'text-blue-500/50'}"
 		stroke-width="64"
 		stroke-linecap="round"
 	/>

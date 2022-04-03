@@ -176,10 +176,11 @@
 </svelte:head>
 
 <div class="w-full items-center min-h-screen bg-gray-100 relative">
+	<div class="wood-1 absolute inset-0" />
 	{#if $turn === Color.RED}
-		<div transition:fade={{ duration: 150 }} class="bg-[#FF005C] inset-x-0 top-0 absolute h-4" />
+		<div transition:fade={{ duration: 150 }} class="bg-red-500 inset-x-0 top-0 absolute h-4" />
 	{:else}
-		<div transition:fade={{ duration: 150 }} class="bg-[#426AF5] inset-x-0 bottom-0 absolute h-4" />
+		<div transition:fade={{ duration: 150 }} class="bg-blue-500 inset-x-0 bottom-0 absolute h-4" />
 	{/if}
 	<div class="sm:max-w-xl h-screen flex mx-auto">
 		<div class="flex relative w-full py-6">
@@ -229,3 +230,11 @@
 		{/if}
 	</div>
 </div>
+
+<style>
+	.wood-1 {
+		background-image: url('img/wood-2.jpeg');
+		background-repeat: repeat;
+		background-size: 250px;
+	}
+</style>
