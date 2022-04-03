@@ -9,10 +9,6 @@
 	import { Color } from '$lib/types/global.type';
 
 	const dispatch = createEventDispatcher();
-
-	$: {
-		console.log($dam);
-	}
 </script>
 
 {#each boardLines as line}
