@@ -3,6 +3,9 @@ const config = {
 
 	theme: {
 		extend: {
+			fontFamily: {
+				sans: ['Bungee', 'sans-serif'],
+			},
 			colors: {
 				red: {
 					300: '#FF7BAB',

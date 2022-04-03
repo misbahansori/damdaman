@@ -182,7 +182,29 @@
 	{:else}
 		<div transition:fade={{ duration: 150 }} class="bg-blue-500 inset-x-0 bottom-0 absolute h-4" />
 	{/if}
-	<div class="sm:max-w-xl h-screen flex mx-auto">
+	<div class="absolute flex gap-1 flex-wrap left-6 top-40">
+		<svg class="h-6 w-6" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path
+				d="M34.5 47H31V43.5C31 42.1227 29.8773 41 28.5 41C27.1227 41 26 42.1227 26 43.5V47H22V43.5C22 42.1227 20.8773 41 19.5 41C18.1227 41 17 42.1227 17 43.5V47H13.5C11.5679 47 10 45.4321 10 43.5V37.5C10 37.4622 10 37.4454 10.0006 37.4219L10.014 36.8863L9.57561 36.5785C4.31467 32.8842 1 27.2559 1 21C1 10.0766 11.1665 1 24 1C36.8335 1 47 10.0766 47 21C47 27.2542 43.6854 32.8806 38.3466 36.5745L37.9156 36.8728V37.3969C37.9156 37.5588 37.9536 37.6968 38 37.8044V43.5C38 45.4321 36.4321 47 34.5 47ZM15 17C11.1383 17 8 20.1383 8 24C8 27.8617 11.1383 31 15 31C18.8617 31 22 27.8617 22 24C22 20.1383 18.8617 17 15 17ZM33 31C36.8617 31 40 27.8617 40 24C40 20.1383 36.8617 17 33 17C29.1383 17 26 20.1383 26 24C26 27.8617 29.1383 31 33 31Z"
+				fill="white"
+				stroke="black"
+				stroke-width="2"
+			/>
+		</svg>
+		<span class="text-white border-black">{redPawnKillCount}</span>
+	</div>
+	<div class="absolute flex gap-1 flex-wrap bottom-40 right-6">
+		<svg class="h-6 w-6" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path
+				d="M34.5 47H31V43.5C31 42.1227 29.8773 41 28.5 41C27.1227 41 26 42.1227 26 43.5V47H22V43.5C22 42.1227 20.8773 41 19.5 41C18.1227 41 17 42.1227 17 43.5V47H13.5C11.5679 47 10 45.4321 10 43.5V37.5C10 37.4622 10 37.4454 10.0006 37.4219L10.014 36.8863L9.57561 36.5785C4.31467 32.8842 1 27.2559 1 21C1 10.0766 11.1665 1 24 1C36.8335 1 47 10.0766 47 21C47 27.2542 43.6854 32.8806 38.3466 36.5745L37.9156 36.8728V37.3969C37.9156 37.5588 37.9536 37.6968 38 37.8044V43.5C38 45.4321 36.4321 47 34.5 47ZM15 17C11.1383 17 8 20.1383 8 24C8 27.8617 11.1383 31 15 31C18.8617 31 22 27.8617 22 24C22 20.1383 18.8617 17 15 17ZM33 31C36.8617 31 40 27.8617 40 24C40 20.1383 36.8617 17 33 17C29.1383 17 26 20.1383 26 24C26 27.8617 29.1383 31 33 31Z"
+				fill="white"
+				stroke="black"
+				stroke-width="2"
+			/>
+		</svg>
+		<span class="text-white border-black">{bluePawnKillCount}</span>
+	</div>
+	<main class="sm:max-w-xl h-screen flex mx-auto">
 		<div class="flex relative w-full py-6">
 			<svg class="w-full" viewBox="0 0 1000 1600" fill="none" xmlns="http://www.w3.org/2000/svg">
 				<Board on:click={onPawnMoved} />
@@ -197,22 +219,6 @@
 					/>
 				{/each}
 			</svg>
-			<div class="absolute flex flex-col gap-0.5 h-20 flex-wrap left-6 top-6">
-				{#each Array(redPawnKillCount) as _}
-					<div
-						transition:fade={{ duration: 300 }}
-						class="w-3 h-3 bg-red-500 border-2 border-red-300 rounded-full"
-					/>
-				{/each}
-			</div>
-			<div dir="rtl" class="absolute flex flex-col gap-0.5 h-20 flex-wrap right-6 bottom-6">
-				{#each Array(bluePawnKillCount) as _}
-					<div
-						transition:fade={{ duration: 300 }}
-						class="w-3 h-3 bg-blue-500 border-2 border-blue-300 rounded-full"
-					/>
-				{/each}
-			</div>
 		</div>
 		{#if $dam.showBanner}
 			<div
@@ -228,7 +234,7 @@
 				</div>
 			</div>
 		{/if}
-	</div>
+	</main>
 </div>
 
 <style>
@@ -236,5 +242,8 @@
 		background-image: url('img/wood-2.jpeg');
 		background-repeat: repeat;
 		background-size: 250px;
+	}
+	.border-black {
+		-webkit-text-stroke: 1px black;
 	}
 </style>
