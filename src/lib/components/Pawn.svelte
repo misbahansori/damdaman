@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { activePawn, dam, turn } from '$lib/store/state';
+	import { dam, turn } from '$lib/store/state';
 	import { Color, type Pawn } from '$lib/types/global.type';
 	import { createEventDispatcher } from 'svelte';
 	import { fade } from 'svelte/transition';
@@ -22,7 +22,7 @@
 	}
 
 	function onClick() {
-		if ($dam === pawn.color) {
+		if ($dam.color === pawn.color) {
 			dispatch('removePawn', pawn);
 			return;
 		}

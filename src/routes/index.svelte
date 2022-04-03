@@ -9,12 +9,10 @@
 		numberOfTurns,
 		pawnCoordinates,
 		suggestionPaths,
-		damCoordinates,
 		turn,
-		damCount,
 	} from '$lib/store/state';
 	import { checkStraightLine } from '$lib/helper';
-	import { draw, fade, fly } from 'svelte/transition';
+	import { fade, fly } from 'svelte/transition';
 	import {
 		changeTurn,
 		getPawnCoordinate,
@@ -23,9 +21,6 @@
 		getSuggestionPath,
 		getDamCoordinates,
 	} from '$lib/functions';
-	import { backInOut } from 'svelte/easing';
-
-	let showDamBanner = false;
 
 	function onPawnSelected(event: CustomEvent<PawnType>) {
 		const { x, y, color } = event.detail;
@@ -44,7 +39,7 @@
 			return;
 		}
 
-		if ($damCount > 0) {
+		if ($dam.count > 0) {
 			return;
 		}
 
@@ -93,15 +88,15 @@
 		);
 
 		if (tempDamCoorinates.length && !eatenEnemy.length) {
-			showDamBanner = true;
-			$damCount = 3;
-			$damCoordinates = tempDamCoorinates;
+			$dam.showBanner = true;
+			$dam.count = 3;
+			$dam.coordinates = tempDamCoorinates;
+			$dam.color = currentPawnCoordinate.color;
 
 			setTimeout(() => {
-				showDamBanner = false;
+				$dam.showBanner = false;
 				setTimeout(() => {
-					$damCoordinates = [];
-					$dam = currentPawnCoordinate.color;
+					$dam.coordinates = [];
 				}, 2500);
 			}, 2000);
 		}
@@ -159,10 +154,15 @@
 			(pawn) => !(pawn.x === event.detail.x && pawn.y === event.detail.y)
 		);
 
-		$damCount = $damCount - 1;
+		$dam.count = $dam.count - 1;
 
-		if ($damCount <= 0) {
-			$dam = null;
+		if ($dam.count <= 0) {
+			$dam = {
+				color: null,
+				coordinates: [],
+				count: 0,
+				showBanner: false,
+			};
 		}
 	}
 
@@ -185,25 +185,14 @@
 		<div class="flex relative w-full py-6">
 			<svg class="w-full" viewBox="0 0 1000 1600" fill="none" xmlns="http://www.w3.org/2000/svg">
 				<Board on:click={onPawnMoved} />
-				{#each $damCoordinates as coordinates}
-					<line
-						in:draw={{ delay: 2200, easing: backInOut }}
-						out:fade
-						x1={coordinates.activePawn.x}
-						y1={coordinates.activePawn.y}
-						x2={coordinates.target.x}
-						y2={coordinates.target.y}
-						class="stroke-current text-red-500/40"
-						stroke-width="64"
-						stroke-linecap="round"
-					/>
-				{/each}
 				{#each $pawnCoordinates as pawn (pawn.id)}
 					<Pawn
 						on:click={onPawnSelected}
 						on:removePawn={removePawn}
 						{pawn}
-						isActive={$dam ? $dam === pawn.color : $activePawn.x === pawn.x && $activePawn.y === pawn.y}
+						isActive={$dam.color && $dam.coordinates.length === 0 && $dam.showBanner === false
+							? $dam.color === pawn.color
+							: $activePawn.x === pawn.x && $activePawn.y === pawn.y}
 					/>
 				{/each}
 			</svg>
@@ -224,7 +213,7 @@
 				{/each}
 			</div>
 		</div>
-		{#if showDamBanner}
+		{#if $dam.showBanner}
 			<div
 				in:fly={{ y: 200, delay: 200 }}
 				out:fade={{ duration: 200 }}
@@ -232,7 +221,7 @@
 			>
 				<div
 					class="py-5 w-full flex items-center justify-center 
-					{$dam === Color.RED ? 'bg-blue-500/80' : 'bg-red-500/80'}"
+					{$dam.color === Color.RED ? 'bg-red-500/80' : 'bg-blue-500/80'}"
 				>
 					<span class="text-white text-4xl font-bold tracking-wide">DAM</span>
 				</div>

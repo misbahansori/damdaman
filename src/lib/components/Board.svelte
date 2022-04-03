@@ -3,9 +3,16 @@
 	import { createEventDispatcher } from 'svelte';
 	import SuggestionPawn from './SuggestionPawn.svelte';
 	import { boardCoordinate, boardLines } from '$lib/store/board';
-	import { suggestionPaths } from '$lib/store/state';
+	import { dam, suggestionPaths } from '$lib/store/state';
+	import { draw, fade } from 'svelte/transition';
+	import { backInOut } from 'svelte/easing';
+	import { Color } from '$lib/types/global.type';
 
 	const dispatch = createEventDispatcher();
+
+	$: {
+		console.log($dam);
+	}
 </script>
 
 {#each boardLines as line}
@@ -31,3 +38,17 @@
 		</text>
 	{/each}
 {/if}
+
+{#each $dam.coordinates as coordinates}
+	<line
+		in:draw={{ delay: 2200, easing: backInOut }}
+		out:fade
+		x1={coordinates.activePawn.x}
+		y1={coordinates.activePawn.y}
+		x2={coordinates.target.x}
+		y2={coordinates.target.y}
+		class="stroke-current {$dam.color === Color.RED ? 'text-red-500/30' : 'text-blue-500/30'}"
+		stroke-width="64"
+		stroke-linecap="round"
+	/>
+{/each}

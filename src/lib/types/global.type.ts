@@ -24,3 +24,10 @@ export interface DamCoordinate {
 	enemyPawn: Coordinate;
 	target: Coordinate;
 }
+
+export interface Dam {
+	color: Color;
+	coordinates: DamCoordinate[];
+	count: number;
+	showBanner: boolean;
+}
