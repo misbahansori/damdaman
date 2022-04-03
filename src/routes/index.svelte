@@ -176,7 +176,7 @@
 </svelte:head>
 
 <div class="w-full items-center min-h-screen bg-gray-100 relative">
-	<div class="wood-1 absolute inset-0" />
+	<div class="wood bg-[url(img/wood-2.jpeg)] absolute inset-0" />
 	{#if $turn === Color.RED}
 		<div transition:fade={{ duration: 150 }} class="bg-red-500 inset-x-0 top-0 absolute h-4" />
 	{:else}
@@ -238,8 +238,7 @@
 </div>
 
 <style>
-	.wood-1 {
-		background-image: url('img/wood-2.jpeg');
+	.wood {
 		background-repeat: repeat;
 		background-size: 250px;
 	}
