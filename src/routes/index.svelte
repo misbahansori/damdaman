@@ -177,7 +177,7 @@
 	<meta name="title" content="Dam Daman - Permainan Tradisional" />
 	<meta
 		name="description"
-		content="Main permainan dam-daman disini.Dam daman adalah permainan mirip catur, setiap pemain harus bergantian menjalankan pionnya. Hanya ada dua pilhan, makan atau dimakan."
+		content="Main permainan Dam daman disini. Dam daman adalah permainan mirip catur, setiap pemain harus bergantian menjalankan pionnya. Hanya ada dua pilhan, makan atau dimakan."
 	/>
 
 	<!-- Open Graph / Facebook -->
@@ -186,7 +186,7 @@
 	<meta property="og:title" content="Dam Daman - Permainan Tradisional" />
 	<meta
 		property="og:description"
-		content="Main permainan dam-daman disini.Dam daman adalah permainan mirip catur, setiap pemain harus bergantian menjalankan pionnya. Hanya ada dua pilhan, makan atau dimakan."
+		content="Main permainan Dam daman disini. Dam daman adalah permainan mirip catur, setiap pemain harus bergantian menjalankan pionnya. Hanya ada dua pilhan, makan atau dimakan."
 	/>
 	<meta property="og:image" content="https://damdaman.vercel.app/img/meta-image.jpg" />
 
@@ -196,7 +196,7 @@
 	<meta property="twitter:title" content="Dam Daman - Permainan Tradisional" />
 	<meta
 		property="twitter:description"
-		content="Main permainan dam-daman disini.Dam daman adalah permainan mirip catur, setiap pemain harus bergantian menjalankan pionnya. Hanya ada dua pilhan, makan atau dimakan."
+		content="Main permainan Dam daman disini. Dam daman adalah permainan mirip catur, setiap pemain harus bergantian menjalankan pionnya. Hanya ada dua pilhan, makan atau dimakan."
 	/>
 	<meta property="twitter:image" content="https://damdaman.vercel.app/img/meta-image.jpg" />
 </svelte:head>
