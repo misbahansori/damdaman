@@ -120,10 +120,15 @@ export function getEatSuggestionCoordinates(
 	let additionalEatingPaths = [];
 
 	if (isAlone) {
-		additionalEatingPaths = activePawnCoordinate.additionalPaths
+		additionalEatingPaths = activePawnCoordinate.eatingPaths
+			.concat(activePawnCoordinate.additionalPaths)
 			.filter((coordinate) =>
-				enemyPossiblePaths.some(
-					(possiblePath) => possiblePath.x === coordinate.x && possiblePath.y === coordinate.y
+				enemiesInContact.some((enemy) =>
+					checkStraightLine([
+						[activePawn.x, activePawn.y],
+						[enemy.x, enemy.y],
+						[coordinate.x, coordinate.y],
+					])
 				)
 			)
 			.filter(
@@ -134,7 +139,15 @@ export function getEatSuggestionCoordinates(
 			);
 	}
 
-	return eatingPaths.concat(additionalEatingPaths);
+	// Make sure the coordinates are unique.
+	const possiblePaths = eatingPaths
+		.concat(additionalEatingPaths)
+		.filter(
+			(coordinate, index, self) =>
+				self.findIndex((item) => item.x === coordinate.x && item.y === coordinate.y) === index
+		);
+
+	return possiblePaths;
 }
 
 export function getSuggestionPath(activePawn: Pawn, pawnCoordinates: Pawn[], isAlone: boolean): Coordinate[] {
@@ -216,8 +229,6 @@ export function getDamCoordinates(currentPawnCoordinates: Pawn[], pawnCoordinate
 			});
 		});
 	});
-
-	console.log(damCoordinates);
 
 	return damCoordinates.filter((coordinates) =>
 		checkStraightLine([
