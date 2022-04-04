@@ -2,6 +2,8 @@
 
 Dam Daman is a game similar to chess, each player has to run each game. There are only two options, eat or be eaten.
 
+You can play it online [here](https://damdaman.vercel.app/)
+
 ## Cloning the project
 
 To clone this project is as easy as cloning it from GitHub!
