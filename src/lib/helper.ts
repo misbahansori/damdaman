@@ -1,6 +1,6 @@
 import type { Coordinate } from './types/global.type';
 
-export const checkStraightLine = (coordinates = []) => {
+export const checkStraightLine = (coordinates: [[number, number], [number, number], [number, number]]) => {
 	const [coordinate1, coordinate2, coordinate3] = coordinates;
 	const [x1, y1] = coordinate1;
 	const [x2, y2] = coordinate2;
