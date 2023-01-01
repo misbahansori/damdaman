@@ -45,6 +45,8 @@
 
 		$activePawn = event.detail;
 
+		if ($activePawn === null) return;
+
 		$suggestionPaths = getSuggestionPath($activePawn, $pawnCoordinates, $isAlone);
 	}
 
@@ -85,8 +87,7 @@
 
 		const tempDamCoorinates = getDamCoordinates(
 			currentPawnCoordinates.concat(currentPawnCoordinate),
-			$pawnCoordinates,
-			$isAlone
+			$pawnCoordinates
 		);
 
 		if (tempDamCoorinates.length && !eatenEnemy.length) {

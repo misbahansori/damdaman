@@ -24,7 +24,7 @@ export const checkTwoEnemiesInARow = (
 ) => {
 	const enemies = enemiesCoordinate.filter(
 		(enemyCoordinate) =>
-			enemyCoordinate[0] !== currentCoordinate.x && enemyCoordinate[1] !== currentCoordinate.y
+			enemyCoordinate.x !== currentCoordinate.x && enemyCoordinate.y !== currentCoordinate.y
 	);
 	return (
 		enemies.filter((enemy) =>

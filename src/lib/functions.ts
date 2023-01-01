@@ -10,12 +10,7 @@ import {
 } from './types/global.type';
 
 export function changeTurn(): void {
-	activePawn.set({
-		id: null,
-		x: null,
-		y: null,
-		color: null,
-	});
+	activePawn.set(null);
 
 	suggestionPaths.set([]);
 
@@ -205,7 +200,7 @@ export function getSuggestionPath(activePawn: Pawn, pawnCoordinates: Pawn[], isA
 	return possiblePaths;
 }
 
-export function getDamCoordinates(currentPawnCoordinates: Pawn[], pawnCoordinates: Pawn[], isAlone: boolean) {
+export function getDamCoordinates(currentPawnCoordinates: Pawn[], pawnCoordinates: Pawn[]) {
 	const emptyCoordinates = getEmptyCoordinate(pawnCoordinates);
 
 	let damCoordinates: DamCoordinate[] = [];

@@ -9,6 +9,7 @@
 	export let coordinate: Coordinate;
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
 <circle
 	on:click={() => dispatch('click', coordinate)}
 	cx={coordinate.x}
@@ -24,7 +25,7 @@
 	cy={coordinate.y}
 	r="40"
 	class="cursor-pointer highlight-none pointer-events-none fill-current 
-	{$activePawn.color === Color.RED ? 'text-red-400' : 'text-blue-400'}"
+	{$activePawn?.color === Color.RED ? 'text-red-400' : 'text-blue-400'}"
 	stroke="#fff"
 	opacity="0.7"
 	stroke-width="12"
