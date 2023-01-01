@@ -54,3 +54,5 @@ export const numberOfTurns = writable<number>(0);
 export const activePawn = writable<Pawn | null>(null);
 
 export const suggestionPaths = writable<Coordinate[]>([]);
+
+export const showStartScreen = writable<boolean>(true);

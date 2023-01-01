@@ -21,6 +21,7 @@
 		getSuggestionPath,
 		getDamCoordinates,
 	} from '$lib/functions';
+	import StartScreen from '$lib/components/StartScreen.svelte';
 
 	function onPawnSelected(event: CustomEvent<PawnType>) {
 		const { x, y, color } = event.detail;
@@ -175,6 +176,8 @@
 </script>
 
 <div class="w-full items-center min-h-screen bg-gray-100 relative">
+	<StartScreen />
+
 	<div class="wood bg-[url(/img/wood-2.jpeg)] absolute inset-0" />
 	{#if $turn === Color.RED}
 		<div transition:fade={{ duration: 150 }} class="bg-red-500 inset-x-0 top-0 absolute h-4" />
