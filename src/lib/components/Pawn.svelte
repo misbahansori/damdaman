@@ -30,6 +30,7 @@
 	}
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
 <circle
 	on:click={onClick}
 	cx={pawn.x}

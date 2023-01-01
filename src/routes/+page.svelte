@@ -31,7 +31,7 @@
 		}
 
 		// If the pawn is already selected, then we can't select it
-		if ($activePawn.x === x && $activePawn.y === y && $activePawn.color === color) {
+		if ($activePawn?.x === x && $activePawn?.y === y && $activePawn?.color === color) {
 			return;
 		}
 
@@ -49,7 +49,7 @@
 	}
 
 	function onPawnMoved(event: CustomEvent<PawnType>) {
-		if (!$activePawn.x && !$activePawn.y && !$activePawn.color) {
+		if (!$activePawn?.x && !$activePawn?.y && !$activePawn?.color) {
 			return;
 		}
 
@@ -62,23 +62,25 @@
 			$isAlone
 		);
 
-		const eatenEnemy = enemiesInContact.filter((pawnCoordinate) =>
-			checkStraightLine([
-				[$activePawn.x, $activePawn.y],
+		const eatenEnemy = enemiesInContact.filter((pawnCoordinate) => {
+			if ($activePawn === null) return;
+
+			return checkStraightLine([
+				[$activePawn?.x, $activePawn?.y],
 				[pawnCoordinate.x, pawnCoordinate.y],
 				[event.detail.x, event.detail.y],
-			])
-		);
+			]);
+		});
 
 		// Check for DAM
 		const currentPawnCoordinates = $pawnCoordinates
-			.filter((pawn) => pawn.color === $activePawn.color)
-			.filter((pawn) => !(pawn.x === $activePawn.x && pawn.y === $activePawn.y));
+			.filter((pawn) => pawn.color === $activePawn?.color)
+			.filter((pawn) => !(pawn.x === $activePawn?.x && pawn.y === $activePawn?.y));
 
 		// Fix silly bug
 		const currentPawnCoordinate = Object.assign(
 			{},
-			$pawnCoordinates.find((pawn) => pawn.x === $activePawn.x && pawn.y === $activePawn.y)
+			$pawnCoordinates.find((pawn) => pawn.x === $activePawn?.x && pawn.y === $activePawn?.y)
 		);
 
 		const tempDamCoorinates = getDamCoordinates(
@@ -116,7 +118,7 @@
 		}
 
 		const activePawnindex = $pawnCoordinates.findIndex(
-			(coordinate) => coordinate.x === $activePawn.x && coordinate.y === $activePawn.y
+			(coordinate) => coordinate.x === $activePawn?.x && coordinate.y === $activePawn?.y
 		);
 
 		if (activePawnindex === -1) {
@@ -126,7 +128,7 @@
 		$pawnCoordinates[activePawnindex].x = event.detail.x;
 		$pawnCoordinates[activePawnindex].y = event.detail.y;
 
-		$activePawn = { id: null, x: event.detail.x, y: event.detail.y, color: $turn };
+		$activePawn = { id: 0, x: event.detail.x, y: event.detail.y, color: $turn };
 
 		if (eatenEnemy.length > 0) {
 			const activePawnCoordinate = getPawnCoordinate($activePawn);
@@ -227,7 +229,7 @@
 						{pawn}
 						isActive={$dam.color && $dam.coordinates.length === 0 && $dam.showBanner === false
 							? $dam.color === pawn.color
-							: $activePawn.x === pawn.x && $activePawn.y === pawn.y}
+							: $activePawn?.x === pawn.x && $activePawn?.y === pawn.y}
 					/>
 				{/each}
 			</svg>

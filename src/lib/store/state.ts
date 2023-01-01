@@ -51,11 +51,6 @@ export const isAlone = derived([pawnCoordinates, turn], ([$pawnCoordinates, $tur
 
 export const numberOfTurns = writable<number>(0);
 
-export const activePawn = writable<Pawn>({
-	id: null,
-	x: null,
-	y: null,
-	color: null,
-});
+export const activePawn = writable<Pawn | null>(null);
 
 export const suggestionPaths = writable<Coordinate[]>([]);
