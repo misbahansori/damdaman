@@ -26,7 +26,7 @@ export interface DamCoordinate {
 }
 
 export interface Dam {
-	color: Color;
+	color: Color | null;
 	coordinates: DamCoordinate[];
 	count: number;
 	showBanner: boolean;

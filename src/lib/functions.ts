@@ -31,7 +31,15 @@ export function changeTurn(): void {
 }
 
 export function getPawnCoordinate(activePawn: Pawn): PawnCoordinate {
-	return boardCoordinate.find((coordinate) => coordinate.x === activePawn.x && coordinate.y === activePawn.y);
+	const pawnCoordinates = boardCoordinate.find(
+		(coordinate) => coordinate.x === activePawn.x && coordinate.y === activePawn.y
+	);
+
+	if (!pawnCoordinates) {
+		throw new Error('Pawn coordinates not found.');
+	}
+
+	return pawnCoordinates;
 }
 
 export function getEmptyCoordinate(pawnCoordinates: Pawn[]): PawnCoordinate[] {
@@ -117,7 +125,7 @@ export function getEatSuggestionCoordinates(
 				)
 		);
 
-	let additionalEatingPaths = [];
+	let additionalEatingPaths: Coordinate[] = [];
 
 	if (isAlone) {
 		additionalEatingPaths = activePawnCoordinate.eatingPaths
