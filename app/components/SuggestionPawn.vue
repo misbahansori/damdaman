@@ -5,11 +5,16 @@ const props = defineProps<{
   coordinate: Coordinate;
 }>();
 
+const emit = defineEmits<{
+  click: [Coordinate];
+}>();
+
 const store = useGameStore();
 </script>
 
 <template>
   <circle
+    @click="emit('click', coordinate)"
     :cx="coordinate.x"
     :cy="coordinate.y"
     fill="#000"

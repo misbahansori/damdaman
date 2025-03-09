@@ -4,6 +4,8 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineNuxtConfig({
   devtools: { enabled: true },
 
+  ssr: false,
+
   modules: [
     "@vueuse/nuxt",
     "@nuxt/fonts",

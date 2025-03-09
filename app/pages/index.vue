@@ -66,31 +66,7 @@ const store = useGameStore();
         </svg>
       </a>
     </div>
-    <main class="mx-auto flex h-screen sm:max-w-xl">
-      <div class="relative flex w-full py-6">
-        <svg
-          class="w-full"
-          viewBox="0 0 1000 1600"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <Board />
-          <Pawn
-            v-for="pawn in store.pawnCoordinates"
-            :key="`${pawn.x},${pawn.y}`"
-            :pawn="pawn"
-            :is-active="
-              store.activePawn?.x === pawn.x && store.activePawn?.y === pawn.y
-            "
-          />
-          <SuggestionPawn
-            v-for="suggestion in store.suggestionPawns"
-            :key="`${suggestion.x},${suggestion.y}`"
-            :coordinate="suggestion"
-          />
-        </svg>
-      </div>
-    </main>
+    <GameBoard />
   </div>
 </template>
 

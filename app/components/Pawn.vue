@@ -8,8 +8,8 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  (e: "click", pawn: Pawn): void;
-  (e: "removePawn", pawn: Pawn): void;
+  clicked: [Pawn];
+  removed: [Pawn];
 }>();
 
 const isActive = computed(
@@ -20,16 +20,9 @@ const isActive = computed(
 
 const onClick = () => {
   if (store.dam.color === props.pawn.color) {
-    emit("removePawn", props.pawn);
+    emit("removed", props.pawn);
   } else {
-    store.activePawn = props.pawn;
-    store.suggestionPawns = getSuggestionPawns(
-      props.pawn,
-      store.pawnCoordinates,
-      store.isAlone,
-    );
-
-    console.log(store.suggestionPawns);
+    emit("clicked", props.pawn);
   }
 };
 </script>
@@ -54,7 +47,6 @@ const onClick = () => {
     :fill="pawn.color === 'red' ? '#FF005C' : '#426AF5'"
     stroke="#fff"
     :stroke-width="12"
-    transition:fade={{ duration: 400, easing: cubicOut }}
   />
 </template>
 

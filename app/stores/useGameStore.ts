@@ -45,7 +45,7 @@ export const useGameStore = defineStore("game", () => {
     { id: 32, x: 800, y: 1500, color: "blue" },
   ]);
   const suggestionPawns = ref<Coordinate[]>([]);
-  const turn = ref<Color>("red");
+  const turn = ref<Color>("blue");
 
   const redPawnKillCount = computed(
     () =>
@@ -63,6 +63,19 @@ export const useGameStore = defineStore("game", () => {
     turn.value = turn.value === "red" ? "blue" : "red";
   };
 
+  const clearSuggestionPawns = () => {
+    suggestionPawns.value = [];
+  };
+
+  const clearActivePawn = () => {
+    activePawn.value = null;
+  };
+
+  const movePawn = (pawn: Pawn, coordinate: Coordinate) => {
+    pawn.x = coordinate.x;
+    pawn.y = coordinate.y;
+  };
+
   return {
     activePawn,
     dam,
@@ -74,5 +87,8 @@ export const useGameStore = defineStore("game", () => {
     changeTurn,
     redPawnKillCount,
     bluePawnKillCount,
+    movePawn,
+    clearSuggestionPawns,
+    clearActivePawn,
   };
 });
