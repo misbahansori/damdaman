@@ -4,6 +4,10 @@ import type { Coordinate, Pawn } from "~/types/global";
 const store = useGameStore();
 
 const handlePawnClick = (pawn: Pawn) => {
+  if (store.numberOfTurns >= 1) return;
+
+  if (store.dam.count > 0) return;
+
   store.activePawn = pawn;
 
   store.suggestionPawns = getSuggestionPawns(
@@ -56,6 +60,12 @@ const handleSuggestionClick = async (suggestion: Coordinate) => {
 
   store.clearSuggestionPawns();
   store.movePawn(store.activePawn, suggestion);
+
+  if (eatenEnemy?.length) {
+    store.checkForMoreEatSuggestion();
+
+    if (store.suggestionPawns.length) return;
+  }
 
   store.clearActivePawn();
   store.changeTurn();

@@ -9,14 +9,22 @@ import type {
 
 export const useGameStore = defineStore("game", () => {
   const activePawn = ref<Pawn | null>(null);
+
+  const isAlone = computed(
+    () =>
+      pawnCoordinates.value.filter((pawn) => pawn.color === turn.value)
+        .length === 1,
+  );
+
   const dam = reactive<Dam>({
     color: null,
     coordinates: [],
     count: 0,
     showBanner: false,
   });
-  const isAlone = ref(false);
+
   const numberOfTurns = ref(0);
+
   const pawnCoordinates = ref<Pawn[]>([
     { id: 1, x: 200, y: 100, color: "red" },
     { id: 2, x: 500, y: 100, color: "red" },
@@ -71,8 +79,6 @@ export const useGameStore = defineStore("game", () => {
   };
 
   const changeTurn = () => {
-    activePawn.value = null;
-    suggestionPawns.value = [];
     numberOfTurns.value = 0;
     turn.value = turn.value === "red" ? "blue" : "red";
   };
@@ -168,6 +174,23 @@ export const useGameStore = defineStore("game", () => {
     dam.coordinates = [];
   };
 
+  const checkForMoreEatSuggestion = () => {
+    if (!activePawn.value) return;
+
+    const eatSuggestionCoordinates = getEatSuggestionCoordinates(
+      pawnCoordinates.value,
+      activePawn.value,
+      isAlone.value,
+    );
+
+    numberOfTurns.value++;
+
+    if (eatSuggestionCoordinates.length) {
+      suggestionPawns.value = eatSuggestionCoordinates;
+      return;
+    }
+  };
+
   return {
     activePawn,
     dam,
@@ -188,5 +211,6 @@ export const useGameStore = defineStore("game", () => {
     checkForDam,
     performDam,
     resetDam,
+    checkForMoreEatSuggestion,
   };
 });
