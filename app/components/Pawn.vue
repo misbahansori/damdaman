@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useGameStore } from "~/stores/game";
-import { Color, type Pawn } from "~/types/global";
+import type { Pawn } from "~/types/global";
 
 const store = useGameStore();
 
@@ -18,7 +18,9 @@ function onClick() {
   if (store.dam.coordinates.length > 0) {
     if (
       store.dam.coordinates.some(
-        (pawn) => pawn.x === props.pawn.x && pawn.y === props.pawn.y,
+        (pawn) =>
+          pawn.activePawn.x === props.pawn.x &&
+          pawn.activePawn.y === props.pawn.y,
       )
     ) {
       emit("removePawn", props.pawn);
@@ -31,19 +33,30 @@ function onClick() {
 </script>
 
 <template>
-  <g
-    :transform="`translate(${pawn.x * 100 + 150}, ${pawn.y * 100 + 350})`"
-    @click="onClick"
-    class="cursor-pointer"
-  >
-    <circle
-      r="35"
-      :class="[
-        'transition-colors duration-150',
-        isActive ? 'stroke-emerald-500' : 'stroke-black',
-        pawn.color === Color.RED ? 'fill-red-500' : 'fill-blue-500',
-      ]"
-      stroke-width="4"
-    />
-  </g>
+  <circle
+    :cx="pawn.x"
+    :cy="pawn.y"
+    fill="#000"
+    :opacity="0"
+    r="64"
+    class="highlight-none cursor-pointer"
+  />
+
+  <circle
+    :cx="pawn.x"
+    :cy="pawn.y"
+    r="40"
+    class="highlight-none cursor-pointer"
+    :class="{ 'pointer-events-none': pawn.color !== store.turn }"
+    :fill="pawn.color === 'red' ? '#FF005C' : '#426AF5'"
+    stroke="#fff"
+    stroke-width="12"
+    transition:fade={{ duration: 400, easing: cubicOut }}
+  />
 </template>
+
+<style scoped>
+.highlight-none {
+  -webkit-tap-highlight-color: transparent;
+}
+</style>

@@ -4,7 +4,6 @@ const store = useGameStore();
 
 <template>
   <div class="relative min-h-screen w-full items-center bg-gray-100">
-    <StartScreen />
     <div class="wood absolute inset-0 bg-[url(/img/wood-2.jpeg)]" />
     <Transition name="fade" mode="out-in">
       <div
@@ -76,6 +75,14 @@ const store = useGameStore();
           xmlns="http://www.w3.org/2000/svg"
         >
           <Board />
+          <Pawn
+            v-for="pawn in store.pawnCoordinates"
+            :key="`${pawn.x},${pawn.y}`"
+            :pawn="pawn"
+            :is-active="
+              store.activePawn?.x === pawn.x && store.activePawn?.y === pawn.y
+            "
+          />
         </svg>
       </div>
     </main>
