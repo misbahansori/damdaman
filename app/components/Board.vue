@@ -1,20 +1,6 @@
 <script setup lang="ts">
-import type { Pawn } from "~/types/global";
 const store = useGameStore();
-
-const emit = defineEmits<{
-  (e: "click", x: number, y: number): void;
-}>();
-
-function onClick(x: number, y: number) {
-  if (
-    !store.suggestionPawns.some((path: Pawn) => path.x === x && path.y === y)
-  ) {
-    return;
-  }
-
-  emit("click", x, y);
-}
+const appConfig = useAppConfig();
 </script>
 
 <template>
@@ -24,17 +10,20 @@ function onClick(x: number, y: number) {
     :y1="line.y1"
     :x2="line.x2"
     :y2="line.y2"
-    stroke="#fff"
+    stroke="currentColor"
+    :stroke-width="3"
     stroke-linecap="round"
     stroke-dasharray="6 6"
+    class="text-white/50"
   />
 
   <text
+    v-if="appConfig.debug"
     v-for="coordinate in boardCoordinate"
     :key="`${coordinate.x},${coordinate.y}`"
     :x="coordinate.x + 40"
     :y="coordinate.y + 20"
-    class="fill-current text-sm text-white"
+    class="fill-current text-base text-white"
   >
     [{{ coordinate.x }},{{ coordinate.y }}]
   </text>
@@ -47,7 +36,7 @@ function onClick(x: number, y: number) {
     :x2="line.target.x"
     :y2="line.target.y"
     class="stroke-current"
-    stroke-width="64"
+    :stroke-width="64"
     stroke-linecap="round"
   />
 </template>

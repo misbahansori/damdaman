@@ -28,10 +28,11 @@ export function getEmptyCoordinate(pawnCoordinates: Pawn[]): PawnCoordinate[] {
 
 export function getEnemiesInContact(
   pawnCoordinates: Pawn[],
-  activePawnCoordinate: PawnCoordinate,
   activePawn: Pawn,
   isAlone: boolean,
 ): Pawn[] {
+  const activePawnCoordinate = getPawnCoordinate(activePawn);
+
   let enemiesInContact = pawnCoordinates.filter((pawnCoordinate) =>
     activePawnCoordinate.possiblePaths.some(
       (coordinate) =>
@@ -92,20 +93,21 @@ export function getEnemyPossiblePaths(
 
 export function getEatSuggestionCoordinates(
   pawnCoordinates: Pawn[],
-  activePawnCoordinate: PawnCoordinate,
   activePawn: Pawn,
   isAlone: boolean,
 ): Coordinate[] {
   const enemiesInContact = getEnemiesInContact(
     pawnCoordinates,
-    activePawnCoordinate,
     activePawn,
     isAlone,
   );
+
   const enemyPossiblePaths = getEnemyPossiblePaths(
     enemiesInContact,
     activePawn,
   );
+
+  const activePawnCoordinate = getPawnCoordinate(activePawn);
 
   const eatingPaths = activePawnCoordinate.eatingPaths
     .filter((coordinate) =>
@@ -175,7 +177,6 @@ export function getSuggestionPawns(
 
   const enemiesInContact = getEnemiesInContact(
     pawnCoordinates,
-    activePawnCoordinate,
     activePawn,
     isAlone,
   );
@@ -237,10 +238,8 @@ export function getDamCoordinates(
   let damCoordinates: DamCoordinate[] = [];
 
   currentPawnCoordinates.forEach((pawnCoordinate) => {
-    const activePawnCoordinate = getPawnCoordinate(pawnCoordinate);
     const enemiesInContact = getEnemiesInContact(
       pawnCoordinates,
-      activePawnCoordinate,
       pawnCoordinate,
       false,
     );

@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import type { Pawn } from "~/types/global";
 
-const store = useGameStore();
-
 const props = defineProps<{
   pawn: Pawn;
 }>();
@@ -11,6 +9,9 @@ const emit = defineEmits<{
   clicked: [Pawn];
   removed: [Pawn];
 }>();
+
+const store = useGameStore();
+const appConfig = useAppConfig();
 
 const isActive = computed(
   () =>
@@ -48,6 +49,15 @@ const onClick = () => {
     stroke="#fff"
     :stroke-width="12"
   />
+
+  <text
+    v-if="appConfig.debug"
+    :x="pawn.x - 12"
+    :y="pawn.y + 8"
+    class="fill-current text-center text-2xl text-white"
+  >
+    {{ pawn.id.toString().padStart(2, "0") }}
+  </text>
 </template>
 
 <style scoped>

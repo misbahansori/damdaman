@@ -76,6 +76,37 @@ export const useGameStore = defineStore("game", () => {
     pawn.y = coordinate.y;
   };
 
+  const getEatenEnemy = (suggestion: Coordinate) => {
+    if (!activePawn.value) return;
+
+    const enemiesInContact = getEnemiesInContact(
+      pawnCoordinates.value,
+      activePawn.value,
+      isAlone.value,
+    );
+
+    const eatenEnemy = enemiesInContact.filter((pawnCoordinate) => {
+      if (!activePawn.value) return;
+      return checkStraightLine([
+        [activePawn.value.x, activePawn.value.y],
+        [pawnCoordinate.x, pawnCoordinate.y],
+        [suggestion.x, suggestion.y],
+      ]);
+    });
+
+    return eatenEnemy;
+  };
+
+  const removePawns = (pawns: Pawn[]) => {
+    pawns.forEach((pawn) => {
+      const enemyIndex = pawnCoordinates.value.findIndex(
+        (p) => p.x === pawn.x && p.y === pawn.y,
+      );
+
+      pawnCoordinates.value.splice(enemyIndex, 1);
+    });
+  };
+
   return {
     activePawn,
     dam,
@@ -90,5 +121,7 @@ export const useGameStore = defineStore("game", () => {
     movePawn,
     clearSuggestionPawns,
     clearActivePawn,
+    getEatenEnemy,
+    removePawns,
   };
 });
