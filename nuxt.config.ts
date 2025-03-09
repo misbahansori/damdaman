@@ -13,6 +13,7 @@ export default defineNuxtConfig({
     "@nuxt/icon",
     "@nuxtjs/color-mode",
     "@pinia/nuxt",
+    "@nuxt/test-utils/module",
   ],
 
   future: {
