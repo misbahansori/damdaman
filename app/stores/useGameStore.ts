@@ -4,6 +4,7 @@ import type {
   Dam,
   DamCoordinate,
   Pawn,
+  PawnCoordinate,
 } from "~/types/global";
 
 export const useGameStore = defineStore("game", () => {
@@ -114,6 +115,7 @@ export const useGameStore = defineStore("game", () => {
   };
 
   const checkPossibleDamCoordiates = () => {
+    if (!activePawn.value) return [];
     const pawnsInTheSameTeamExceptActivePawn = pawnCoordinates.value
       .filter((pawn) => pawn.color === turn.value)
       .filter(
@@ -121,8 +123,15 @@ export const useGameStore = defineStore("game", () => {
           !(pawn.x === activePawn.value?.x && pawn.y === activePawn.value?.y),
       );
 
+    const previousActivePawn = {
+      id: activePawn.value.id ?? 0,
+      color: activePawn.value.color ?? "red",
+      x: activePawn.value.x ?? 0,
+      y: activePawn.value.y ?? 0,
+    } satisfies Pawn;
+
     const possibleDamCoordinates = getDamCoordinates(
-      pawnsInTheSameTeamExceptActivePawn,
+      pawnsInTheSameTeamExceptActivePawn.concat(previousActivePawn),
       pawnCoordinates.value,
     );
 
@@ -133,23 +142,20 @@ export const useGameStore = defineStore("game", () => {
     possibleDamCoordinates: DamCoordinate[],
     eatenEnemy?: Pawn[],
   ) => {
-    log({
-      possibleDamCoordinates,
-      eatenEnemy,
-    });
-    if (possibleDamCoordinates.length && !eatenEnemy?.length) {
-      dam.showBanner = true;
-      dam.count = 3;
-      dam.coordinates = possibleDamCoordinates;
-      dam.color = activePawn.value?.color ?? null;
+    return possibleDamCoordinates.length && !eatenEnemy?.length;
+  };
 
-      setTimeout(() => {
-        dam.showBanner = false;
-        setTimeout(() => {
-          dam.coordinates = [];
-        }, 2500);
-      }, 2000);
-    }
+  const performDam = async (possibleDamCoordinates: DamCoordinate[]) => {
+    dam.showBanner = true;
+    dam.count = 3;
+    dam.color = activePawn.value?.color ?? null;
+
+    await sleep(2000);
+    dam.showBanner = false;
+    dam.coordinates = possibleDamCoordinates;
+
+    await sleep(2500);
+    dam.coordinates = [];
   };
 
   return {
@@ -170,5 +176,6 @@ export const useGameStore = defineStore("game", () => {
     removePawns,
     checkPossibleDamCoordiates,
     checkForDam,
+    performDam,
   };
 });

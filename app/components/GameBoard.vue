@@ -19,14 +19,20 @@ const handlePawnRemoved = (pawn: Pawn) => {
   );
 };
 
-const handleSuggestionClick = (suggestion: Coordinate) => {
+const handleSuggestionClick = async (suggestion: Coordinate) => {
   if (!store.activePawn) return;
 
   const possibleDamCoordinates = store.checkPossibleDamCoordiates();
 
   const eatenEnemy = store.getEatenEnemy(suggestion);
 
-  store.checkForDam(possibleDamCoordinates, eatenEnemy);
+  if (store.checkForDam(possibleDamCoordinates, eatenEnemy)) {
+    store.movePawn(store.activePawn, suggestion);
+    store.clearActivePawn();
+    store.clearSuggestionPawns();
+
+    await store.performDam(possibleDamCoordinates);
+  }
 
   if (eatenEnemy?.length) {
     store.removePawns(eatenEnemy);
