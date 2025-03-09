@@ -7,33 +7,34 @@ import {
 
 /**
  * Get the coordinate of a pawn on the board.
+ * Optimization: Early return when found
  */
 export function getPawnCoordinate(activePawn: Pawn): PawnCoordinate {
-  const pawnCoordinates = boardCoordinate.find(
-    (coordinate) =>
-      coordinate.x === activePawn.x && coordinate.y === activePawn.y,
-  );
-
-  if (!pawnCoordinates) {
-    throw new Error("Pawn coordinates not found.");
+  for (const coordinate of boardCoordinate) {
+    if (coordinate.x === activePawn.x && coordinate.y === activePawn.y) {
+      return coordinate;
+    }
   }
-
-  return pawnCoordinates;
+  throw new Error("Pawn coordinates not found.");
 }
 
 /**
  * Get the empty coordinates on the board.
+ * Optimization: Use Set for O(1) lookups
  */
 export function getEmptyCoordinate(pawnCoordinates: Pawn[]): PawnCoordinate[] {
-  return boardCoordinate.filter((coordinate) => {
-    return !pawnCoordinates.some(
-      (pawn) => pawn.x === coordinate.x && pawn.y === coordinate.y,
-    );
-  });
+  const occupiedSpaces = new Set(
+    pawnCoordinates.map((pawn) => `${pawn.x},${pawn.y}`),
+  );
+
+  return boardCoordinate.filter(
+    (coordinate) => !occupiedSpaces.has(`${coordinate.x},${coordinate.y}`),
+  );
 }
 
 /**
  * Get the enemies in contact with the active pawn.
+ * Optimization: Single pass filter with combined conditions
  */
 export function getEnemiesInContact(
   pawnCoordinates: Pawn[],
@@ -41,70 +42,73 @@ export function getEnemiesInContact(
   isAlone: boolean,
 ): Pawn[] {
   const activePawnCoordinate = getPawnCoordinate(activePawn);
+  const enemySet = new Set<Pawn>();
 
-  let enemiesInContact = pawnCoordinates.filter((pawnCoordinate) =>
-    activePawnCoordinate.possiblePaths.some(
-      (coordinate) =>
-        coordinate.x === pawnCoordinate.x &&
-        coordinate.y === pawnCoordinate.y &&
-        activePawn.color !== pawnCoordinate.color,
-    ),
+  // Convert paths to Sets for O(1) lookups
+  const possiblePathsSet = new Set(
+    activePawnCoordinate.possiblePaths.map((p) => `${p.x},${p.y}`),
   );
 
-  if (isAlone) {
-    const eatingPaths = pawnCoordinates.filter((pawnCoordinate) =>
-      activePawnCoordinate.eatingPaths.some(
-        (coordinate) =>
-          coordinate.x === pawnCoordinate.x &&
-          coordinate.y === pawnCoordinate.y &&
-          activePawn.color !== pawnCoordinate.color,
-      ),
-    );
-    const additionalPaths = pawnCoordinates.filter((pawnCoordinate) =>
-      activePawnCoordinate.additionalPaths.some(
-        (coordinate) =>
-          coordinate.x === pawnCoordinate.x &&
-          coordinate.y === pawnCoordinate.y &&
-          activePawn.color !== pawnCoordinate.color,
-      ),
-    );
+  const eatingPathsSet = isAlone
+    ? new Set(activePawnCoordinate.eatingPaths.map((p) => `${p.x},${p.y}`))
+    : new Set();
 
-    enemiesInContact = [
-      ...enemiesInContact,
-      ...eatingPaths,
-      ...additionalPaths,
-    ];
+  const additionalPathsSet = isAlone
+    ? new Set(activePawnCoordinate.additionalPaths.map((p) => `${p.x},${p.y}`))
+    : new Set();
+
+  // Single pass through pawnCoordinates
+  for (const pawn of pawnCoordinates) {
+    if (pawn.color === activePawn.color) continue;
+
+    const key = `${pawn.x},${pawn.y}`;
+    if (
+      possiblePathsSet.has(key) ||
+      (isAlone && (eatingPathsSet.has(key) || additionalPathsSet.has(key)))
+    ) {
+      enemySet.add(pawn);
+    }
   }
 
-  return enemiesInContact;
+  return Array.from(enemySet);
 }
 
 /**
  * Get the possible paths for the enemies in contact with the active pawn.
+ * Optimization: Reduce nested iterations using Sets
  */
 export function getEnemyPossiblePaths(
   enemiesInContact: Pawn[],
   activePawn: Pawn,
-) {
-  return boardCoordinate
-    .filter((coordinate) =>
-      enemiesInContact.some(
-        (enemy) => enemy.x === coordinate.x && enemy.y === coordinate.y,
-      ),
-    )
-    .flatMap((enemy) =>
-      enemy.possiblePaths.filter((coordinate) => {
-        return checkStraightLine([
+): Coordinate[] {
+  const enemySet = new Set(
+    enemiesInContact.map((enemy) => `${enemy.x},${enemy.y}`),
+  );
+
+  const paths: Coordinate[] = [];
+
+  for (const coordinate of boardCoordinate) {
+    if (!enemySet.has(`${coordinate.x},${coordinate.y}`)) continue;
+
+    for (const possiblePath of coordinate.possiblePaths) {
+      if (
+        checkStraightLine([
           [activePawn.x, activePawn.y],
-          [enemy.x, enemy.y],
           [coordinate.x, coordinate.y],
-        ]);
-      }),
-    );
+          [possiblePath.x, possiblePath.y],
+        ])
+      ) {
+        paths.push(possiblePath);
+      }
+    }
+  }
+
+  return paths;
 }
 
 /**
  * Get the eating suggestion coordinates for the active pawn.
+ * Optimization: Combine filters and use Sets for uniqueness
  */
 export function getEatSuggestionCoordinates(
   pawnCoordinates: Pawn[],
@@ -116,69 +120,63 @@ export function getEatSuggestionCoordinates(
     activePawn,
     isAlone,
   );
-
   const enemyPossiblePaths = getEnemyPossiblePaths(
     enemiesInContact,
     activePawn,
   );
-
   const activePawnCoordinate = getPawnCoordinate(activePawn);
 
-  const eatingPaths = activePawnCoordinate.eatingPaths
-    .filter((coordinate) =>
-      enemyPossiblePaths.some(
-        (possiblePath) =>
-          possiblePath.x === coordinate.x && possiblePath.y === coordinate.y,
-      ),
-    )
-    .filter(
-      (coordinate) =>
-        !pawnCoordinates.some(
-          (pawnCoordinate) =>
-            pawnCoordinate.x === coordinate.x &&
-            pawnCoordinate.y === coordinate.y,
-        ),
-    );
+  // Convert to Sets for O(1) lookups
+  const enemyPathsSet = new Set(
+    enemyPossiblePaths.map((path) => `${path.x},${path.y}`),
+  );
+  const occupiedSpacesSet = new Set(
+    pawnCoordinates.map((pawn) => `${pawn.x},${pawn.y}`),
+  );
 
-  let additionalEatingPaths: Coordinate[] = [];
+  const validPaths = new Set<string>();
 
+  // Process eating paths
+  for (const path of activePawnCoordinate.eatingPaths) {
+    const key = `${path.x},${path.y}`;
+    if (enemyPathsSet.has(key) && !occupiedSpacesSet.has(key)) {
+      validPaths.add(key);
+    }
+  }
+
+  // Process additional paths if alone
   if (isAlone) {
-    additionalEatingPaths = activePawnCoordinate.eatingPaths
-      .concat(activePawnCoordinate.additionalPaths)
-      .filter((coordinate) =>
+    const allPaths = [
+      ...activePawnCoordinate.eatingPaths,
+      ...activePawnCoordinate.additionalPaths,
+    ];
+
+    for (const path of allPaths) {
+      const key = `${path.x},${path.y}`;
+      if (
+        !occupiedSpacesSet.has(key) &&
         enemiesInContact.some((enemy) =>
           checkStraightLine([
             [activePawn.x, activePawn.y],
             [enemy.x, enemy.y],
-            [coordinate.x, coordinate.y],
+            [path.x, path.y],
           ]),
-        ),
-      )
-      .filter(
-        (coordinate) =>
-          !pawnCoordinates.some(
-            (pawnCoordinate) =>
-              pawnCoordinate.x === coordinate.x &&
-              pawnCoordinate.y === coordinate.y,
-          ),
-      );
+        )
+      ) {
+        validPaths.add(key);
+      }
+    }
   }
-
-  // Make sure the coordinates are unique.
-  const possiblePaths = eatingPaths
-    .concat(additionalEatingPaths)
-    .filter(
-      (coordinate, index, self) =>
-        self.findIndex(
-          (item) => item.x === coordinate.x && item.y === coordinate.y,
-        ) === index,
-    );
-
-  return possiblePaths;
+  // Convert back to coordinates
+  return Array.from(validPaths).map((key) => {
+    const [x, y] = key.split(",").map(Number);
+    return { x: x!, y: y! } as Coordinate;
+  });
 }
 
 /**
  * Get the suggestion pawns for the active pawn.
+ * Optimization: Use Sets and reduce iterations
  */
 export function getSuggestionPawns(
   activePawn: Pawn,
@@ -186,114 +184,102 @@ export function getSuggestionPawns(
   isAlone: boolean,
 ): Coordinate[] {
   const activePawnCoordinate = getPawnCoordinate(activePawn);
+  if (!activePawnCoordinate) return [];
 
-  if (!activePawnCoordinate) {
-    return [];
-  }
+  const occupiedSpacesSet = new Set(
+    pawnCoordinates.map((pawn) => `${pawn.x},${pawn.y}`),
+  );
 
-  let possiblePaths = activePawnCoordinate.possiblePaths;
+  const validPaths = new Set<string>();
 
+  // Add basic possible paths
+  activePawnCoordinate.possiblePaths.forEach((path) => {
+    const key = `${path.x},${path.y}`;
+    if (!occupiedSpacesSet.has(key)) {
+      validPaths.add(key);
+    }
+  });
+
+  // Add enemy-related paths
   const enemiesInContact = getEnemiesInContact(
     pawnCoordinates,
     activePawn,
     isAlone,
   );
-
   if (enemiesInContact.length > 0) {
-    const enemyPossiblePaths = getEnemyPossiblePaths(
-      enemiesInContact,
-      activePawn,
-    );
-
-    possiblePaths = possiblePaths.concat(enemyPossiblePaths);
+    getEnemyPossiblePaths(enemiesInContact, activePawn).forEach((path) => {
+      const key = `${path.x},${path.y}`;
+      if (!occupiedSpacesSet.has(key)) {
+        validPaths.add(key);
+      }
+    });
   }
 
+  // Add additional paths for alone mode
   if (isAlone) {
-    possiblePaths = possiblePaths
-      .concat(activePawnCoordinate.eatingPaths)
-      .concat(activePawnCoordinate.additionalPaths);
-
     const enemiesCoordinates = pawnCoordinates.filter(
-      (pawnCoordinate) => pawnCoordinate.color !== activePawn.color,
+      (pawn) => pawn.color !== activePawn.color,
     );
 
-    possiblePaths = possiblePaths.filter(
-      (coordinate) =>
-        !checkTwoEnemiesInARow(
-          activePawnCoordinate,
-          enemiesCoordinates,
-          coordinate,
-        ),
-    );
+    [
+      ...activePawnCoordinate.eatingPaths,
+      ...activePawnCoordinate.additionalPaths,
+    ].forEach((path) => {
+      const key = `${path.x},${path.y}`;
+      if (
+        !occupiedSpacesSet.has(key) &&
+        !checkTwoEnemiesInARow(activePawnCoordinate, enemiesCoordinates, path)
+      ) {
+        validPaths.add(key);
+      }
+    });
   }
 
-  possiblePaths = possiblePaths.filter(
-    (coordinate) =>
-      !pawnCoordinates.some(
-        (pawnCoordinate) =>
-          pawnCoordinate.x === coordinate.x &&
-          pawnCoordinate.y === coordinate.y,
-      ),
-  );
-
-  // Make sure the coordinates are unique.
-  possiblePaths = possiblePaths.filter(
-    (coordinate, index, self) =>
-      self.findIndex(
-        (item) => item.x === coordinate.x && item.y === coordinate.y,
-      ) === index,
-  );
-
-  return possiblePaths;
+  return Array.from(validPaths).map((key) => {
+    const [x, y] = key.split(",").map(Number);
+    return { x: x!, y: y! };
+  });
 }
 
 /**
  * Get the dam coordinates for the active pawn.
+ * Optimization: Use Sets and reduce nested iterations
  */
 export function getDamCoordinates(
   currentPawnCoordinates: Pawn[],
   pawnCoordinates: Pawn[],
-) {
-  const emptyCoordinates = getEmptyCoordinate(pawnCoordinates);
-
-  let damCoordinates: DamCoordinate[] = [];
-
-  currentPawnCoordinates.forEach((pawnCoordinate) => {
-    const enemiesInContact = getEnemiesInContact(
-      pawnCoordinates,
-      pawnCoordinate,
-      false,
-    );
-
-    let enemyPossiblePaths = getEnemyPossiblePaths(
-      enemiesInContact,
-      pawnCoordinate,
-    );
-
-    enemyPossiblePaths = enemyPossiblePaths.filter((coordinate) =>
-      emptyCoordinates.some(
-        (emptyCoordinate) =>
-          emptyCoordinate.x === coordinate.x &&
-          emptyCoordinate.y === coordinate.y,
-      ),
-    );
-
-    enemiesInContact.forEach((enemy) => {
-      enemyPossiblePaths.forEach((coordinate) => {
-        damCoordinates.push({
-          activePawn: pawnCoordinate,
-          enemyPawn: enemy,
-          target: coordinate,
-        });
-      });
-    });
-  });
-
-  return damCoordinates.filter((coordinates) =>
-    checkStraightLine([
-      [coordinates.activePawn.x, coordinates.activePawn.y],
-      [coordinates.enemyPawn.x, coordinates.enemyPawn.y],
-      [coordinates.target.x, coordinates.target.y],
-    ]),
+): DamCoordinate[] {
+  const emptyCoordinatesSet = new Set(
+    getEmptyCoordinate(pawnCoordinates).map((coord) => `${coord.x},${coord.y}`),
   );
+
+  const damCoordinates: DamCoordinate[] = [];
+  const processedMoves = new Set<string>();
+
+  for (const pawn of currentPawnCoordinates) {
+    const enemiesInContact = getEnemiesInContact(pawnCoordinates, pawn, false);
+    const enemyPaths = getEnemyPossiblePaths(enemiesInContact, pawn);
+
+    for (const enemy of enemiesInContact) {
+      for (const target of enemyPaths) {
+        if (!emptyCoordinatesSet.has(`${target.x},${target.y}`)) continue;
+
+        const moveKey = `${pawn.x},${pawn.y}-${enemy.x},${enemy.y}-${target.x},${target.y}`;
+        if (processedMoves.has(moveKey)) continue;
+
+        if (
+          checkStraightLine([
+            [pawn.x, pawn.y],
+            [enemy.x, enemy.y],
+            [target.x, target.y],
+          ])
+        ) {
+          processedMoves.add(moveKey);
+          damCoordinates.push({ activePawn: pawn, enemyPawn: enemy, target });
+        }
+      }
+    }
+  }
+
+  return damCoordinates;
 }
