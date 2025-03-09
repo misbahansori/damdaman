@@ -74,6 +74,9 @@ importers:
       typescript:
         specifier: ^5.8.2
         version: 5.8.2
+      uncrypto:
+        specifier: ^0.1.3
+        version: 0.1.3
       vue:
         specifier: latest
         version: 3.5.13(typescript@5.8.2)
