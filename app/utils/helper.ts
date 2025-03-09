@@ -50,10 +50,11 @@ export const checkTwoEnemiesInARow = (
       enemiesInPath++;
 
       // If we find more than one enemy in the path
-      if (enemiesInPath > 1) {
+      if (enemiesInPath >= 2) {
         return true;
       }
     }
+
     x += stepX;
     y += stepY;
   }

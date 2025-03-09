@@ -133,13 +133,21 @@ export function getEatSuggestionCoordinates(
   const occupiedSpacesSet = new Set(
     pawnCoordinates.map((pawn) => `${pawn.x},${pawn.y}`),
   );
+  const enemiesCoordinates = pawnCoordinates.filter(
+    (pawn) => pawn.color !== activePawn.color,
+  );
 
   const validPaths = new Set<string>();
 
   // Process eating paths
   for (const path of activePawnCoordinate.eatingPaths) {
     const key = `${path.x},${path.y}`;
-    if (enemyPathsSet.has(key) && !occupiedSpacesSet.has(key)) {
+    if (
+      enemyPathsSet.has(key) &&
+      !occupiedSpacesSet.has(key) &&
+      (!isAlone ||
+        !checkTwoEnemiesInARow(activePawnCoordinate, enemiesCoordinates, path))
+    ) {
       validPaths.add(key);
     }
   }
@@ -155,6 +163,11 @@ export function getEatSuggestionCoordinates(
       const key = `${path.x},${path.y}`;
       if (
         !occupiedSpacesSet.has(key) &&
+        !checkTwoEnemiesInARow(
+          activePawnCoordinate,
+          enemiesCoordinates,
+          path,
+        ) &&
         enemiesInContact.some((enemy) =>
           checkStraightLine([
             [activePawn.x, activePawn.y],
@@ -191,6 +204,9 @@ export function getSuggestionPawns(
   );
 
   const validPaths = new Set<string>();
+  const enemiesCoordinates = pawnCoordinates.filter(
+    (pawn) => pawn.color !== activePawn.color,
+  );
 
   // Add basic possible paths
   activePawnCoordinate.possiblePaths.forEach((path) => {
@@ -209,7 +225,15 @@ export function getSuggestionPawns(
   if (enemiesInContact.length > 0) {
     getEnemyPossiblePaths(enemiesInContact, activePawn).forEach((path) => {
       const key = `${path.x},${path.y}`;
-      if (!occupiedSpacesSet.has(key)) {
+      if (
+        !occupiedSpacesSet.has(key) &&
+        (!isAlone ||
+          !checkTwoEnemiesInARow(
+            activePawnCoordinate,
+            enemiesCoordinates,
+            path,
+          ))
+      ) {
         validPaths.add(key);
       }
     });
@@ -217,10 +241,6 @@ export function getSuggestionPawns(
 
   // Add additional paths for alone mode
   if (isAlone) {
-    const enemiesCoordinates = pawnCoordinates.filter(
-      (pawn) => pawn.color !== activePawn.color,
-    );
-
     [
       ...activePawnCoordinate.eatingPaths,
       ...activePawnCoordinate.additionalPaths,

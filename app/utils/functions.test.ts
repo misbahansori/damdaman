@@ -173,4 +173,19 @@ describe("getSuggestionPawns", () => {
       expect.objectContaining({ x: 100, y: 1200 }),
     );
   });
+
+  it("should return not return enemy when there are more than 2 enemies in a row", () => {
+    const redPawn: Pawn = { id: 1, x: 100, y: 1200, color: "red" };
+    const bluePawn1: Pawn = { id: 2, x: 100, y: 1000, color: "blue" };
+    const bluePawn2: Pawn = { id: 3, x: 100, y: 800, color: "blue" };
+
+    const enemies = getSuggestionPawns(redPawn, [bluePawn1, bluePawn2], true);
+
+    expect(enemies).not.toContainEqual(
+      expect.objectContaining({ x: 100, y: 600 }),
+    );
+    expect(enemies).not.toContainEqual(
+      expect.objectContaining({ x: 100, y: 400 }),
+    );
+  });
 });
