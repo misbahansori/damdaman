@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useGameStore } from "~/stores/game";
 import type { Pawn } from "~/types/global";
 const store = useGameStore();
 

@@ -56,6 +56,13 @@ export const useGameStore = defineStore("game", () => {
       16 - pawnCoordinates.value.filter((pawn) => pawn.color === "blue").length,
   );
 
+  const changeTurn = () => {
+    activePawn.value = null;
+    suggestionPaths.value = [];
+    numberOfTurns.value = 0;
+    turn.value = turn.value === "red" ? "blue" : "red";
+  };
+
   return {
     activePawn,
     dam,
@@ -64,6 +71,7 @@ export const useGameStore = defineStore("game", () => {
     pawnCoordinates,
     suggestionPaths,
     turn,
+    changeTurn,
     redPawnKillCount,
     bluePawnKillCount,
   };

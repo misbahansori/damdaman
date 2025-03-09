@@ -1,13 +1,4 @@
 import { type Pawn } from "~/types/global";
-import { useGameStore } from "~/stores/game";
-
-export function changeTurn() {
-  const store = useGameStore();
-  store.activePawn = null;
-  store.suggestionPaths = [];
-  store.numberOfTurns = 0;
-  store.turn = store.turn === "red" ? "blue" : "red";
-}
 
 export function getPawnCoordinate(pawn: Pawn | null): Pawn {
   if (!pawn) {
