@@ -13,10 +13,13 @@ const emit = defineEmits<{
 const store = useGameStore();
 const appConfig = useAppConfig();
 
-const isActive = computed(
-  () =>
-    store.activePawn?.x === props.pawn.x &&
-    store.activePawn?.y === props.pawn.y,
+const isActive = computed(() =>
+  store.dam.color &&
+  store.dam.coordinates.length === 0 &&
+  store.dam.showBanner === false
+    ? store.dam.color === props.pawn.color
+    : store.activePawn?.x === props.pawn.x &&
+      store.activePawn?.y === props.pawn.y,
 );
 
 const onClick = () => {

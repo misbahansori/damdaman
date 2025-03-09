@@ -145,10 +145,13 @@ export const useGameStore = defineStore("game", () => {
     return possibleDamCoordinates.length && !eatenEnemy?.length;
   };
 
-  const performDam = async (possibleDamCoordinates: DamCoordinate[]) => {
+  const performDam = async (
+    color: Color,
+    possibleDamCoordinates: DamCoordinate[],
+  ) => {
     dam.showBanner = true;
     dam.count = 3;
-    dam.color = activePawn.value?.color ?? null;
+    dam.color = color;
 
     await sleep(2000);
     dam.showBanner = false;

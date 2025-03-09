@@ -27,11 +27,15 @@ const handleSuggestionClick = async (suggestion: Coordinate) => {
   const eatenEnemy = store.getEatenEnemy(suggestion);
 
   if (store.checkForDam(possibleDamCoordinates, eatenEnemy)) {
+    const color = store.activePawn?.color;
+
     store.movePawn(store.activePawn, suggestion);
     store.clearActivePawn();
     store.clearSuggestionPawns();
 
-    await store.performDam(possibleDamCoordinates);
+    await store.performDam(color, possibleDamCoordinates);
+
+    return;
   }
 
   if (eatenEnemy?.length) {
