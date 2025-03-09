@@ -1,4 +1,10 @@
-import type { Color, Coordinate, Dam, Pawn } from "~/types/global";
+import type {
+  Color,
+  Coordinate,
+  Dam,
+  DamCoordinate,
+  Pawn,
+} from "~/types/global";
 
 export const useGameStore = defineStore("game", () => {
   const activePawn = ref<Pawn | null>(null);
@@ -107,7 +113,7 @@ export const useGameStore = defineStore("game", () => {
     });
   };
 
-  const checkForDam = () => {
+  const checkPossibleDamCoordiates = () => {
     const pawnsInTheSameTeamExceptActivePawn = pawnCoordinates.value
       .filter((pawn) => pawn.color === turn.value)
       .filter(
@@ -115,12 +121,35 @@ export const useGameStore = defineStore("game", () => {
           !(pawn.x === activePawn.value?.x && pawn.y === activePawn.value?.y),
       );
 
-    const damCoordinates = getDamCoordinates(
+    const possibleDamCoordinates = getDamCoordinates(
       pawnsInTheSameTeamExceptActivePawn,
       pawnCoordinates.value,
     );
 
-    dam.coordinates = damCoordinates;
+    return possibleDamCoordinates;
+  };
+
+  const checkForDam = (
+    possibleDamCoordinates: DamCoordinate[],
+    eatenEnemy?: Pawn[],
+  ) => {
+    log({
+      possibleDamCoordinates,
+      eatenEnemy,
+    });
+    if (possibleDamCoordinates.length && !eatenEnemy?.length) {
+      dam.showBanner = true;
+      dam.count = 3;
+      dam.coordinates = possibleDamCoordinates;
+      dam.color = activePawn.value?.color ?? null;
+
+      setTimeout(() => {
+        dam.showBanner = false;
+        setTimeout(() => {
+          dam.coordinates = [];
+        }, 2500);
+      }, 2000);
+    }
   };
 
   return {
@@ -139,6 +168,7 @@ export const useGameStore = defineStore("game", () => {
     clearActivePawn,
     getEatenEnemy,
     removePawns,
+    checkPossibleDamCoordiates,
     checkForDam,
   };
 });

@@ -22,9 +22,11 @@ const handlePawnRemoved = (pawn: Pawn) => {
 const handleSuggestionClick = (suggestion: Coordinate) => {
   if (!store.activePawn) return;
 
-  store.checkForDam();
+  const possibleDamCoordinates = store.checkPossibleDamCoordiates();
 
   const eatenEnemy = store.getEatenEnemy(suggestion);
+
+  store.checkForDam(possibleDamCoordinates, eatenEnemy);
 
   if (eatenEnemy?.length) {
     store.removePawns(eatenEnemy);
@@ -62,6 +64,21 @@ const handleSuggestionClick = (suggestion: Coordinate) => {
           @click="handleSuggestionClick"
         />
       </svg>
+    </div>
+    <div
+      v-if="store.dam.showBanner"
+      class="absolute inset-0 flex items-center justify-center"
+    >
+      <div
+        class="flex w-full items-center justify-center py-5 shadow-2xl"
+        :class="store.dam.color === 'red' ? 'bg-red-500/80' : 'bg-blue-500/80'"
+      >
+        <span
+          class="drop-shadow-px text-4xl font-bold tracking-wide text-white"
+        >
+          DAM
+        </span>
+      </div>
     </div>
   </main>
 </template>
