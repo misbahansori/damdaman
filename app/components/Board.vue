@@ -35,7 +35,8 @@ const appConfig = useAppConfig();
     :y1="line.activePawn.y"
     :x2="line.target.x"
     :y2="line.target.y"
-    class="stroke-current"
+    stroke="currentColor"
+    :class="store.dam.color === 'red' ? 'text-red-500/50' : 'text-blue-500/50'"
     :stroke-width="64"
     stroke-linecap="round"
   />

@@ -22,6 +22,8 @@ const handlePawnRemoved = (pawn: Pawn) => {
 const handleSuggestionClick = (suggestion: Coordinate) => {
   if (!store.activePawn) return;
 
+  store.checkForDam();
+
   const eatenEnemy = store.getEatenEnemy(suggestion);
 
   if (eatenEnemy?.length) {

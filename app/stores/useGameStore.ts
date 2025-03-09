@@ -2,7 +2,7 @@ import type { Color, Coordinate, Dam, Pawn } from "~/types/global";
 
 export const useGameStore = defineStore("game", () => {
   const activePawn = ref<Pawn | null>(null);
-  const dam = ref<Dam>({
+  const dam = reactive<Dam>({
     color: null,
     coordinates: [],
     count: 0,
@@ -107,6 +107,22 @@ export const useGameStore = defineStore("game", () => {
     });
   };
 
+  const checkForDam = () => {
+    const pawnsInTheSameTeamExceptActivePawn = pawnCoordinates.value
+      .filter((pawn) => pawn.color === turn.value)
+      .filter(
+        (pawn) =>
+          !(pawn.x === activePawn.value?.x && pawn.y === activePawn.value?.y),
+      );
+
+    const damCoordinates = getDamCoordinates(
+      pawnsInTheSameTeamExceptActivePawn,
+      pawnCoordinates.value,
+    );
+
+    dam.coordinates = damCoordinates;
+  };
+
   return {
     activePawn,
     dam,
@@ -123,5 +139,6 @@ export const useGameStore = defineStore("game", () => {
     clearActivePawn,
     getEatenEnemy,
     removePawns,
+    checkForDam,
   };
 });

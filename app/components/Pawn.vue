@@ -54,7 +54,7 @@ const onClick = () => {
     v-if="appConfig.debug"
     :x="pawn.x - 12"
     :y="pawn.y + 8"
-    class="fill-current text-center text-2xl text-white"
+    class="pointer-events-none fill-current text-center text-2xl text-white"
   >
     {{ pawn.id.toString().padStart(2, "0") }}
   </text>
