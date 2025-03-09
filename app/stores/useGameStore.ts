@@ -63,6 +63,13 @@ export const useGameStore = defineStore("game", () => {
       16 - pawnCoordinates.value.filter((pawn) => pawn.color === "blue").length,
   );
 
+  const resetDam = () => {
+    dam.color = null;
+    dam.coordinates = [];
+    dam.count = 0;
+    dam.showBanner = false;
+  };
+
   const changeTurn = () => {
     activePawn.value = null;
     suggestionPawns.value = [];
@@ -180,5 +187,6 @@ export const useGameStore = defineStore("game", () => {
     checkPossibleDamCoordiates,
     checkForDam,
     performDam,
+    resetDam,
   };
 });

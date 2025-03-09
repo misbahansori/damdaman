@@ -5,19 +5,31 @@ const store = useGameStore();
 
 const handlePawnClick = (pawn: Pawn) => {
   store.activePawn = pawn;
+
   store.suggestionPawns = getSuggestionPawns(
     pawn,
     store.pawnCoordinates,
     store.isAlone,
   );
-  log("Pawn clicked", store.suggestionPawns);
 };
 
 const handlePawnRemoved = (pawn: Pawn) => {
-  store.pawnCoordinates = store.pawnCoordinates.filter(
-    (p) => p.x !== pawn.x && p.y !== pawn.y,
-  );
+  if (store.dam.count > 0) {
+    store.removePawns([pawn]);
+
+    store.dam.count--;
+  }
 };
+
+watch(
+  () => store.dam.count,
+  (newCount) => {
+    if (newCount <= 0) {
+      store.resetDam();
+      store.changeTurn();
+    }
+  },
+);
 
 const handleSuggestionClick = async (suggestion: Coordinate) => {
   if (!store.activePawn) return;
