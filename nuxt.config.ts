@@ -7,13 +7,14 @@ export default defineNuxtConfig({
   ssr: false,
 
   modules: [
-    "@vueuse/nuxt",
     "@nuxt/fonts",
-    "shadcn-nuxt",
     "@nuxt/icon",
+    "@nuxt/test-utils/module",
     "@nuxtjs/color-mode",
     "@pinia/nuxt",
-    "@nuxt/test-utils/module",
+    "@vueuse/nuxt",
+    "motion-v/nuxt",
+    "shadcn-nuxt",
   ],
 
   future: {

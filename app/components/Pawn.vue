@@ -29,6 +29,16 @@ const onClick = () => {
     emit("clicked", props.pawn);
   }
 };
+
+const x = useMotionValue(props.pawn.x);
+const y = useMotionValue(props.pawn.y);
+const r = useMotionValue(40);
+
+watch([props.pawn.x, props.pawn.y, isActive], () => {
+  x.set(props.pawn.x);
+  y.set(props.pawn.y);
+  r.set(isActive ? 48 : 40);
+});
 </script>
 
 <template>

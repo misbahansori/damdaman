@@ -1,10 +1,9 @@
 import type {
+  Dam,
+  Pawn,
   Color,
   Coordinate,
-  Dam,
   DamCoordinate,
-  Pawn,
-  PawnCoordinate,
 } from "~/types/global";
 
 export const useGameStore = defineStore("game", () => {
