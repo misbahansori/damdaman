@@ -91,8 +91,16 @@ export const useGameStore = defineStore("game", () => {
   };
 
   const movePawn = (pawn: Pawn, coordinate: Coordinate) => {
-    pawn.x = coordinate.x;
-    pawn.y = coordinate.y;
+    const pawnIndex = pawnCoordinates.value.findIndex(
+      (p) => p.x === pawn.x && p.y === pawn.y,
+    );
+
+    if (pawnIndex === -1) return;
+
+    const targetPawn = pawnCoordinates.value[pawnIndex]!;
+
+    targetPawn.x = coordinate.x;
+    targetPawn.y = coordinate.y;
   };
 
   const getEatenEnemy = (suggestion: Coordinate) => {

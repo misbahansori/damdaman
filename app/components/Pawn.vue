@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { TransitionPresets } from "@vueuse/core";
 import type { Pawn } from "~/types/global";
 
 const props = defineProps<{
@@ -30,32 +31,48 @@ const onClick = () => {
   }
 };
 
-const x = useMotionValue(props.pawn.x);
-const y = useMotionValue(props.pawn.y);
-const r = useMotionValue(40);
+const x = ref(props.pawn.x);
+const y = ref(props.pawn.y);
+const r = ref(40);
 
-watch([props.pawn.x, props.pawn.y, isActive], () => {
-  x.set(props.pawn.x);
-  y.set(props.pawn.y);
-  r.set(isActive ? 48 : 40);
+const xOutput = useTransition(x, {
+  duration: 200,
+  transition: TransitionPresets.easeInOutSine,
+});
+const yOutput = useTransition(y, {
+  duration: 200,
+  transition: TransitionPresets.easeInOutSine,
+});
+const rOutput = useTransition(r, {
+  duration: 100,
+  transition: TransitionPresets.easeOutQuint,
+});
+
+watch([() => props.pawn.x, () => props.pawn.y], () => {
+  x.value = props.pawn.x;
+  y.value = props.pawn.y;
+});
+
+watch(isActive, () => {
+  r.value = isActive.value ? 48 : 40;
 });
 </script>
 
 <template>
   <circle
-    :cx="pawn.x"
-    :cy="pawn.y"
+    :cx="xOutput"
+    :cy="yOutput"
     fill="#000"
     :opacity="0"
-    :r="40"
+    :r="rOutput"
     class="highlight-none cursor-pointer"
   />
 
   <circle
     @click="onClick"
-    :cx="pawn.x"
-    :cy="pawn.y"
-    :r="isActive ? 48 : 40"
+    :cx="xOutput"
+    :cy="yOutput"
+    :r="rOutput"
     class="highlight-none cursor-pointer"
     :class="{ 'pointer-events-none': pawn.color !== store.turn }"
     :fill="pawn.color === 'red' ? '#FF005C' : '#426AF5'"

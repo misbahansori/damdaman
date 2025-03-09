@@ -84,7 +84,7 @@ const handleSuggestionClick = async (suggestion: Coordinate) => {
         <Board />
         <Pawn
           v-for="pawn in store.pawnCoordinates"
-          :key="`${pawn.x},${pawn.y}`"
+          :key="pawn.id"
           :pawn="pawn"
           @clicked="handlePawnClick"
           @removed="handlePawnRemoved"
