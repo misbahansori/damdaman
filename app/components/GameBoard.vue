@@ -15,6 +15,8 @@ const handlePawnClick = (pawn: Pawn) => {
     store.pawnCoordinates,
     store.isAlone,
   );
+
+  console.log(store.suggestionPawns);
 };
 
 const handlePawnRemoved = (pawn: Pawn) => {

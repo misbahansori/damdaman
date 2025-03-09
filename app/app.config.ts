@@ -1,3 +1,3 @@
 export default defineAppConfig({
-  debug: false,
+  debug: true,
 });

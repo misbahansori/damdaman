@@ -38,12 +38,12 @@ describe("checkTwoEnemiesInRow", () => {
   });
 
   it("should detect two enemies in diagonal line", () => {
-    const currentCoordinate: Coordinate = { x: 0, y: 0 };
+    const currentCoordinate: Coordinate = { x: 900, y: 800 };
     const enemiesCoordinate: Coordinate[] = [
-      { x: 1, y: 1 },
-      { x: 2, y: 2 },
+      { x: 500, y: 1200 },
+      { x: 325, y: 1375 },
     ];
-    const targetCoordinate: Coordinate = { x: 3, y: 3 };
+    const targetCoordinate: Coordinate = { x: 200, y: 1500 };
 
     expect(
       checkTwoEnemiesInARow(

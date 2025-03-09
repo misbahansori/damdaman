@@ -162,16 +162,15 @@ describe("getSuggestionPawns", () => {
     );
   });
 
-  it("should filter out moves with multiple enemies in path when alone", () => {
-    const redPawn: Pawn = { id: 1, x: 300, y: 600, color: "red" };
-    const bluePawn: Pawn = { id: 2, x: 500, y: 400, color: "blue" };
-    const bluePawn2: Pawn = { id: 3, x: 4, y: 4, color: "blue" };
+  it("should return not return enemy when there are more than 2 enemies in a row", () => {
+    const redPawn: Pawn = { id: 1, x: 100, y: 400, color: "red" };
+    const bluePawn1: Pawn = { id: 2, x: 100, y: 800, color: "blue" };
+    const bluePawn2: Pawn = { id: 3, x: 100, y: 1000, color: "blue" };
 
-    const enemies = [bluePawn, bluePawn2];
-    const suggestions = getSuggestionPawns(redPawn, enemies, true);
+    const enemies = getSuggestionPawns(redPawn, [bluePawn1, bluePawn2], true);
 
-    suggestions.forEach((move) => {
-      expect(checkTwoEnemiesInARow(redPawn, enemies, move)).toBe(false);
-    });
+    expect(enemies).not.toContainEqual(
+      expect.objectContaining({ x: 100, y: 1200 }),
+    );
   });
 });
