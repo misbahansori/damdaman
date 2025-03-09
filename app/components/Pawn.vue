@@ -23,6 +23,13 @@ const onClick = () => {
     emit("removePawn", props.pawn);
   } else {
     store.activePawn = props.pawn;
+    store.suggestionPawns = getSuggestionPawns(
+      props.pawn,
+      store.pawnCoordinates,
+      store.isAlone,
+    );
+
+    console.log(store.suggestionPawns);
   }
 };
 </script>

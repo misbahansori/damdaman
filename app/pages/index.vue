@@ -83,6 +83,11 @@ const store = useGameStore();
               store.activePawn?.x === pawn.x && store.activePawn?.y === pawn.y
             "
           />
+          <SuggestionPawn
+            v-for="suggestion in store.suggestionPawns"
+            :key="`${suggestion.x},${suggestion.y}`"
+            :coordinate="suggestion"
+          />
         </svg>
       </div>
     </main>

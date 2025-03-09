@@ -1,20 +1,177 @@
-import { type Pawn } from "~/types/global";
+import {
+  type Coordinate,
+  type DamCoordinate,
+  type Pawn,
+  type PawnCoordinate,
+} from "~/types/global";
 
-export function getPawnCoordinate(pawn: Pawn | null): Pawn {
-  if (!pawn) {
-    return { id: 0, x: 0, y: 0, color: "red" };
+export function getPawnCoordinate(activePawn: Pawn): PawnCoordinate {
+  const pawnCoordinates = boardCoordinate.find(
+    (coordinate) =>
+      coordinate.x === activePawn.x && coordinate.y === activePawn.y,
+  );
+
+  if (!pawnCoordinates) {
+    throw new Error("Pawn coordinates not found.");
   }
 
-  return pawn;
+  return pawnCoordinates;
+}
+
+export function getEmptyCoordinate(pawnCoordinates: Pawn[]): PawnCoordinate[] {
+  return boardCoordinate.filter((coordinate) => {
+    return !pawnCoordinates.some(
+      (pawn) => pawn.x === coordinate.x && pawn.y === coordinate.y,
+    );
+  });
+}
+
+export function getEnemiesInContact(
+  pawnCoordinates: Pawn[],
+  activePawnCoordinate: PawnCoordinate,
+  activePawn: Pawn,
+  isAlone: boolean,
+): Pawn[] {
+  let enemiesInContact = pawnCoordinates.filter((pawnCoordinate) =>
+    activePawnCoordinate.possiblePaths.some(
+      (coordinate) =>
+        coordinate.x === pawnCoordinate.x &&
+        coordinate.y === pawnCoordinate.y &&
+        activePawn.color !== pawnCoordinate.color,
+    ),
+  );
+
+  if (isAlone) {
+    const eatingPaths = pawnCoordinates.filter((pawnCoordinate) =>
+      activePawnCoordinate.eatingPaths.some(
+        (coordinate) =>
+          coordinate.x === pawnCoordinate.x &&
+          coordinate.y === pawnCoordinate.y &&
+          activePawn.color !== pawnCoordinate.color,
+      ),
+    );
+    const additionalPaths = pawnCoordinates.filter((pawnCoordinate) =>
+      activePawnCoordinate.additionalPaths.some(
+        (coordinate) =>
+          coordinate.x === pawnCoordinate.x &&
+          coordinate.y === pawnCoordinate.y &&
+          activePawn.color !== pawnCoordinate.color,
+      ),
+    );
+
+    enemiesInContact = [
+      ...enemiesInContact,
+      ...eatingPaths,
+      ...additionalPaths,
+    ];
+  }
+
+  return enemiesInContact;
+}
+
+export function getEnemyPossiblePaths(
+  enemiesInContact: Pawn[],
+  activePawn: Pawn,
+) {
+  return boardCoordinate
+    .filter((coordinate) =>
+      enemiesInContact.some(
+        (enemy) => enemy.x === coordinate.x && enemy.y === coordinate.y,
+      ),
+    )
+    .flatMap((enemy) =>
+      enemy.possiblePaths.filter((coordinate) => {
+        return checkStraightLine([
+          [activePawn.x, activePawn.y],
+          [enemy.x, enemy.y],
+          [coordinate.x, coordinate.y],
+        ]);
+      }),
+    );
 }
 
 export function getEatSuggestionCoordinates(
   pawnCoordinates: Pawn[],
-  activePawnCoordinate: Pawn,
-  activePawn: Pawn | null,
+  activePawnCoordinate: PawnCoordinate,
+  activePawn: Pawn,
   isAlone: boolean,
-): Pawn[] {
-  if (!activePawn) return [];
+): Coordinate[] {
+  const enemiesInContact = getEnemiesInContact(
+    pawnCoordinates,
+    activePawnCoordinate,
+    activePawn,
+    isAlone,
+  );
+  const enemyPossiblePaths = getEnemyPossiblePaths(
+    enemiesInContact,
+    activePawn,
+  );
+
+  const eatingPaths = activePawnCoordinate.eatingPaths
+    .filter((coordinate) =>
+      enemyPossiblePaths.some(
+        (possiblePath) =>
+          possiblePath.x === coordinate.x && possiblePath.y === coordinate.y,
+      ),
+    )
+    .filter(
+      (coordinate) =>
+        !pawnCoordinates.some(
+          (pawnCoordinate) =>
+            pawnCoordinate.x === coordinate.x &&
+            pawnCoordinate.y === coordinate.y,
+        ),
+    );
+
+  let additionalEatingPaths: Coordinate[] = [];
+
+  if (isAlone) {
+    additionalEatingPaths = activePawnCoordinate.eatingPaths
+      .concat(activePawnCoordinate.additionalPaths)
+      .filter((coordinate) =>
+        enemiesInContact.some((enemy) =>
+          checkStraightLine([
+            [activePawn.x, activePawn.y],
+            [enemy.x, enemy.y],
+            [coordinate.x, coordinate.y],
+          ]),
+        ),
+      )
+      .filter(
+        (coordinate) =>
+          !pawnCoordinates.some(
+            (pawnCoordinate) =>
+              pawnCoordinate.x === coordinate.x &&
+              pawnCoordinate.y === coordinate.y,
+          ),
+      );
+  }
+
+  // Make sure the coordinates are unique.
+  const possiblePaths = eatingPaths
+    .concat(additionalEatingPaths)
+    .filter(
+      (coordinate, index, self) =>
+        self.findIndex(
+          (item) => item.x === coordinate.x && item.y === coordinate.y,
+        ) === index,
+    );
+
+  return possiblePaths;
+}
+
+export function getSuggestionPawns(
+  activePawn: Pawn,
+  pawnCoordinates: Pawn[],
+  isAlone: boolean,
+): Coordinate[] {
+  const activePawnCoordinate = getPawnCoordinate(activePawn);
+
+  if (!activePawnCoordinate) {
+    return [];
+  }
+
+  let possiblePaths = activePawnCoordinate.possiblePaths;
 
   const enemiesInContact = getEnemiesInContact(
     pawnCoordinates,
@@ -23,165 +180,100 @@ export function getEatSuggestionCoordinates(
     isAlone,
   );
 
-  return enemiesInContact.reduce<Pawn[]>((acc, enemy) => {
-    const x = enemy.x - activePawn.x;
-    const y = enemy.y - activePawn.y;
-
-    const possibleMove = {
-      id: 0,
-      x: enemy.x + x,
-      y: enemy.y + y,
-      color: activePawn.color,
-    };
-
-    const isOccupied = pawnCoordinates.some(
-      (pawn) => pawn.x === possibleMove.x && pawn.y === possibleMove.y,
+  if (enemiesInContact.length > 0) {
+    const enemyPossiblePaths = getEnemyPossiblePaths(
+      enemiesInContact,
+      activePawn,
     );
 
-    if (isOccupied) {
-      return acc;
-    }
-
-    if (
-      possibleMove.x < 0 ||
-      possibleMove.x > 7 ||
-      possibleMove.y < 0 ||
-      possibleMove.y > 7
-    ) {
-      return acc;
-    }
-
-    return [...acc, possibleMove];
-  }, []);
-}
-
-export function getEnemiesInContact(
-  pawnCoordinates: Pawn[],
-  activePawnCoordinate: Pawn,
-  activePawn: Pawn | null,
-  isAlone: boolean,
-): Pawn[] {
-  if (!activePawn) return [];
-
-  const enemies = pawnCoordinates.filter(
-    (pawn) => pawn.color !== activePawn.color,
-  );
-
-  return enemies.filter((enemy) => {
-    const xDiff = Math.abs(enemy.x - activePawnCoordinate.x);
-    const yDiff = Math.abs(enemy.y - activePawnCoordinate.y);
-
-    if (isAlone) {
-      return xDiff === 1 && yDiff === 1;
-    }
-
-    return xDiff <= 2 && yDiff <= 2;
-  });
-}
-
-export function getSuggestionPath(
-  activePawn: Pawn | null,
-  pawnCoordinates: Pawn[],
-  isAlone: boolean,
-): Pawn[] {
-  if (!activePawn) return [];
-
-  const possibleMoves: Pawn[] = [];
-
-  // Get all possible moves
-  for (let x = -1; x <= 1; x++) {
-    for (let y = -1; y <= 1; y++) {
-      if (x === 0 || y === 0) continue;
-
-      const possibleMove = {
-        id: 0,
-        x: activePawn.x + x,
-        y: activePawn.y + y,
-        color: activePawn.color,
-      };
-
-      if (
-        possibleMove.x < 0 ||
-        possibleMove.x > 7 ||
-        possibleMove.y < 0 ||
-        possibleMove.y > 7
-      ) {
-        continue;
-      }
-
-      const isOccupied = pawnCoordinates.some(
-        (pawn) => pawn.x === possibleMove.x && pawn.y === possibleMove.y,
-      );
-
-      if (isOccupied) {
-        continue;
-      }
-
-      possibleMoves.push(possibleMove);
-    }
+    possiblePaths = possiblePaths.concat(enemyPossiblePaths);
   }
 
-  const activePawnCoordinate = getPawnCoordinate(activePawn);
-  const eatSuggestionCoordinates = getEatSuggestionCoordinates(
-    pawnCoordinates,
-    activePawnCoordinate,
-    activePawn,
-    isAlone,
-  );
+  if (isAlone) {
+    possiblePaths = possiblePaths
+      .concat(activePawnCoordinate.eatingPaths)
+      .concat(activePawnCoordinate.additionalPaths);
 
-  if (eatSuggestionCoordinates.length) {
-    return eatSuggestionCoordinates;
+    const enemiesCoordinates = pawnCoordinates.filter(
+      (pawnCoordinate) => pawnCoordinate.color !== activePawn.color,
+    );
+
+    possiblePaths = possiblePaths.filter(
+      (coordinate) =>
+        !checkTwoEnemiesInARow(
+          activePawnCoordinate,
+          enemiesCoordinates,
+          coordinate,
+        ),
+    );
   }
 
-  return possibleMoves;
+  possiblePaths = possiblePaths.filter(
+    (coordinate) =>
+      !pawnCoordinates.some(
+        (pawnCoordinate) =>
+          pawnCoordinate.x === coordinate.x &&
+          pawnCoordinate.y === coordinate.y,
+      ),
+  );
+
+  // Make sure the coordinates are unique.
+  possiblePaths = possiblePaths.filter(
+    (coordinate, index, self) =>
+      self.findIndex(
+        (item) => item.x === coordinate.x && item.y === coordinate.y,
+      ) === index,
+  );
+
+  return possiblePaths;
 }
 
 export function getDamCoordinates(
   currentPawnCoordinates: Pawn[],
   pawnCoordinates: Pawn[],
-): Pawn[] {
-  const damCoordinates: Pawn[] = [];
+) {
+  const emptyCoordinates = getEmptyCoordinate(pawnCoordinates);
 
-  for (const pawn of currentPawnCoordinates) {
-    const possibleMoves: Pawn[] = [];
+  let damCoordinates: DamCoordinate[] = [];
 
-    // Get all possible moves
-    for (let x = -1; x <= 1; x++) {
-      for (let y = -1; y <= 1; y++) {
-        if (x === 0 || y === 0) continue;
+  currentPawnCoordinates.forEach((pawnCoordinate) => {
+    const activePawnCoordinate = getPawnCoordinate(pawnCoordinate);
+    const enemiesInContact = getEnemiesInContact(
+      pawnCoordinates,
+      activePawnCoordinate,
+      pawnCoordinate,
+      false,
+    );
 
-        const possibleMove = {
-          id: 0,
-          x: pawn.x + x,
-          y: pawn.y + y,
-          color: pawn.color,
-        };
+    let enemyPossiblePaths = getEnemyPossiblePaths(
+      enemiesInContact,
+      pawnCoordinate,
+    );
 
-        if (
-          possibleMove.x < 0 ||
-          possibleMove.x > 7 ||
-          possibleMove.y < 0 ||
-          possibleMove.y > 7
-        ) {
-          continue;
-        }
+    enemyPossiblePaths = enemyPossiblePaths.filter((coordinate) =>
+      emptyCoordinates.some(
+        (emptyCoordinate) =>
+          emptyCoordinate.x === coordinate.x &&
+          emptyCoordinate.y === coordinate.y,
+      ),
+    );
 
-        const isOccupied = pawnCoordinates.some(
-          (p) => p.x === possibleMove.x && p.y === possibleMove.y,
-        );
+    enemiesInContact.forEach((enemy) => {
+      enemyPossiblePaths.forEach((coordinate) => {
+        damCoordinates.push({
+          activePawn: pawnCoordinate,
+          enemyPawn: enemy,
+          target: coordinate,
+        });
+      });
+    });
+  });
 
-        if (isOccupied) {
-          continue;
-        }
-
-        possibleMoves.push(possibleMove);
-      }
-    }
-
-    if (possibleMoves.length === 0) {
-      damCoordinates.push(pawn);
-    }
-  }
-
-  return damCoordinates;
+  return damCoordinates.filter((coordinates) =>
+    checkStraightLine([
+      [coordinates.activePawn.x, coordinates.activePawn.y],
+      [coordinates.enemyPawn.x, coordinates.enemyPawn.y],
+      [coordinates.target.x, coordinates.target.y],
+    ]),
+  );
 }

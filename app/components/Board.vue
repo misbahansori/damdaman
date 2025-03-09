@@ -8,7 +8,7 @@ const emit = defineEmits<{
 
 function onClick(x: number, y: number) {
   if (
-    !store.suggestionPaths.some((path: Pawn) => path.x === x && path.y === y)
+    !store.suggestionPawns.some((path: Pawn) => path.x === x && path.y === y)
   ) {
     return;
   }
@@ -28,13 +28,7 @@ function onClick(x: number, y: number) {
     stroke-linecap="round"
     stroke-dasharray="6 6"
   />
-  <SuggestionPawn
-    v-for="suggestion in store.suggestionPaths"
-    :key="`${suggestion.x},${suggestion.y}`"
-    :x="suggestion.x"
-    :y="suggestion.y"
-    @click="onClick(suggestion.x, suggestion.y)"
-  />
+
   <text
     v-for="coordinate in boardCoordinate"
     :key="`${coordinate.x},${coordinate.y}`"

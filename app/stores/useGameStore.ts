@@ -1,4 +1,4 @@
-import type { Color, Dam, Pawn } from "~/types/global";
+import type { Color, Coordinate, Dam, Pawn } from "~/types/global";
 
 export const useGameStore = defineStore("game", () => {
   const activePawn = ref<Pawn | null>(null);
@@ -44,7 +44,7 @@ export const useGameStore = defineStore("game", () => {
     { id: 31, x: 500, y: 1500, color: "blue" },
     { id: 32, x: 800, y: 1500, color: "blue" },
   ]);
-  const suggestionPaths = ref<Pawn[]>([]);
+  const suggestionPawns = ref<Coordinate[]>([]);
   const turn = ref<Color>("red");
 
   const redPawnKillCount = computed(
@@ -58,7 +58,7 @@ export const useGameStore = defineStore("game", () => {
 
   const changeTurn = () => {
     activePawn.value = null;
-    suggestionPaths.value = [];
+    suggestionPawns.value = [];
     numberOfTurns.value = 0;
     turn.value = turn.value === "red" ? "blue" : "red";
   };
@@ -69,7 +69,7 @@ export const useGameStore = defineStore("game", () => {
     isAlone,
     numberOfTurns,
     pawnCoordinates,
-    suggestionPaths,
+    suggestionPawns,
     turn,
     changeTurn,
     redPawnKillCount,
