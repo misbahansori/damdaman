@@ -2,11 +2,13 @@ export default defineWebSocketHandler({
   open(peer) {
     // Subscribe to public channel by default
     peer.subscribe("public");
-    peer.send({
-      type: "SYSTEM",
-      message: "Connected to public channel",
-      channel: "public",
-    });
+    peer.send(
+      JSON.stringify({
+        type: "SYSTEM",
+        message: "Connected to public channel",
+        channel: "public",
+      }),
+    );
   },
 
   message(peer, message) {
@@ -33,11 +35,13 @@ export default defineWebSocketHandler({
           // Allow client to subscribe to any channel
           const { channelId } = data;
           peer.subscribe(channelId);
-          peer.send({
-            type: "SUBSCRIBED",
-            message: `Subscribed to channel ${channelId}`,
-            channel: channelId,
-          });
+          peer.send(
+            JSON.stringify({
+              type: "SUBSCRIBED",
+              message: `Subscribed to channel ${channelId}`,
+              channel: channelId,
+            }),
+          );
           // Notify channel members
           peer.publish(
             channelId,
@@ -65,20 +69,25 @@ export default defineWebSocketHandler({
           break;
       }
     } catch (error) {
-      peer.send({
-        type: "ERROR",
-        message: "Invalid message format",
-        channel: "public",
-      });
+      peer.send(
+        JSON.stringify({
+          type: "ERROR",
+          message: "Invalid message format",
+          channel: "public",
+        }),
+      );
     }
   },
 
   close(peer) {
     // Just notify public channel when a user disconnects
-    peer.publish("public", {
-      type: "USER_LEFT",
-      user: peer.toString(),
-      channel: "public",
-    });
+    peer.publish(
+      "public",
+      JSON.stringify({
+        type: "USER_LEFT",
+        user: peer.toString(),
+        channel: "public",
+      }),
+    );
   },
 });
