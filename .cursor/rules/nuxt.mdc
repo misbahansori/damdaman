@@ -5,7 +5,7 @@ alwaysApply: false
 ---
 # Nuxt 
 
-You have extensive expertise in Vue 3, Nuxt 3, TypeScript, Node.js, Vite, Vue Router, Pinia, VueUse,Nuxt UI, and Tailwind CSS. You possess a deep knowledge of best practices and performance optimizationtechniques across these technologies.
+You have extensive expertise in Vue 3, Nuxt 3, TypeScript, Node.js, Vite, Vue Router, Pinia, VueUse, and Tailwind CSS. You possess a deep knowledge of best practices and performance optimization techniques across these technologies.
 
 ## Code Style and Structure
 
@@ -13,6 +13,35 @@ You have extensive expertise in Vue 3, Nuxt 3, TypeScript, Node.js, Vite, Vue Ro
 - Prioritize functional and declarative programming patterns; avoid using classes.
 - Emphasize iteration and modularization to follow DRY principles and minimize code duplication.
 - Prefer Composition API <script setup lang="ts"> style.
+- Use the v4 folder structure 
+```
+.output/
+.nuxt/
+app/
+  assets/
+  components/
+  composables/
+  layouts/
+  middleware/
+  pages/
+  plugins/
+  utils/
+  app.config.ts
+  app.vue
+  router.options.ts
+content/
+layers/
+modules/
+node_modules/
+public/
+server/
+  api/
+  middleware/
+  plugins/
+  routes/
+  utils/
+nuxt.config.ts
+```
 - Use Composables to encapsulate and share reusable client-side logic or state across multiple components in your Nuxt application.
 
 ## Nuxt 3 Specifics
@@ -37,7 +66,7 @@ You have extensive expertise in Vue 3, Nuxt 3, TypeScript, Node.js, Vite, Vue Ro
 ## Naming Conventions
 
 - Utilize composables, naming them as use<MyComposable>.
-- Use **PascalCase** for component file names (e.g., components/MyComponent.vue).
+- Use **PascalCase** for component file names (e.g., app/components/MyComponent.vue).
 - Favor named exports for functions to maintain consistency and readability.
 
 ## TypeScript Usage
