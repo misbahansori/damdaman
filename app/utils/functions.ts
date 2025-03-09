@@ -5,6 +5,9 @@ import {
   type PawnCoordinate,
 } from "~/types/global";
 
+/**
+ * Get the coordinate of a pawn on the board.
+ */
 export function getPawnCoordinate(activePawn: Pawn): PawnCoordinate {
   const pawnCoordinates = boardCoordinate.find(
     (coordinate) =>
@@ -18,6 +21,9 @@ export function getPawnCoordinate(activePawn: Pawn): PawnCoordinate {
   return pawnCoordinates;
 }
 
+/**
+ * Get the empty coordinates on the board.
+ */
 export function getEmptyCoordinate(pawnCoordinates: Pawn[]): PawnCoordinate[] {
   return boardCoordinate.filter((coordinate) => {
     return !pawnCoordinates.some(
@@ -26,6 +32,9 @@ export function getEmptyCoordinate(pawnCoordinates: Pawn[]): PawnCoordinate[] {
   });
 }
 
+/**
+ * Get the enemies in contact with the active pawn.
+ */
 export function getEnemiesInContact(
   pawnCoordinates: Pawn[],
   activePawn: Pawn,
@@ -70,6 +79,9 @@ export function getEnemiesInContact(
   return enemiesInContact;
 }
 
+/**
+ * Get the possible paths for the enemies in contact with the active pawn.
+ */
 export function getEnemyPossiblePaths(
   enemiesInContact: Pawn[],
   activePawn: Pawn,
@@ -91,6 +103,9 @@ export function getEnemyPossiblePaths(
     );
 }
 
+/**
+ * Get the eating suggestion coordinates for the active pawn.
+ */
 export function getEatSuggestionCoordinates(
   pawnCoordinates: Pawn[],
   activePawn: Pawn,
@@ -162,6 +177,9 @@ export function getEatSuggestionCoordinates(
   return possiblePaths;
 }
 
+/**
+ * Get the suggestion pawns for the active pawn.
+ */
 export function getSuggestionPawns(
   activePawn: Pawn,
   pawnCoordinates: Pawn[],
@@ -229,6 +247,9 @@ export function getSuggestionPawns(
   return possiblePaths;
 }
 
+/**
+ * Get the dam coordinates for the active pawn.
+ */
 export function getDamCoordinates(
   currentPawnCoordinates: Pawn[],
   pawnCoordinates: Pawn[],
