@@ -2,8 +2,72 @@
 import type { Coordinate, Pawn } from "~/types/global";
 
 const store = useGameStore();
+const { data, send } = useWebSocket("/damdaman");
 
 const handlePawnClick = (pawn: Pawn) => {
+  send(
+    JSON.stringify({
+      type: "PAWN_CLICKED",
+      data: {
+        id: pawn.id,
+      },
+    }),
+  );
+
+  onPawnClicked(pawn);
+};
+
+const handlePawnMoved = (coordinate: Coordinate) => {
+  send(
+    JSON.stringify({
+      type: "PAWN_MOVED",
+      data: { coordinate },
+    }),
+  );
+
+  onPawnMoved(coordinate);
+};
+
+const handlePawnRemoved = (pawn: Pawn) => {
+  send(
+    JSON.stringify({
+      type: "PAWN_REMOVED",
+      data: { id: pawn.id },
+    }),
+  );
+
+  onPawnRemoved(pawn);
+};
+watch(data, (newData) => {
+  const payload = JSON.parse(newData);
+  const handlers: Record<string, () => void> = {
+    PAWN_CLICKED: () => {
+      const pawn = store.pawnCoordinates.find(
+        (pawn) => pawn.id === payload.data.id,
+      );
+
+      if (!pawn) return;
+
+      onPawnClicked(pawn);
+    },
+    PAWN_MOVED: () => {
+      onPawnMoved(payload.data.coordinate);
+    },
+    PAWN_REMOVED: () => {
+      const pawn = store.pawnCoordinates.find(
+        (pawn) => pawn.id === payload.data.id,
+      );
+
+      if (!pawn) return;
+
+      onPawnRemoved(pawn);
+    },
+  };
+
+  handlers[payload.type]?.();
+});
+
+const onPawnClicked = (pawn: Pawn) => {
   if (store.numberOfTurns >= 1) return;
 
   if (store.dam.count > 0) return;
@@ -15,11 +79,9 @@ const handlePawnClick = (pawn: Pawn) => {
     store.pawnCoordinates,
     store.isAlone,
   );
-
-  console.log(store.suggestionPawns);
 };
 
-const handlePawnRemoved = (pawn: Pawn) => {
+const onPawnRemoved = (pawn: Pawn) => {
   if (store.dam.count > 0) {
     store.removePawns([pawn]);
 
@@ -37,7 +99,7 @@ watch(
   },
 );
 
-const handleSuggestionClick = async (suggestion: Coordinate) => {
+const onPawnMoved = async (suggestion: Coordinate) => {
   if (!store.activePawn) return;
 
   const possibleDamCoordinates = store.checkPossibleDamCoordiates();
@@ -95,7 +157,7 @@ const handleSuggestionClick = async (suggestion: Coordinate) => {
           v-for="suggestion in store.suggestionPawns"
           :key="`${suggestion.x},${suggestion.y}`"
           :coordinate="suggestion"
-          @click="handleSuggestionClick"
+          @click="handlePawnMoved"
         />
       </svg>
     </div>
