@@ -18,6 +18,13 @@ export default defineWebSocketHandler({
         };
         peer.send(JSON.stringify(payload));
       },
+      CREATE_ROOM: () => {
+        const payload = {
+          type: "CREATE_ROOM",
+          data: data.data,
+        };
+        peer.publish("global", JSON.stringify(payload));
+      },
       PAWN_CLICKED: () => {
         const payload = {
           type: "PAWN_CLICKED",
