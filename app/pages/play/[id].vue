@@ -1,5 +1,9 @@
 <script setup lang="ts">
+const route = useRoute();
 const store = useGameStore();
+const { joinRoom } = useGameSocket();
+
+joinRoom(route.params.id as string);
 </script>
 
 <template>

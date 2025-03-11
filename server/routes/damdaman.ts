@@ -1,3 +1,5 @@
+const rooms = new Map<string, Set<string>>();
+
 export default defineWebSocketHandler({
   open(peer) {
     peer.send(JSON.stringify({ type: "SYSTEM", message: `Welcome ${peer}!` }));
@@ -18,9 +20,29 @@ export default defineWebSocketHandler({
         };
         peer.send(JSON.stringify(payload));
       },
-      CREATE_ROOM: () => {
+      JOIN_ROOM: () => {
+        if (rooms.has(data.data.roomId)) {
+          rooms.get(data.data.roomId)?.add(peer.id);
+        } else {
+          rooms.set(data.data.roomId, new Set([peer.id]));
+        }
+
+        peer.subscribe(data.data.roomId);
+
         const payload = {
-          type: "CREATE_ROOM",
+          type: "JOIN_ROOM",
+          data: {
+            roomId: data.data.roomId,
+            players: Array.from(rooms.get(data.data.roomId) || []),
+          },
+        };
+
+        peer.send(JSON.stringify(payload));
+        peer.publish("global", JSON.stringify(payload));
+      },
+      LEAVE_ROOM: () => {
+        const payload = {
+          type: "LEAVE_ROOM",
           data: data.data,
         };
         peer.publish("global", JSON.stringify(payload));

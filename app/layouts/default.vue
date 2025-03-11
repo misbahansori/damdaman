@@ -1,3 +1,6 @@
+<script setup lang="ts">
+useGameSocket();
+</script>
 <template>
   <div class="relative min-h-screen w-full items-center">
     <div

@@ -6,6 +6,10 @@ const { data, send } = useWebSocket("/damdaman");
 
 export const useGameSocket = () => {
   const store = useGameStore();
+
+  /*
+   * User Actions
+   */
   const handlePawnClick = (pawn: Pawn) => {
     send(
       JSON.stringify({
@@ -41,6 +45,18 @@ export const useGameSocket = () => {
     onPawnRemoved(pawn);
   };
 
+  const joinRoom = (roomId: string) => {
+    send(
+      JSON.stringify({
+        type: "JOIN_ROOM",
+        data: { roomId },
+      }),
+    );
+  };
+
+  /*
+   * Server Actions
+   */
   watch(data, (newData) => {
     const payload = JSON.parse(newData);
     const handlers: Record<string, () => void> = {
@@ -83,6 +99,9 @@ export const useGameSocket = () => {
     }
   });
 
+  /*
+   * Action Handlers
+   */
   const onPawnClicked = (pawn: Pawn) => {
     if (store.numberOfTurns >= 1) return;
 
@@ -151,5 +170,11 @@ export const useGameSocket = () => {
     store.changeTurn();
   };
 
-  return { handlePawnClick, handlePawnMoved, handlePawnRemoved };
+  return {
+    handlePawnClick,
+    handlePawnMoved,
+    handlePawnRemoved,
+    joinRoom,
+    data,
+  };
 };
