@@ -70,7 +70,7 @@ function handleJoinRoom(peer: any, data: JoinRoomData) {
     type: "JOIN_ROOM",
     data: {
       roomId,
-      players: Array.from(rooms.get(roomId) || []),
+      players: Array.from(rooms.get(roomId) ?? []),
     },
   };
 
@@ -91,7 +91,7 @@ function handleLeaveRoom(peer: any, data: LeaveRoomData) {
 
 function handlePawnClicked(peer: any, data: PawnClickedData) {
   peer.publish(
-    "data.data.roomId",
+    data.data.roomId,
     JSON.stringify({
       type: "PAWN_CLICKED",
       data: data.data,

@@ -66,32 +66,31 @@ export const useGameSocket = () => {
    * Server Actions
    */
   watch(data, (newData) => {
-    const payload = JSON.parse(newData);
-    const handlers: Record<string, () => void> = {
-      PAWN_CLICKED: () => {
-        const pawn = store.pawnCoordinates.find(
-          (pawn) => pawn.id === payload.data.id,
-        );
+    const payload: SocketData = JSON.parse(newData);
 
-        if (!pawn) return;
+    if (payload.type === "PAWN_CLICKED") {
+      const pawn = store.pawnCoordinates.find(
+        (pawn) => pawn.id === Number(payload.data.id),
+      );
 
-        onPawnClicked(pawn);
-      },
-      PAWN_MOVED: () => {
-        onPawnMoved(payload.data.coordinate);
-      },
-      PAWN_REMOVED: () => {
-        const pawn = store.pawnCoordinates.find(
-          (pawn) => pawn.id === payload.data.id,
-        );
+      if (!pawn) return;
 
-        if (!pawn) return;
+      onPawnClicked(pawn);
+    }
 
-        onPawnRemoved(pawn);
-      },
-    };
+    if (payload.type === "PAWN_MOVED") {
+      onPawnMoved(payload.data.coordinate);
+    }
 
-    handlers[payload.type]?.();
+    if (payload.type === "PAWN_REMOVED") {
+      const pawn = store.pawnCoordinates.find(
+        (pawn) => pawn.id === Number(payload.data.id),
+      );
+
+      if (!pawn) return;
+
+      onPawnRemoved(pawn);
+    }
   });
 
   watch(store.pawnCoordinates, (newPawns) => {
