@@ -6,52 +6,60 @@ const { data, send } = useWebSocket("/damdaman");
 
 export const useGameSocket = () => {
   const store = useGameStore();
+  const route = useRoute();
 
   /*
    * User Actions
    */
   const handlePawnClick = (pawn: Pawn) => {
-    send(
-      JSON.stringify({
-        type: "PAWN_CLICKED",
-        data: {
-          id: pawn.id,
-        },
-      }),
-    );
+    const payload: PawnClickedData = {
+      type: "PAWN_CLICKED",
+      data: {
+        roomId: route.params.id as string,
+        id: pawn.id.toString(),
+      },
+    };
+
+    send(JSON.stringify(payload));
 
     onPawnClicked(pawn);
   };
 
   const handlePawnMoved = (coordinate: Coordinate) => {
-    send(
-      JSON.stringify({
-        type: "PAWN_MOVED",
-        data: { coordinate },
-      }),
-    );
+    const payload: PawnMovedData = {
+      type: "PAWN_MOVED",
+      data: {
+        roomId: route.params.id as string,
+        coordinate,
+      },
+    };
+
+    send(JSON.stringify(payload));
 
     onPawnMoved(coordinate);
   };
 
   const handlePawnRemoved = (pawn: Pawn) => {
-    send(
-      JSON.stringify({
-        type: "PAWN_REMOVED",
-        data: { id: pawn.id },
-      }),
-    );
+    const payload: PawnRemovedData = {
+      type: "PAWN_REMOVED",
+      data: {
+        roomId: route.params.id as string,
+        id: pawn.id.toString(),
+      },
+    };
+
+    send(JSON.stringify(payload));
 
     onPawnRemoved(pawn);
   };
 
   const joinRoom = (roomId: string) => {
-    send(
-      JSON.stringify({
-        type: "JOIN_ROOM",
-        data: { roomId },
-      }),
-    );
+    const payload: JoinRoomData = {
+      type: "JOIN_ROOM",
+      data: { roomId },
+    };
+
+    send(JSON.stringify(payload));
   };
 
   /*

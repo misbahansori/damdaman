@@ -10,67 +10,33 @@ export default defineWebSocketHandler({
     peer.subscribe("global");
   },
   message(peer, message) {
-    const data = JSON.parse(message.text());
+    const data: SocketData = JSON.parse(message.text());
 
-    const handlers: Record<string, () => void> = {
-      PING: () => {
-        const payload = {
-          type: "SYSTEM",
-          message: "PONG",
-        };
-        peer.send(JSON.stringify(payload));
-      },
-      JOIN_ROOM: () => {
-        if (rooms.has(data.data.roomId)) {
-          rooms.get(data.data.roomId)?.add(peer.id);
-        } else {
-          rooms.set(data.data.roomId, new Set([peer.id]));
-        }
+    switch (data.type) {
+      case "PING":
+        handlePing(peer);
+        break;
 
-        peer.subscribe(data.data.roomId);
+      case "JOIN_ROOM":
+        handleJoinRoom(peer, data);
+        break;
 
-        const payload = {
-          type: "JOIN_ROOM",
-          data: {
-            roomId: data.data.roomId,
-            players: Array.from(rooms.get(data.data.roomId) || []),
-          },
-        };
+      case "LEAVE_ROOM":
+        handleLeaveRoom(peer, data);
+        break;
 
-        peer.send(JSON.stringify(payload));
-        peer.publish("global", JSON.stringify(payload));
-      },
-      LEAVE_ROOM: () => {
-        const payload = {
-          type: "LEAVE_ROOM",
-          data: data.data,
-        };
-        peer.publish("global", JSON.stringify(payload));
-      },
-      PAWN_CLICKED: () => {
-        const payload = {
-          type: "PAWN_CLICKED",
-          data: data.data,
-        };
-        peer.publish("global", JSON.stringify(payload));
-      },
-      PAWN_MOVED: () => {
-        const payload = {
-          type: "PAWN_MOVED",
-          data: data.data,
-        };
-        peer.publish("global", JSON.stringify(payload));
-      },
-      PAWN_REMOVED: () => {
-        const payload = {
-          type: "PAWN_REMOVED",
-          data: data.data,
-        };
-        peer.publish("global", JSON.stringify(payload));
-      },
-    };
+      case "PAWN_CLICKED":
+        handlePawnClicked(peer, data);
+        break;
 
-    handlers[data.type]?.();
+      case "PAWN_MOVED":
+        handlePawnMoved(peer, data);
+        break;
+
+      case "PAWN_REMOVED":
+        handlePawnRemoved(peer, data);
+        break;
+    }
   },
   close(peer) {
     peer.publish(
@@ -79,3 +45,76 @@ export default defineWebSocketHandler({
     );
   },
 });
+
+function handlePing(peer: any) {
+  peer.send(
+    JSON.stringify({
+      type: "SYSTEM",
+      message: "PONG",
+    }),
+  );
+}
+
+function handleJoinRoom(peer: any, data: JoinRoomData) {
+  const roomId = data.data.roomId;
+
+  if (rooms.has(roomId)) {
+    rooms.get(roomId)?.add(peer.id);
+  } else {
+    rooms.set(roomId, new Set([peer.id]));
+  }
+
+  peer.subscribe(roomId);
+
+  const payload = {
+    type: "JOIN_ROOM",
+    data: {
+      roomId,
+      players: Array.from(rooms.get(roomId) || []),
+    },
+  };
+
+  peer.send(JSON.stringify(payload));
+  peer.publish("global", JSON.stringify(payload));
+}
+
+function handleLeaveRoom(peer: any, data: LeaveRoomData) {
+  peer.unsubscribe(data.data.roomId);
+  peer.publish(
+    "global",
+    JSON.stringify({
+      type: "LEAVE_ROOM",
+      data: data.data,
+    }),
+  );
+}
+
+function handlePawnClicked(peer: any, data: PawnClickedData) {
+  peer.publish(
+    "data.data.roomId",
+    JSON.stringify({
+      type: "PAWN_CLICKED",
+      data: data.data,
+    }),
+  );
+}
+
+function handlePawnMoved(peer: any, data: PawnMovedData) {
+  peer.publish(
+    data.data.roomId,
+    JSON.stringify({
+      type: "PAWN_MOVED",
+      data: data.data,
+    }),
+  );
+}
+
+function handlePawnRemoved(peer: any, data: PawnRemovedData) {
+  peer.publish(
+    data.data.roomId,
+    JSON.stringify({
+      type: "PAWN_REMOVED",
+      data: data.data,
+    }),
+  );
+}
