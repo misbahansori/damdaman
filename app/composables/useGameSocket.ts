@@ -98,11 +98,11 @@ export const useGameSocket = () => {
     const bluePawns = newPawns.filter((pawn) => pawn.color === "blue");
 
     if (redPawns.length === 0) {
-      console.log("blue wins");
+      store.setWinner("blue");
     }
 
     if (bluePawns.length === 0) {
-      console.log("red wins");
+      store.setWinner("red");
     }
   });
 
