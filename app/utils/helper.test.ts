@@ -1,6 +1,5 @@
 import { describe, it, expect } from "vitest";
 import { checkTwoEnemiesInARow } from "./helper";
-import type { Coordinate } from "~/types/global";
 
 describe("checkTwoEnemiesInRow", () => {
   it("should detect two enemies in horizontal line", () => {

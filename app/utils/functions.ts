@@ -1,10 +1,3 @@
-import {
-  type Coordinate,
-  type DamCoordinate,
-  type Pawn,
-  type PawnCoordinate,
-} from "~/types/global";
-
 /**
  * Get the coordinate of a pawn on the board.
  * Optimization: Early return when found

@@ -1,7 +1,3 @@
-import type { Coordinate } from "~/types/global";
-
-import type { Pawn } from "~/types/global";
-
 const { data, send } = useWebSocket("/damdaman");
 
 export const useGameSocket = () => {
@@ -65,7 +61,7 @@ export const useGameSocket = () => {
   /*
    * Server Actions
    */
-  watch(data, (newData) => {
+  watch(data, async (newData) => {
     const payload: SocketData = JSON.parse(newData);
 
     if (payload.type === "PAWN_CLICKED") {
@@ -79,7 +75,7 @@ export const useGameSocket = () => {
     }
 
     if (payload.type === "PAWN_MOVED") {
-      onPawnMoved(payload.data.coordinate);
+      await onPawnMoved(payload.data.coordinate);
     }
 
     if (payload.type === "PAWN_REMOVED") {
@@ -141,17 +137,19 @@ export const useGameSocket = () => {
     },
   );
 
-  const onPawnMoved = async (suggestion: Coordinate) => {
+  const onPawnMoved = async (coordinate: Coordinate) => {
     if (!store.activePawn) return;
 
     const possibleDamCoordinates = store.checkPossibleDamCoordiates();
+    console.log("possibleDamCoordinates", possibleDamCoordinates);
 
-    const eatenEnemy = store.getEatenEnemy(suggestion);
+    const eatenEnemy = store.getEatenEnemy(coordinate);
+    console.log("eatenEnemy", eatenEnemy);
 
     if (store.checkForDam(possibleDamCoordinates, eatenEnemy)) {
       const color = store.activePawn?.color;
 
-      store.movePawn(store.activePawn, suggestion);
+      store.movePawn(store.activePawn, coordinate);
       store.clearActivePawn();
       store.clearSuggestionPawns();
 
@@ -165,7 +163,7 @@ export const useGameSocket = () => {
     }
 
     store.clearSuggestionPawns();
-    store.movePawn(store.activePawn, suggestion);
+    store.movePawn(store.activePawn, coordinate);
 
     if (eatenEnemy?.length) {
       store.checkForMoreEatSuggestion();

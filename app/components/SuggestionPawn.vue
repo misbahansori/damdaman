@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { Coordinate } from "~/types/global";
-
 const props = defineProps<{
   coordinate: Coordinate;
 }>();

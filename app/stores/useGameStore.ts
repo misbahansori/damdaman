@@ -1,11 +1,3 @@
-import type {
-  Dam,
-  Pawn,
-  Color,
-  Coordinate,
-  DamCoordinate,
-} from "~/types/global";
-
 export const useGameStore = defineStore("game", () => {
   const activePawn = ref<Pawn | null>(null);
   const winner = ref<Color | null>(null);
@@ -166,6 +158,8 @@ export const useGameStore = defineStore("game", () => {
       isAlone.value,
     );
 
+    console.log("enemiesInContact", enemiesInContact);
+
     const eatenEnemy = enemiesInContact.filter((pawnCoordinate) => {
       if (!activePawn.value) return;
       return checkStraightLine([
@@ -174,6 +168,8 @@ export const useGameStore = defineStore("game", () => {
         [suggestion.x, suggestion.y],
       ]);
     });
+
+    console.log("eatenEnemy", eatenEnemy);
 
     return eatenEnemy;
   };

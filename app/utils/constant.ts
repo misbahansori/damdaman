@@ -1,5 +1,3 @@
-import type { PawnCoordinate } from "~/types/global";
-
 export const boardLines = [
   { x1: 100, y1: 400, x2: 900, y2: 400 },
   { x1: 100, y1: 600, x2: 900, y2: 600 },

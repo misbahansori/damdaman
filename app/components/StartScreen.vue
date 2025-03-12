@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { Pawn } from "~/types/global";
-
 const store = useGameStore();
 
 function startGame() {

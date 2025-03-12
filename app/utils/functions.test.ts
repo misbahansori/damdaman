@@ -8,7 +8,6 @@ import {
   getSuggestionPawns,
   getDamCoordinates,
 } from "./functions";
-import type { Pawn, PawnCoordinate } from "~/types/global";
 
 describe("getPawnCoordinate", () => {
   it("should return correct board coordinate for a pawn", () => {

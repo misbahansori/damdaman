@@ -1,5 +1,3 @@
-import type { Coordinate } from "~/types/global";
-
 export const checkStraightLine = (
   coordinates: [[number, number], [number, number], [number, number]],
 ) => {

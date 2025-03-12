@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { TransitionPresets } from "@vueuse/core";
-import type { Pawn } from "~/types/global";
 
 const props = defineProps<{
   pawn: Pawn;
