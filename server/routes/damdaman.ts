@@ -43,6 +43,12 @@ export default defineWebSocketHandler({
       "global",
       JSON.stringify({ type: "SYSTEM", message: `${peer} left!` }),
     );
+
+    rooms.forEach((players) => {
+      if (players.has(peer.id)) {
+        players.delete(peer.id);
+      }
+    });
   },
 });
 
