@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const store = useGameStore();
+const gameStore = useGameStore();
 const appConfig = useAppConfig();
 </script>
 
@@ -29,14 +29,16 @@ const appConfig = useAppConfig();
   </text>
 
   <line
-    v-for="line in store.dam.coordinates"
+    v-for="line in gameStore.dam.coordinates"
     :key="`${line.activePawn.x},${line.activePawn.y}`"
     :x1="line.activePawn.x"
     :y1="line.activePawn.y"
     :x2="line.target.x"
     :y2="line.target.y"
     stroke="currentColor"
-    :class="store.dam.color === 'red' ? 'text-red-500/50' : 'text-blue-500/50'"
+    :class="
+      gameStore.dam.color === 'red' ? 'text-red-500/50' : 'text-blue-500/50'
+    "
     :stroke-width="64"
     stroke-linecap="round"
   />

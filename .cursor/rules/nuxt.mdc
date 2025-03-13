@@ -47,6 +47,7 @@ nuxt.config.ts
 ## Nuxt 3 Specifics
 
 - Nuxt 3 provides auto imports, so you should not manually import any functions from `vue`, `composables`, `utils` and etc.
+- Tak advantage of the available shadcn component inside the `app/components/ui` directory
 - For color mode handling, use the built-in '@nuxtjs/color-mode' with the 'useColorMode()' function.
 - Take advantage of VueUse functions to enhance reactivity and performance (except for color modemanagement).
 - Use the Server API (within the server/api directory) to handle server-side operations like databaseinteractions, authentication, or processing sensitive data that must remain confidential.

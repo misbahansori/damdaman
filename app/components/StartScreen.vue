@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const store = useGameStore();
+const gameStore = useGameStore();
 
 function startGame() {
   const pawnCoordinates: Pawn[] = [];
@@ -28,7 +28,7 @@ function startGame() {
     }
   }
 
-  store.pawnCoordinates = pawnCoordinates;
+  gameStore.pawnCoordinates = pawnCoordinates;
 }
 
 startGame();
@@ -36,7 +36,7 @@ startGame();
 
 <template>
   <div
-    v-if="!store.pawnCoordinates.length"
+    v-if="!gameStore.pawnCoordinates.length"
     class="absolute inset-0 flex items-center justify-center"
   >
     <div class="rounded-lg bg-white p-8 text-center shadow-lg">

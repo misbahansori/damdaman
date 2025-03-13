@@ -1,16 +1,20 @@
 <script setup lang="ts">
 const route = useRoute();
-const store = useGameStore();
+const gameStore = useGameStore();
 const { joinRoom } = useGameSocket();
 
 joinRoom(route.params.id as string);
+
+onMounted(() => {
+  gameStore.initializeGame();
+});
 </script>
 
 <template>
   <div>
     <Transition name="fade" mode="out-in">
       <div
-        v-if="store.turn === 'red'"
+        v-if="gameStore.turn === 'red'"
         class="absolute inset-x-0 top-0 h-4 bg-red-500"
       />
       <div v-else class="absolute inset-x-0 bottom-0 h-4 bg-blue-500" />
@@ -29,7 +33,9 @@ joinRoom(route.params.id as string);
           stroke-width="2"
         />
       </svg>
-      <span class="border-black text-white">{{ store.redPawnKillCount }}</span>
+      <span class="border-black text-white">
+        {{ gameStore.redPawnKillCount }}
+      </span>
     </div>
     <div class="absolute bottom-12 left-6 flex flex-wrap gap-1">
       <svg
@@ -45,7 +51,9 @@ joinRoom(route.params.id as string);
           stroke-width="2"
         />
       </svg>
-      <span class="border-black text-white">{{ store.bluePawnKillCount }}</span>
+      <span class="border-black text-white">
+        {{ gameStore.bluePawnKillCount }}
+      </span>
     </div>
     <div
       class="absolute right-4 bottom-10 z-10 flex items-center justify-center"
