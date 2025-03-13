@@ -60,6 +60,7 @@ export interface PawnMovedData {
   type: "PAWN_MOVED";
   data: {
     roomId: string;
+    pawn: Pawn;
     coordinate: Coordinate;
   };
 }

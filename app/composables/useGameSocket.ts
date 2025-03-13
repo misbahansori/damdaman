@@ -1,7 +1,8 @@
-const { data, send } = useWebSocket("/damdaman");
+const { ws, send } = useWebSocket("/damdaman");
 
 export const useGameSocket = () => {
-  const store = useGameStore();
+  const gameStore = useGameStore();
+  const roomStore = useRoomStore();
   const route = useRoute();
 
   /*
@@ -22,17 +23,22 @@ export const useGameSocket = () => {
   };
 
   const handlePawnMoved = (coordinate: Coordinate) => {
+    const activePawn = gameStore.activePawn;
+
+    if (!activePawn) return;
+
     const payload: PawnMovedData = {
       type: "PAWN_MOVED",
       data: {
         roomId: route.params.id as string,
+        pawn: activePawn,
         coordinate,
       },
     };
 
     send(JSON.stringify(payload));
 
-    onPawnMoved(coordinate);
+    onPawnMoved(activePawn, coordinate);
   };
 
   const handlePawnRemoved = (pawn: Pawn) => {
@@ -61,44 +67,50 @@ export const useGameSocket = () => {
   /*
    * Server Actions
    */
-  watch(data, async (newData) => {
-    const payload: SocketData = JSON.parse(newData);
+  if (ws.value) {
+    ws.value.onmessage = (event) => {
+      const payload: SocketData = JSON.parse(event.data);
 
-    if (payload.type === "PAWN_CLICKED") {
-      const pawn = store.pawnCoordinates.find(
-        (pawn) => pawn.id === Number(payload.data.id),
-      );
+      if (payload.type === "PAWN_CLICKED") {
+        const pawn = gameStore.pawnCoordinates.find(
+          (pawn) => pawn.id === Number(payload.data.id),
+        );
 
-      if (!pawn) return;
+        if (!pawn) return;
 
-      onPawnClicked(pawn);
-    }
+        onPawnClicked(pawn);
+      }
 
-    if (payload.type === "PAWN_MOVED") {
-      await onPawnMoved(payload.data.coordinate);
-    }
+      if (payload.type === "PAWN_MOVED") {
+        onPawnMoved(payload.data.pawn, payload.data.coordinate);
+      }
 
-    if (payload.type === "PAWN_REMOVED") {
-      const pawn = store.pawnCoordinates.find(
-        (pawn) => pawn.id === Number(payload.data.id),
-      );
+      if (payload.type === "PAWN_REMOVED") {
+        const pawn = gameStore.pawnCoordinates.find(
+          (pawn) => pawn.id === Number(payload.data.id),
+        );
 
-      if (!pawn) return;
+        if (!pawn) return;
 
-      onPawnRemoved(pawn);
-    }
-  });
+        onPawnRemoved(pawn);
+      }
 
-  watch(store.pawnCoordinates, (newPawns) => {
+      if (payload.type === "JOIN_ROOM") {
+        roomStore.joinRoom(payload.data.roomId);
+      }
+    };
+  }
+
+  watch(gameStore.pawnCoordinates, (newPawns) => {
     const redPawns = newPawns.filter((pawn) => pawn.color === "red");
     const bluePawns = newPawns.filter((pawn) => pawn.color === "blue");
 
     if (redPawns.length === 0) {
-      store.setWinner("blue");
+      gameStore.setWinner("blue");
     }
 
     if (bluePawns.length === 0) {
-      store.setWinner("red");
+      gameStore.setWinner("red");
     }
   });
 
@@ -106,73 +118,71 @@ export const useGameSocket = () => {
    * Action Handlers
    */
   const onPawnClicked = (pawn: Pawn) => {
-    if (store.numberOfTurns >= 1) return;
+    if (gameStore.numberOfTurns >= 1) return;
 
-    if (store.dam.count > 0) return;
+    if (gameStore.dam.count > 0) return;
 
-    store.activePawn = pawn;
+    gameStore.activePawn = pawn;
 
-    store.suggestionPawns = getSuggestionPawns(
+    gameStore.suggestionPawns = getSuggestionPawns(
       pawn,
-      store.pawnCoordinates,
-      store.isAlone,
+      gameStore.pawnCoordinates,
+      gameStore.isAlone,
     );
   };
 
   const onPawnRemoved = (pawn: Pawn) => {
-    if (store.dam.count > 0) {
-      store.removePawns([pawn]);
+    if (gameStore.dam.count > 0) {
+      gameStore.removePawns([pawn]);
 
-      store.dam.count--;
+      gameStore.dam.count--;
     }
   };
 
   watch(
-    () => store.dam.count,
+    () => gameStore.dam.count,
     (newCount) => {
       if (newCount <= 0) {
-        store.resetDam();
-        store.changeTurn();
+        gameStore.resetDam();
+        gameStore.changeTurn();
       }
     },
   );
 
-  const onPawnMoved = async (coordinate: Coordinate) => {
-    if (!store.activePawn) return;
+  const onPawnMoved = async (pawn: Pawn, coordinate: Coordinate) => {
+    if (!gameStore.activePawn) return;
 
-    const possibleDamCoordinates = store.checkPossibleDamCoordiates();
-    console.log("possibleDamCoordinates", possibleDamCoordinates);
+    const possibleDamCoordinates = gameStore.checkPossibleDamCoordiates();
 
-    const eatenEnemy = store.getEatenEnemy(coordinate);
-    console.log("eatenEnemy", eatenEnemy);
+    const eatenEnemy = gameStore.getEatenEnemy(coordinate);
 
-    if (store.checkForDam(possibleDamCoordinates, eatenEnemy)) {
-      const color = store.activePawn?.color;
+    if (gameStore.checkForDam(possibleDamCoordinates, eatenEnemy)) {
+      const color = gameStore.activePawn?.color;
 
-      store.movePawn(store.activePawn, coordinate);
-      store.clearActivePawn();
-      store.clearSuggestionPawns();
+      gameStore.movePawn(gameStore.activePawn, coordinate);
+      gameStore.clearActivePawn();
+      gameStore.clearSuggestionPawns();
 
-      await store.performDam(color, possibleDamCoordinates);
+      await gameStore.performDam(color, possibleDamCoordinates);
 
       return;
     }
 
     if (eatenEnemy?.length) {
-      store.removePawns(eatenEnemy);
+      gameStore.removePawns(eatenEnemy);
     }
 
-    store.clearSuggestionPawns();
-    store.movePawn(store.activePawn, coordinate);
+    gameStore.clearSuggestionPawns();
+    gameStore.movePawn(gameStore.activePawn, coordinate);
 
     if (eatenEnemy?.length) {
-      store.checkForMoreEatSuggestion();
+      gameStore.checkForMoreEatSuggestion();
 
-      if (store.suggestionPawns.length) return;
+      if (gameStore.suggestionPawns.length) return;
     }
 
-    store.clearActivePawn();
-    store.changeTurn();
+    gameStore.clearActivePawn();
+    gameStore.changeTurn();
   };
 
   return {
@@ -180,6 +190,6 @@ export const useGameSocket = () => {
     handlePawnMoved,
     handlePawnRemoved,
     joinRoom,
-    data,
+    ws,
   };
 };

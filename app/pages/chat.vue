@@ -23,7 +23,6 @@ watch(data, (newData) => {
 
   const parsedData =
     typeof newData === "string" ? JSON.parse(newData) : newData;
-  console.log("Received WebSocket data:", parsedData); // Debug log
 
   switch (parsedData.type) {
     case "MESSAGE":

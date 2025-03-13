@@ -15,7 +15,6 @@ export default defineWebSocketHandler({
     try {
       const data = JSON.parse(message.text());
 
-      console.log("Received message:", data);
       switch (data.type) {
         case "CHAT":
           const { channel, content } = data;

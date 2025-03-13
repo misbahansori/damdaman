@@ -14,16 +14,6 @@ const joinRoom = async () => {
 };
 
 const store = useRoomStore();
-
-const { data } = useGameSocket();
-
-watch(data, (newData) => {
-  const payload = JSON.parse(newData);
-
-  if (payload.type === "JOIN_ROOM") {
-    store.joinRoom(payload.data.roomId);
-  }
-});
 </script>
 
 <template>
