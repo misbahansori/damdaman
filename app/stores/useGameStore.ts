@@ -191,7 +191,7 @@ export const useGameStore = defineStore("game", () => {
     dam.coordinates = possibleDamCoordinates;
 
     await sleep(2500);
-    dam.coordinates = [];
+    // dam.coordinates = [];
   };
 
   const checkForMoreEatSuggestion = () => {
