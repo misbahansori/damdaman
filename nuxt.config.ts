@@ -15,6 +15,7 @@ export default defineNuxtConfig({
     "@vueuse/nuxt",
     "motion-v/nuxt",
     "shadcn-nuxt",
+    "@nuxthub/core",
   ],
 
   future: {
@@ -38,5 +39,9 @@ export default defineNuxtConfig({
     experimental: {
       websocket: true,
     },
+  },
+
+  hub: {
+    workers: true,
   },
 });
